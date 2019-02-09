@@ -82,14 +82,13 @@ export class TidalEditor {
         const document = this.editor.document;
         const position = this.editor.selection.active;
 
-        const line = document.lineAt(position);
-
-        // If there is a single-line expression
-        // TODO: decide the behaviour in case in multi-line selections
+        // If there is a single-line expression or selection
         if (!getMultiline) {
             if (this.isEmpty(document, position.line)) { return null; }
-            let range = new Range(line.lineNumber, 0, line.lineNumber, line.text.length);
-            return new TidalExpression(line.text, range);
+            const startLine = document.lineAt(this.editor.selection.start);
+            const endLine = document.lineAt(this.editor.selection.end);
+            let range = new Range(startLine.lineNumber, 0, endLine.lineNumber, endLine.text.length);
+            return new TidalExpression(document.getText(range), range);
         }
 
         // If there is a multi-line expression
