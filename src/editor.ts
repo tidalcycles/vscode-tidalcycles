@@ -84,7 +84,6 @@ export class TidalEditor {
 
         // If there is a single-line expression or selection
         if (!getMultiline) {
-            if (this.isEmpty(document, position.line)) { return null; }
             const startLine = document.lineAt(this.editor.selection.start);
             const endLine = document.lineAt(this.editor.selection.end);
             let range = new Range(startLine.lineNumber, 0, endLine.lineNumber, endLine.text.length);
