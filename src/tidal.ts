@@ -67,15 +67,57 @@ export class Tidal implements ITidal {
         }
 
         const splits = expression.split(/[\r\n]+/);
+        // nothing to evaluate
         if (splits.length === 0 || splits[0] === null) { return; }
-        this.ghci.writeLn(':{');
-        if (!isMultilineStatement && splits[0].trim().substring(0, 2) !== "do") {
-            this.ghci.writeLn("do");
+
+        // directly write single line to ghci
+        if (splits.length === 1) {
+            this.ghci.writeLn(splits[0]);
         }
+
+        // if user requested multiline eval using ctrl+enter
+        // wrap lines in multiline ghci-operator
+        // required for multiline statements without indentation like function declarations
+        if (isMultilineStatement) {
+            this.ghci.writeLn(":{");
+            for (let i = 0; i < splits.length; i++) {
+                this.ghci.writeLn(splits[i]);
+            }
+            this.ghci.writeLn(":}");
+            return;
+        }
+
+        // if user requested single line eval of a selection using shift+enter
+        // keep track of current indent level and wrap in multi-line ops if required
+        let indent = splits[0].replace(/^(\s*).*$/,"$1").length;
+        let multilineOpen = false; // keep track of open multi-line operator
+        let multilineMustClose = false; // if op must be closed after writing current statement
         for (let i = 0; i < splits.length; i++) {
-            this.ghci.writeLn(splits[i]);
+            const currentSplit = splits[i]
+            if (i + 1 < splits.length) {
+                const futureIndent = splits[i + 1].replace(/^(\s*).*$/,"$1").length;
+                // next statement is deeper indented, guessing it to be part of current statement, opening
+                if (futureIndent > indent && !multilineOpen) {
+                    multilineOpen = true;
+                    this.ghci.writeLn(":{");
+                // next statement is shallower indented, guessing statement is done, closing
+                } else if (futureIndent < indent && multilineOpen) {
+                    multilineMustClose = true;
+                }
+                indent = futureIndent;
+            }
+            this.ghci.writeLn(currentSplit);
+            // close open op before next, shallower indented statement
+            if (multilineMustClose) {
+                multilineMustClose = false;
+                multilineOpen = false;
+                this.ghci.writeLn(":}")
+            }
         }
-        this.ghci.writeLn(':}');
+        // close remaining open op
+        if (multilineOpen) {
+            this.ghci.writeLn(":}");
+        }
     }
 
     private async getBootCommandsFromFile(uri: vscode.Uri): Promise<string[] | null> {
