@@ -73,6 +73,7 @@ export class Tidal implements ITidal {
         // directly write single line to ghci
         if (splits.length === 1) {
             this.ghci.writeLn(splits[0]);
+            return;
         }
 
         // if user requested multiline eval using ctrl+enter
