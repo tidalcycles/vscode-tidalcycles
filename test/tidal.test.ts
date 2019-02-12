@@ -14,7 +14,7 @@ suite("Tidal", () => {
         mockedGhci.setup(ghci => ghci.writeLn('d1 $ sound "bd"')).verifiable(TypeMoq.Times.once());
         mockedGhci.setup(ghci => ghci.writeLn(':}')).verifiable(TypeMoq.Times.once());
 
-        return tidal.sendTidalExpression('d1 $ sound "bd"').then(() => {
+        return tidal.sendTidalExpression('d1 $ sound "bd"', false).then(() => {
             mockedGhci.verifyAll();
         });
     });
@@ -31,7 +31,7 @@ suite("Tidal", () => {
             mockedGhci.setup(ghci => ghci.writeLn('sound "bd"')).verifiable(TypeMoq.Times.once());
             mockedGhci.setup(ghci => ghci.writeLn(':}')).verifiable(TypeMoq.Times.once());
 
-            return tidal.sendTidalExpression(`d1 $${lineEnding}sound "bd"`).then(() => {
+            return tidal.sendTidalExpression(`d1 $${lineEnding}sound "bd"`, true).then(() => {
                 mockedGhci.verifyAll();
             });
         });

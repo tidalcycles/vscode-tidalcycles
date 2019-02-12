@@ -31,7 +31,7 @@ export class Repl implements IRepl {
             return;
         }
 
-        await this.tidal.sendTidalExpression('hush');
+        await this.tidal.sendTidalExpression('hush', false);
         this.history.log(new TidalExpression('hush', new vscode.Range(0, 0, 0, 0)));
     }
 
@@ -43,7 +43,7 @@ export class Repl implements IRepl {
         const block = new TidalEditor(this.textEditor).getTidalExpressionUnderCursor(isMultiline);
         
         if (block) {
-            await this.tidal.sendTidalExpression(block.expression);
+            await this.tidal.sendTidalExpression(block.expression, isMultiline);
             this.feedback(block.range);
             this.history.log(block);
         }

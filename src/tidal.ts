@@ -7,7 +7,7 @@ import * as vscode from 'vscode';
  * Provides an interface to send instructions to the current Tidal instance.
  */
 export interface ITidal {
-    sendTidalExpression(expression: string): Promise<void>;
+    sendTidalExpression(expression: string, isMultilineStatement: boolean): Promise<void>;
 }
 
 export class Tidal implements ITidal {
@@ -60,14 +60,18 @@ export class Tidal implements ITidal {
         return true;
     }
 
-    public async sendTidalExpression(expression: string) {
+    public async sendTidalExpression(expression: string, isMultilineStatement: boolean) {
         if (!await this.bootTidal()) {
             this.logger.error('Could not boot Tidal');
             return;
         }
 
-        this.ghci.writeLn(':{');
         const splits = expression.split(/[\r\n]+/);
+        if (splits.length === 0 || splits[0] === null) { return; }
+        this.ghci.writeLn(':{');
+        if (!isMultilineStatement && splits[0].trim().substring(0, 2) !== "do") {
+            this.ghci.writeLn("do");
+        }
         for (let i = 0; i < splits.length; i++) {
             this.ghci.writeLn(splits[i]);
         }
