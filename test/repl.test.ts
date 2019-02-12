@@ -22,7 +22,7 @@ suite('Repl', () => {
             mockConfig.object, mockCreateTextEditorDecorationType.object);
         await repl.hush();
 
-        mockTidal.verify(t => t.sendTidalExpression('hush'), TypeMoq.Times.once());
+        mockTidal.verify(t => t.sendTidalExpression('hush', false), TypeMoq.Times.once());
         mockHistory.verify(h => h.log(TypeMoq.It.isAny()), TypeMoq.Times.once());
     });
 
@@ -40,7 +40,7 @@ suite('Repl', () => {
             mockConfig.object, mockCreateTextEditorDecorationType.object);
         await repl.hush();
 
-        mockTidal.verify(t => t.sendTidalExpression(TypeMoq.It.isAnyString()), TypeMoq.Times.never());
+        mockTidal.verify(t => t.sendTidalExpression(TypeMoq.It.isAnyString(), false), TypeMoq.Times.never());
         mockHistory.verify(h => h.log(TypeMoq.It.isAny()), TypeMoq.Times.never());
     });
 
@@ -58,7 +58,7 @@ suite('Repl', () => {
             mockConfig.object, mockCreateTextEditorDecorationType.object);
         await repl.evaluate(false);
 
-        mockTidal.verify(t => t.sendTidalExpression(TypeMoq.It.isAnyString()), TypeMoq.Times.never());
+        mockTidal.verify(t => t.sendTidalExpression(TypeMoq.It.isAnyString(), false), TypeMoq.Times.never());
         mockHistory.verify(h => h.log(TypeMoq.It.isAny()), TypeMoq.Times.never());
     });
 
@@ -76,7 +76,7 @@ suite('Repl', () => {
             mockConfig.object, mockCreateTextEditorDecorationType.object);
         await repl.evaluate(true);
 
-        mockTidal.verify(t => t.sendTidalExpression('Foo\r\nbar'), TypeMoq.Times.once());
+        mockTidal.verify(t => t.sendTidalExpression('Foo\r\nbar', true), TypeMoq.Times.once());
         mockHistory.verify(h => h.log(TypeMoq.It.isAny()), TypeMoq.Times.once());
     });
 
@@ -94,7 +94,8 @@ suite('Repl', () => {
             mockConfig.object, mockCreateTextEditorDecorationType.object);
         await repl.evaluate(false);
 
-        mockTidal.verify(t => t.sendTidalExpression('bar'), TypeMoq.Times.once());
+        mockTidal.verify(t => t.sendTidalExpression('bar', false), TypeMoq.Times.once());
         mockHistory.verify(h => h.log(TypeMoq.It.isAny()), TypeMoq.Times.once());
     });
+
 });

@@ -13,7 +13,7 @@ suite("Editor", () => {
 
         assert.isNotNull(expression);
         if (expression !== null) {
-            expect(expression.expression).to.be.equal("Hello world");
+            expect(expression.expression).to.be.equal("Hello world\r\n");
         }
     });
 
@@ -26,7 +26,7 @@ suite("Editor", () => {
 
         assert.isNotNull(expression);
         if (expression !== null) {
-            expect(expression.expression).to.be.equal("Hello world");
+            expect(expression.expression).to.be.equal("Hello world\r\n");
         }
     });
 

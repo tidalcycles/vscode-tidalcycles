@@ -80,19 +80,17 @@ export class TidalEditor {
 
     public getTidalExpressionUnderCursor(getMultiline: boolean): TidalExpression | null {
         const document = this.editor.document;
-        const position = this.editor.selection.active;
+        const startLine = document.lineAt(this.editor.selection.start);
+        const endLine = document.lineAt(this.editor.selection.end);
 
-        const line = document.lineAt(position);
-
-        // If there is a single-line expression
-        // TODO: decide the behaviour in case in multi-line selections
-        if (!getMultiline) {
-            if (this.isEmpty(document, position.line)) { return null; }
-            let range = new Range(line.lineNumber, 0, line.lineNumber, line.text.length);
-            return new TidalExpression(line.text, range);
+        // If there is a single-line expression or selection
+        if (!getMultiline || startLine.lineNumber !== endLine.lineNumber) {
+            const range = new Range(startLine.lineNumber, 0, endLine.lineNumber, endLine.text.length);
+            const text = document.getText(range);
+            if (text.trim().length === 0) { return null; }
+            return new TidalExpression(text, range);
         }
-
-        // If there is a multi-line expression
+        // If there is a multi-line expression without selection
         const selectedRange = new Range(this.editor.selection.anchor, this.editor.selection.active);
         const startLineNumber = this.getStartLineNumber(document, selectedRange);
         if (startLineNumber === null) {
@@ -102,7 +100,7 @@ export class TidalEditor {
         const endLineNumber = this.getEndLineNumber(document, startLineNumber);
         const endCol = document.lineAt(endLineNumber).text.length;
 
-        let range = new Range(startLineNumber, 0, endLineNumber, endCol);
+        const range = new Range(startLineNumber, 0, endLineNumber, endCol);
 
         return new TidalExpression(document.getText(range), range);
     }    
