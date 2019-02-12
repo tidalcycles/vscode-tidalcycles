@@ -1,6 +1,7 @@
 import { ILogger } from "./logging";
 import { IGhci } from "./ghci";
 import * as vscode from 'vscode';
+import { homedir } from 'os';
 
 
 /**
@@ -40,7 +41,11 @@ export class Tidal implements ITidal {
                 useBootFileInCurrentDirectory setting.');
             }
         } else if (bootTidalPath) {
-            uri = vscode.Uri.file(`${bootTidalPath}`);
+            // expand '~' to home directory if present as first character
+            const bootTidalPathExpanded = bootTidalPath.startsWith('~')
+                    ? homedir() + bootTidalPath.substring(1)
+                    : bootTidalPath;
+            uri = vscode.Uri.file(`${bootTidalPathExpanded}`);
         }
 
         let bootCommands: string[] = this.bootCommands;
