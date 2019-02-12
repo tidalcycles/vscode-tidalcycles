@@ -84,22 +84,13 @@ export class TidalEditor {
         const endLine = document.lineAt(this.editor.selection.end);
 
         // If there is a single-line expression or selection
-        if (!getMultiline) {
+        if (!getMultiline || startLine.lineNumber !== endLine.lineNumber) {
             const range = new Range(startLine.lineNumber, 0, endLine.lineNumber, endLine.text.length);
             const text = document.getText(range);
             if (text.trim().length === 0) { return null; }
             return new TidalExpression(text, range);
         }
-        // If there is a multi-line expression
-        // Selection
-        if (startLine.lineNumber !== endLine.lineNumber)
-        {
-            const range = new Range(startLine.lineNumber, 0, endLine.lineNumber, endLine.text.length);
-            const text = document.getText(range);
-            if (text.trim().length === 0) { return null; }
-            return new TidalExpression(text, range);
-        }
-        // Block
+        // If there is a multi-line expression without selection
         const selectedRange = new Range(this.editor.selection.anchor, this.editor.selection.active);
         const startLineNumber = this.getStartLineNumber(document, selectedRange);
         if (startLineNumber === null) {
