@@ -1,5 +1,9 @@
 # Change Log
 
+## "1.1.1"
+
+- update to latest standard Tidal bootup code: https://github.com/tidalcycles/Tidal/blob/12c4dd2d805628b73162abfc34d77f5dd0c825b8/BootTidal.hs
+
 ## "1.0.0"
 - make compatible with Tidal 1.0.0
 

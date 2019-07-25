@@ -3,6 +3,12 @@
 Support for the TidalCycles in vscode. You can learn more about
 TidalCycles at [TidalCycles](https://tidalcycles.org).
 
+## Upgrading to 1.1
+
+If you are upgrading from 1.04 to 1.1, you will need to install the latest version of SuperDirt unless you are using
+your own custom Tidal boot file. The default boot will assign Tidal's `d1` through `d12` connections to 
+SuperCollider orbits 0 through 11, respectively.
+
 ## Features
 
 This VSCode extension for TidalCycles is inspired by the commands from the popular Atom package:
