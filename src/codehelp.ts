@@ -37,14 +37,6 @@ class TidalCommandDescription {
     ){
         if(typeof parameters === 'undefined'){
             this.parameters = [];
-            if(typeof formattedCommand === 'undefined'){
-                this.formattedCommand = new MarkdownString("`"+command+" ?`");
-            }
-            else {
-                this.formattedCommand = typeof formattedCommand === 'string' ?
-                    new MarkdownString(formattedCommand)
-                    : formattedCommand;
-            }
         }
         else {
             this.parameters = parameters.map(parm => ({
@@ -53,17 +45,25 @@ class TidalCommandDescription {
                     , help:(typeof parm.help === 'string' ? new MarkdownString(parm.help) : parm.help)
                 })
             );
-            if(typeof formattedCommand === 'undefined'){
-                this.formattedCommand = new MarkdownString(
-                    "`"+command+" "+this.parameters.map(x => x.name).reduce((x,y) => x+" "+y)+"`"
-                );
+        }
+        if(typeof formattedCommand === 'undefined'){
+            if(typeof parameters === 'undefined'){
+                formattedCommand = command+" ?";
             }
             else {
-                this.formattedCommand = typeof formattedCommand === 'string' ?
-                    new MarkdownString(formattedCommand)
-                    : formattedCommand;
+                formattedCommand = command+" "+this.parameters.map(x => x.name).reduce((x,y) => x+" "+y);
             }
         }
+        
+        if(typeof formattedCommand === 'string'){
+            if(formattedCommand.indexOf("`") < 0 || formattedCommand.indexOf("    ") !== 0){
+                formattedCommand = `    ${formattedCommand}`;
+            }
+            formattedCommand = new MarkdownString(formattedCommand);
+        }
+        
+        this.formattedCommand = formattedCommand;
+
         this.parameters.forEach(p => p.help.isTrusted = true);
         this.formattedCommand.isTrusted = true;
 
@@ -110,13 +110,13 @@ class TidalCommandDescription {
         this.examples.forEach(x => x.isTrusted = true);
     }
 
-    public format(): MarkdownString {
+    public format(withCommand:boolean=true): MarkdownString {
         const hline = "\r\n- - -\r\n\r\n";
         const ms = new MarkdownString();
         ms.isTrusted = true;
 
         return ms
-            .appendMarkdown(this.formattedCommand.value)
+            .appendMarkdown(withCommand ? this.formattedCommand.value : "")
             .appendMarkdown(typeof this.help === 'undefined' ? "" : hline + this.help.value)
             .appendMarkdown(typeof this.parameters === 'undefined' || this.parameters.length === 0 ? "" :
                 hline + this.parameters
@@ -304,10 +304,11 @@ export class TidalLanguageHelpProvider implements HoverProvider, CompletionItemP
                 const item = new CompletionItem(key);
 
                 if(typeof cdesc !== 'undefined'){
-                    item.documentation = cdesc.format();
+                    item.documentation = cdesc.format(false);
                 }
                 item.range = range;
-        
+                item.detail = cdesc.formattedCommand.value.replace(/`/g,'');
+
                 if(typeof cdesc.parameters === 'undefined'){
                     item.detail = "Tidal code";
                 }
@@ -334,7 +335,7 @@ export class TidalLanguageHelpProvider implements HoverProvider, CompletionItemP
             return undefined;
         }
 
-        return new Hover(hoverText.format(), range);
+        return new Hover(hoverText.format(true), range);
     }
 
 }
