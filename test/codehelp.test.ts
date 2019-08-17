@@ -28,7 +28,7 @@ foo:
         assert.exists(provider.commandDescriptions["foo"].command);
         assert.exists(provider.commandDescriptions["foo"].formattedCommand);
         assert.hasAllKeys(provider.commandDescriptions["foo"].formattedCommand, ["value","isTrusted"]);
-        assert.equal(provider.commandDescriptions["foo"].formattedCommand.value, "bar");
+        assert.equal(provider.commandDescriptions["foo"].formattedCommand.value, "    bar");
         assert.isTrue(provider.commandDescriptions["foo"].formattedCommand.isTrusted);
 
     });

@@ -1,4 +1,5 @@
-import { Hover, HoverProvider, Position, TextDocument, CancellationToken, MarkdownString, Range } from 'vscode';
+import { Hover, HoverProvider } from 'vscode';
+import { Position, TextDocument, CancellationToken, MarkdownString, Range, CompletionItemKind } from 'vscode';
 import { CompletionItemProvider, CompletionContext, ProviderResult, CompletionItem, CompletionList, Uri, window } from 'vscode';
 
 enum TidalTypeDescription {
@@ -96,9 +97,13 @@ class TidalCommandDescription {
         else if(Array.isArray(examples)){
             this.examples = (examples as (string | MarkdownString)[]).map(x => {
                 if(typeof x === 'string'){
-                    x = new MarkdownString(
-                        "`"+x+"` "
-                        + "[Run]("+Uri.parse("command:tidal.eval?"+encodeURIComponent(JSON.stringify({"command":x})))+")"
+                    x = x.replace(/(\s*\r?\n)*$/,'').replace(/\r?\n/g,"\r\n");
+                    let cmduri = Uri.parse("command:tidal.eval?"+encodeURIComponent(JSON.stringify({"command":x})));
+                    x = new MarkdownString(`~~~
+${x}
+~~~
+[Run](${cmduri.toString()})
+`
                     );
                 }
                 return x;
@@ -302,6 +307,8 @@ export class TidalLanguageHelpProvider implements HoverProvider, CompletionItemP
             .map(k => ({'key':k, 'cdesc':this.commandDescriptions[k]}))
             .map(({key, cdesc}) => {
                 const item = new CompletionItem(key);
+                
+                item.kind = CompletionItemKind.Snippet;
 
                 if(typeof cdesc !== 'undefined'){
                     item.documentation = cdesc.format(false);

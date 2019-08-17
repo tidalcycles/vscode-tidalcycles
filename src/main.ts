@@ -56,6 +56,7 @@ export function activate(context: ExtensionContext) {
         const repl = getRepl(repls, window.activeTextEditor);
         
         if (repl !== undefined) {
+
             if(typeof args !== 'undefined'){
                 let command = Object.keys(args).filter(x => x === 'command').map(x=>args[x]).pop() as string | undefined;
                 if(typeof command !== 'undefined'){
@@ -63,7 +64,34 @@ export function activate(context: ExtensionContext) {
                     if(typeof range === 'undefined'){
                         range = new Range(0,0,0,0);
                     }
-                    repl.evaluateExpression(new TidalExpression(command, range), false);
+
+                    /*
+                    this is a pragmatic way of splitting a list of commands into
+                    distinct top level commands to executem them separately in
+                    GHCi. The idea is that every time there's a not-indented
+                    line, then all previous, unexecuted liens are executed up to
+                    that line.
+                    */
+
+                    const lines = command.split(/\r?\n/);
+                    let startLine = 0;
+
+                    for(let i=0;i<lines.length;i++){
+                        if(lines[i].length === 0){
+                            continue;
+                        }
+                        let c = lines[i].charAt(0);
+                        let m = c.match(/\S/);
+                        let isEmpty = typeof m === 'undefined' || m === null || m.length === 0;
+                        if(i !== lines.length - 1){
+                            if(isEmpty){
+                                continue;
+                            }
+                        }
+                        let currentCommand = lines.slice(startLine, i+1).reduce((x,y)=>x+"\r\n"+y);
+                        repl.evaluateExpression(new TidalExpression(currentCommand, range), true);
+                        startLine = i+1;
+                    }
                 }
                 return;
             }

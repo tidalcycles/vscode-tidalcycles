@@ -45,3 +45,17 @@ stut:
   examples:
     - 'd1 $ stut 3 (1/3) 0.8 $ s "sd!4"'
     - 'd1 $ every 2 (stut 3 (1/8) 1.1) $ s "sd!4"'
+setcps:
+  cmd: setcps numcycles
+  help: Set the cycles per second that Tidal should evaluate.
+  params:
+    numcycles: The number of cycles per second. One cycle is usually interpreted as one bar.
+  examples:
+    - |+
+      setcps (120/60/4)
+      d1 $ s "bd!4"
+    - |+
+      setcps (165/60/4)
+      d1 $ s "bd!4"
+  links:
+    - https://tidalcycles.org/index.php/Tutorial
