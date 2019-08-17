@@ -14,14 +14,14 @@ Instructions:
 
 */
 
-const baseUrl = 'https://tidalcycles.org/index.php/'
+const baseUrl = 'https://tidalcycles.org/index.php/';
 
 process.argv.slice(2).forEach(inFile => {
     const fs = require('fs')
     const lines = fs.readFileSync(inFile).toString().split(/(\r?\n)+/);
     const context = {commands:[]};
     
-    console.log(`## ${inFile}`)
+    console.log(`## ${inFile}`);
 
     let patterns = [
         [RegExp(/^\s*[|]\s*[\[]{2,2}(\w+)[\]]{2,2}\s*$/), m => {
@@ -34,7 +34,7 @@ process.argv.slice(2).forEach(inFile => {
                 cmd['args'] = m[1];
                 context.commands.push(cmd);
             }
-            return(m[1])
+            return(m[1]);
         }]
         , [RegExp(/^\s*[|]\s*(.+?)\s*$/i), m => {
             const cmd = context.commands.pop();
@@ -45,7 +45,7 @@ process.argv.slice(2).forEach(inFile => {
                 }
                 context.commands.push(cmd);
             }
-            return(m[1])
+            return(m[1]);
         }]
     ];
 
@@ -100,7 +100,7 @@ process.argv.slice(2).forEach(inFile => {
                 x = x.replace(/<code>\s*(.*?)\s*<\/code>/ig,"`$1`")
                 x = x.replace(/\[{2,2}(.*?)\]{2,2}/ig,"`$1`")
                 ydef = `${ydef}
-        ${x}`
+        ${x}`;
             });
         }
 
@@ -108,7 +108,7 @@ process.argv.slice(2).forEach(inFile => {
         if(typeof cmd.help !== 'undefined' && cmd.help.length > 0){
             ydef = `${ydef}
     links:
-        - ${baseUrl}${cmd.name}`
+        - ${baseUrl}${cmd.name}`;
         }
 
         console.log(ydef);

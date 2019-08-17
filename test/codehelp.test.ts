@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 
-import * as yaml from 'js-yaml'
+import * as yaml from 'js-yaml';
 import { TidalLanguageHelpProvider } from '../src/codehelp';
 import { Position, CancellationTokenSource, MarkdownString } from 'vscode';
 import { createMockDocument } from './mock';
@@ -31,7 +31,8 @@ foo:
         assert.equal(provider.commandDescriptions["foo"].formattedCommand.value, "bar");
         assert.isTrue(provider.commandDescriptions["foo"].formattedCommand.isTrusted);
 
-    })
+    });
+
     test("hover", () => {
         const testData = yaml.load(`
 foo:
@@ -55,7 +56,10 @@ foo:
             assert.isTrue(h.contents.length > 0);
             let md = h.contents[0] as MarkdownString;
             ["bar","link1","link2","link3","title3"].forEach(x =>{
-                assert.isTrue(md.value.indexOf(x) >= 0, `String ${x} missing from hover contents:\n--------------\n${md.value}\n--------------\n`);
+                assert.isTrue(
+                    md.value.indexOf(x) >= 0
+                    , `String ${x} missing from hover contents:\n--------------\n${md.value}\n--------------\n`
+                );
             });
             assert.exists(h.range);
             if(typeof h.range !== 'undefined'){
@@ -81,7 +85,7 @@ foo:
             .map(([source, defPath, ..._]) => {
                 const ydef = yaml.load(readFileSync(defPath).toString());
                 return {source: source, ydef};
-            })
+            });
 
             const provider = new TidalLanguageHelpProvider(yf);
 
@@ -90,4 +94,4 @@ foo:
             });
         }
     });
-})
+});

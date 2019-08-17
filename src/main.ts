@@ -9,7 +9,7 @@ import { TidalLanguageHelpProvider } from './codehelp';
 import * as path from 'path';
 import { TidalExpression } from './editor';
 import * as yaml from 'js-yaml';
-import { readFileSync } from 'fs'
+import { readFileSync } from 'fs';
 
 export function activate(context: ExtensionContext) {
     const config = new Config();
