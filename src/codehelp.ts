@@ -125,7 +125,12 @@ class TidalCommandDescription {
                 + this.examples.map(x => x.value).reduce((x,y) => x+"    \r\n"+y,"")
             )
             .appendMarkdown(this.links.length === 0 ? "" :
-                hline + this.links.map(lnk => `${lnk.title.value}: <${lnk.url}>`).reduce((x,y) => x+"    \r\n"+y,"")
+                hline + this.links
+                    .map(lnk => 
+                        (lnk.title.value.trim() === "" ? "" : `${lnk.title.value}: `)
+                        + `<${lnk.url}>`
+                    )
+                    .reduce((x,y) => x+"    \r\n"+y,"")
             )
             ;
     }
@@ -141,7 +146,9 @@ export class TidalLanguageHelpProvider implements HoverProvider, CompletionItemP
         yamlCommandDefinitions.forEach(({source, ydef}) => {
             try {
                 this.parseYamlDefinitions(ydef)
-                    .forEach(cmd => this.commandDescriptions[cmd.command] = cmd);
+                    .forEach(cmd => {
+                        this.commandDescriptions[cmd.command] = cmd
+                    });
             }
             catch(error){
                 window.showErrorMessage(`Error loading Tidal command descriptions from ${source}: `+error);
@@ -183,12 +190,10 @@ export class TidalLanguageHelpProvider implements HoverProvider, CompletionItemP
 
                             Object.entries(value).map(([parmName, parmprops, ..._]) => {
                                 if(typeof parmName === 'string'){
-                                    if(typeof parmprops === 'string'){
-                                        return new TidalParameterDescription(parmName, new MarkdownString(parmprops));
+                                    if(typeof parmprops !== 'string'){
+                                        parmprops = ""+parmprops;
                                     }
-                                    else {
-                                        throw new Error("Invalid parameter value type "+(typeof parmName));
-                                    }
+                                    return new TidalParameterDescription(parmName, new MarkdownString(parmprops));
                                 }
                                 else {
                                     throw new Error("Invalid parameter key type "+(typeof parmName));

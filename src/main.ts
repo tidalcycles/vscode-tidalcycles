@@ -20,7 +20,7 @@ export function activate(context: ExtensionContext) {
     const history = new History(logger, config);
 
     const hoveAndMarkdownPrivder = new TidalLanguageHelpProvider(
-        ["commands.yaml"].map(x => ([x, path.join(context.extensionPath, x)]))
+        ["commands-generated.yaml","commands.yaml"].map(x => ([x, path.join(context.extensionPath, x)]))
         .map(([source, defPath, ..._]) => {
             const ydef = yaml.load(readFileSync(defPath).toString());
             return {source: source, ydef};

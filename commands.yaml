@@ -1,10 +1,12 @@
 slow:
   cmd: slow times pattern
+  help:
+    Slow down a pattern. This effectively changes the number of cycles it takes
+    for the pattern to repeat.
   params:
-    times: The amount to slow down the patern by. Can be a pattern itself
+    times: The amount to slow down the pattern by. Can be a pattern itself
     pattern: The pattern to slow down
-  returns:
-    A slowed down version of the pattern
+  returns: A slowed down version of the pattern
   links:
     - url: https://tidalcycles.org/index.php/slow
       title: Tidal Documentation
@@ -12,6 +14,34 @@ slow:
     - 'd1 $ slow 4 $ s "bd!8"'
     - 'd1 $ s "bd!8" # speed (slow 2 $ range 0.95 1.05 square)'
 fast:
-distretise:
-silence:
-hurry:
+  cmd: fast times pattern
+  help:
+    Speed up a pattern. This effectively changes the number of cycles it takes
+    for the pattern to repeat.
+  params:
+    times: The amount to speed up the pattern by. Can be a pattern itself
+    pattern: The pattern to speed up
+  returns:
+    A sped up version of the pattern
+  links:
+    - url: https://tidalcycles.org/index.php/fast
+      title: Tidal Documentation
+  examples:
+    - 'd1 $ fast 4 $ s "bd!2"'
+    - 'd1 $ s "bd!8" # speed (fast 2 $ range 0.95 1.05 square)'
+stut:
+  cmd: stut repeat time decay
+  help:
+    Similar to a delay, this causes `repeat` versions of the pattern to play
+    with an offset of `time` each. Every time the pattern is repeated, the gain
+    is multiplied with the `decay` values.
+  params:
+    repeat: The number of times to repeat the pattern
+    time: The delay between the repeated patterns
+    decay:
+      The amount to multiply the gain by on each repeat. Values `< 1` will
+      make the repeats more silent each time, values `> 1` will make their
+      volume increase.
+  examples:
+    - 'd1 $ stut 3 (1/3) 0.8 $ s "sd!4"'
+    - 'd1 $ every 2 (stut 3 (1/8) 1.1) $ s "sd!4"'

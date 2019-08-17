@@ -77,7 +77,7 @@ foo:
         const ext = vscode.extensions.getExtension("tidalcycles.vscode-tidalcycles");
         assert.exists(ext, "The tidal extension does not exist.");
         if(typeof ext !== 'undefined' && ext !== null){
-            const yf = ["commands.yaml"].map(x => ([x, path.join(ext.extensionPath,x)]))
+            const yf = ["commands-generated.yaml", "commands.yaml"].map(x => ([x, path.join(ext.extensionPath,x)]))
             .map(([source, defPath, ..._]) => {
                 const ydef = yaml.load(readFileSync(defPath).toString());
                 return {source: source, ydef};
@@ -85,7 +85,9 @@ foo:
 
             const provider = new TidalLanguageHelpProvider(yf);
 
-            assert.hasAllKeys(provider.commandDescriptions, ["stut","slow"]);
+            ["stut","slow"].forEach(x => {
+                assert.hasAnyKeys(provider.commandDescriptions, [x], "Expected command descirption for "+x+" to be present");
+            });
         }
     });
 })
