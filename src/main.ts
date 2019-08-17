@@ -1,11 +1,15 @@
-import { TextEditor, ExtensionContext, window, commands } from 'vscode';
+import { TextEditor, ExtensionContext, window, commands, languages, Range } from 'vscode';
 import { Repl } from './repl';
 import { Logger } from './logging';
 import { Config } from './config';
 import { Ghci } from './ghci';
 import { Tidal } from './tidal';
 import { History } from './history';
-
+import { TidalLanguageHelpProvider } from './codehelp';
+import * as path from 'path';
+import { TidalExpression } from './editor';
+import * as yaml from 'js-yaml';
+import { readFileSync } from 'fs'
 
 export function activate(context: ExtensionContext) {
     const config = new Config();
@@ -14,6 +18,18 @@ export function activate(context: ExtensionContext) {
     const ghci = new Ghci(logger, config.useStackGhci(), config.ghciPath(), config.showGhciOutput());
     const tidal = new Tidal(logger, ghci, config.bootTidalPath(), config.useBootFileInCurrentDirectory());
     const history = new History(logger, config);
+
+    const hoveAndMarkdownPrivder = new TidalLanguageHelpProvider(
+        ["commands.yaml"].map(x => ([x, path.join(context.extensionPath, x)]))
+        .map(([source, defPath, ..._]) => {
+            const ydef = yaml.load(readFileSync(defPath).toString());
+            return {source: source, ydef};
+        })
+    );
+    [languages.registerHoverProvider, languages.registerCompletionItemProvider]
+        .forEach((regFunc:((selector:any, provider:any) => void)) => {
+            regFunc({scheme:"*", language: 'haskell',pattern: '**/*.tidal'}, hoveAndMarkdownPrivder);
+        });
 
     function getRepl(repls: Map<TextEditor, Repl>, textEditor: TextEditor | undefined): Repl | undefined {
         if (textEditor === undefined) { return undefined; }
@@ -36,9 +52,22 @@ export function activate(context: ExtensionContext) {
         });
     }
 
-    const evalSingleCommand = commands.registerCommand('tidal.eval', function () {
+    const evalSingleCommand = commands.registerCommand('tidal.eval', function (args?:{[key:string]:any}) {
         const repl = getRepl(repls, window.activeTextEditor);
+        
         if (repl !== undefined) {
+            if(typeof args !== 'undefined'){
+                let command = Object.keys(args).filter(x => x === 'command').map(x=>args[x]).pop() as string | undefined;
+                if(typeof command !== 'undefined'){
+                    let range = Object.keys(args).filter(x => x === 'range').map(x=>args[x]).pop() as Range | undefined;
+                    if(typeof range === 'undefined'){
+                        range = new Range(0,0,0,0);
+                    }
+                    repl.evaluateExpression(new TidalExpression(command, range), false);
+                }
+                return;
+            }
+        
             repl.evaluate(false);
         }
     });

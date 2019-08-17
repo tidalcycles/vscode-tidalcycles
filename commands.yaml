@@ -1,0 +1,17 @@
+slow:
+  cmd: slow times pattern
+  params:
+    times: The amount to slow down the patern by. Can be a pattern itself
+    pattern: The pattern to slow down
+  returns:
+    A slowed down version of the pattern
+  links:
+    - url: https://tidalcycles.org/index.php/slow
+      title: Tidal Documentation
+  examples:
+    - 'd1 $ slow 4 $ s "bd!8"'
+    - 'd1 $ s "bd!8" # speed (slow 2 $ range 0.95 1.05 square)'
+fast:
+distretise:
+silence:
+hurry:
