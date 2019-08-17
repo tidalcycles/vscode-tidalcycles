@@ -4,6 +4,9 @@ import * as yaml from 'js-yaml'
 import { TidalLanguageHelpProvider } from '../src/codehelp';
 import { Position, CancellationTokenSource, MarkdownString } from 'vscode';
 import { createMockDocument } from './mock';
+import * as path from 'path';
+import { readFileSync } from 'fs';
+import * as vscode from 'vscode';
 
 suite("Code helper", () => {
     test("yaml", () => {
@@ -63,6 +66,26 @@ foo:
             }
         }
 
-    })
-})
+    });
 
+    test("commands.yaml", (...args) =>{
+        /*
+        try loading the commands from the provided commands.yaml file to make
+        sure it's not causing any errors and that (at least some) values are
+        present.
+        */
+        const ext = vscode.extensions.getExtension("tidalcycles.vscode-tidalcycles");
+        assert.exists(ext, "The tidal extension does not exist.");
+        if(typeof ext !== 'undefined' && ext !== null){
+            const yf = ["commands.yaml"].map(x => ([x, path.join(ext.extensionPath,x)]))
+            .map(([source, defPath, ..._]) => {
+                const ydef = yaml.load(readFileSync(defPath).toString());
+                return {source: source, ydef};
+            })
+
+            const provider = new TidalLanguageHelpProvider(yf);
+
+            assert.hasAllKeys(provider.commandDescriptions, ["stut","slow"]);
+        }
+    });
+})
