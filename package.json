@@ -16,7 +16,8 @@
     "activationEvents": [
         "onCommand:tidal.eval",
         "onCommand:tidal.evalMulti",
-        "onCommand:tidal.hush"
+        "onCommand:tidal.hush",
+        "onLanguage:haskell"
     ],
     "main": "./out/src/main",
     "contributes": {
@@ -114,6 +115,7 @@
     },
     "devDependencies": {
         "@types/chai": "^4.1.6",
+        "@types/js-yaml": "^3.12.1",
         "@types/mocha": "^5.2.5",
         "@types/node": "^7.0.0",
         "@types/split2": "^2.1.6",
@@ -124,6 +126,7 @@
         "vscode": "^1.1.24"
     },
     "dependencies": {
+        "js-yaml": "^3.13.1",
         "split2": "^3.0.0"
     }
 }

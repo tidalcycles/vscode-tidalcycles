@@ -1,0 +1,1696 @@
+## ../tmp/doc-allfunc.txt
+_every:
+    cmd: _every Int -> Int -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+    params:
+    help: |
+        `_every'`
+    links:
+        - https://tidalcycles.org/index.php/_every
+_fast:
+    cmd: _fast Time -> Pattern a -> Pattern a
+    params:
+_run:
+    cmd: _run (Enum a, Num a) => a -> Pattern a
+    params:
+_scan:
+    cmd: _scan (Enum a, Num a) => a -> Pattern a
+    params:
+_slow:
+    cmd: _slow Time -> Pattern a -> Pattern a
+    params:
+append:
+    cmd: append Pattern a -> Pattern a -> Pattern a
+    params:
+cat:
+    cmd: cat [Pattern a] -> Pattern a
+    params:
+compress:
+    cmd: compress Arc -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/compress
+compressTo:
+    cmd: compressTo Arc -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/compressTo
+cosine:
+    cmd: cosine Fractional a => Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/cosine
+density:
+    cmd: density Pattern Time -> Pattern a -> Pattern a
+    params:
+densityGap:
+    cmd: densityGap Pattern Time -> Pattern a -> Pattern a
+    params:
+envEq:
+    cmd: envEq Pattern Double
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/envEq
+envEqR:
+    cmd: envEqR Pattern Double
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/envEqR
+envL:
+    cmd: envL Pattern Double
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/envL
+envLR:
+    cmd: envLR Pattern Double
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/envLR
+every:
+    cmd: every Pattern Int -> Pattern Int -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+    params:
+    help: |
+        `every'`
+    links:
+        - https://tidalcycles.org/index.php/every
+fast:
+    cmd: fast Pattern Time -> Pattern a -> Pattern a
+    params:
+fastAppend:
+    cmd: fastAppend Pattern a -> Pattern a -> Pattern a
+    params:
+fastCat:
+    cmd: fastCat [Pattern a] -> Pattern a
+    params:
+fastFromList:
+    cmd: fastFromList [a] -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/fastFromList
+fastGap:
+    cmd: fastGap Pattern Time -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/fastGap
+fastRepeatCycles:
+    cmd: fastRepeatCycles Int -> Pattern a -> Pattern a
+    params:
+fastSqueeze:
+    cmd: fastSqueeze Pattern Time -> Pattern a -> Pattern a
+    params:
+fastcat:
+    cmd: fastcat [Pattern a] -> Pattern a
+    params:
+foldEvery:
+    cmd: foldEvery [Int] -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+    params:
+fromList:
+    cmd: fromList [a] -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/fromList
+fromMaybes:
+    cmd: fromMaybes [Maybe a] -> Pattern a
+    params:
+isaw:
+    cmd: isaw (Fractional a, Real a) => Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/isaw
+listToPat:
+    cmd: listToPat [a] -> Pattern a
+    params:
+overlay:
+    cmd: overlay Pattern a -> Pattern a -> Pattern a
+    params:
+repeatCycles:
+    cmd: repeatCycles Int -> Pattern a -> Pattern a
+    params:
+rev:
+    cmd: rev Pattern a -> Pattern a
+    params:
+run:
+    cmd: run (Enum a, Num a) => Pattern a -> Pattern a
+    params:
+saw:
+    cmd: saw (Fractional a, Real a) => Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/saw
+scan:
+    cmd: scan (Enum a, Num a) => Pattern a -> Pattern a
+    params:
+sig:
+    cmd: sig (Time -> a) -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/sig
+silence:
+    cmd: silence Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/silence
+sine:
+    cmd: sine Fractional a => Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/sine
+slow:
+    cmd: slow Pattern Time -> Pattern a -> Pattern a
+    params:
+slowAppend:
+    cmd: slowAppend Pattern a -> Pattern a -> Pattern a
+    params:
+slowCat:
+    cmd: slowCat [Pattern a] -> Pattern a
+    params:
+slowSqueeze:
+    cmd: slowSqueeze Pattern Time -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/slowSqueeze
+slowcat:
+    cmd: slowcat [Pattern a] -> Pattern a
+    params:
+sparsity:
+    cmd: sparsity Pattern Time -> Pattern a -> Pattern a
+    params:
+square:
+    cmd: square (Fractional a, Real a) => Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/square
+stack:
+    cmd: stack [Pattern a] -> Pattern a
+    params:
+timeCat:
+    cmd: timeCat [(Time, Pattern a)] -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/timeCat
+tri:
+    cmd: tri (Fractional a, Real a) => Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/tri
+when:
+    cmd: when (Int -> Bool) -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+    params:
+whenT:
+    cmd: whenT (Time -> Bool) -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/whenT
+zoom:
+    cmd: zoom Pattern Time -> Pattern a -> Pattern a
+    params:
+    help: |
+        <nowiki>|%</nowiki>
+        <nowiki>|%|</nowiki>
+        <nowiki>|*</nowiki>
+        <nowiki>|*|</nowiki>
+        <nowiki>|+</nowiki>
+        <nowiki>|+|</nowiki>
+        <nowiki>|-</nowiki>
+        <nowiki>|-|</nowiki>
+        <nowiki>|/</nowiki>
+        <nowiki>|/|</nowiki>
+        <nowiki>|<</nowiki>
+        <nowiki>|<|</nowiki>
+        <nowiki>|></nowiki>
+        <nowiki>|>|</nowiki>
+        <nowiki>~></nowiki>
+    links:
+        - https://tidalcycles.org/index.php/zoom
+_cF:
+    cmd: _cF [Double] -> String -> Pattern Double
+    params:
+_cP:
+    cmd: _cP (Enumerable a, Parseable a) => [Pattern a] -> String -> Pattern a
+    params:
+_cS:
+    cmd: _cS [String] -> String -> Pattern String
+    params:
+_cX:
+    cmd: _cX (Arc -> Value -> [Event a]) -> [a] -> String -> Pattern a
+    params:
+_chop:
+    cmd: _chop Int -> ControlPattern -> ControlPattern
+    params:
+_gap:
+    cmd: _gap Int -> ControlPattern -> ControlPattern
+    params:
+_slice:
+    cmd: _slice Int -> Int -> ControlPattern -> ControlPattern
+    params:
+_spin:
+    cmd: _spin Int -> ControlPattern -> ControlPattern
+    params:
+_striate:
+    cmd: _striate Int -> ControlPattern -> ControlPattern
+    params:
+_striateBy:
+    cmd: _striateBy Int -> Double -> ControlPattern -> ControlPattern
+    params:
+_stut:
+    cmd: _stut Integer -> Double -> Rational -> ControlPattern -> ControlPattern
+    params:
+_stutWith:
+    cmd: _stutWith (Num n, Ord n) => n -> Time -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+    params:
+cF:
+    cmd: cF Double -> String -> Pattern Double
+    params:
+cF0:
+    cmd: cF0 String -> Pattern Double
+    params:
+cF_:
+    cmd: cF_ String -> Pattern Double
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/cF_
+cI:
+    cmd: cI String -> Pattern Int
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/cI
+cP:
+    cmd: cP (Enumerable a, Parseable a) => Pattern a -> String -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/cP
+cP_:
+    cmd: cP_ (Enumerable a, Parseable a) => String -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/cP_
+cR:
+    cmd: cR Time -> String -> Pattern Rational
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/cR
+cR0:
+    cmd: cR0 String -> Pattern Time
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/cR0
+cR_:
+    cmd: cR_ String -> Pattern Time
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/cR_
+cS:
+    cmd: cS String -> String -> Pattern String
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/cS
+cS_:
+    cmd: cS_ String -> Pattern String
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/cS_
+cT:
+    cmd: cT Time -> String -> Pattern Time
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/cT
+cT0:
+    cmd: cT0 String -> Pattern Time
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/cT0
+cT_:
+    cmd: cT_ String -> Pattern Time
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/cT_
+chop:
+    cmd: chop Pattern Int -> ControlPattern -> ControlPattern
+    params:
+chopArc:
+    cmd: chopArc Arc -> Int -> [Arc]
+    params:
+gap:
+    cmd: gap Pattern Int -> ControlPattern -> ControlPattern
+    params:
+hurry:
+    cmd: hurry Pattern Rational -> ControlPattern -> ControlPattern
+    params:
+in0:
+    cmd: in0 Pattern Double
+    params:
+in1:
+    cmd: in1 Pattern Double
+    params:
+    help: |
+        TODO
+        ... up to ...
+    links:
+        - https://tidalcycles.org/index.php/in1
+in127:
+    cmd: in127 Pattern Double
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/in127
+interlace:
+    cmd: interlace ControlPattern -> ControlPattern -> ControlPattern
+    params:
+loopAt:
+    cmd: loopAt Pattern Time -> ControlPattern -> ControlPattern
+    params:
+mergePlayRange:
+    cmd: mergePlayRange (Double, Double) -> ControlMap -> ControlMap
+    params:
+randslice:
+    cmd: randslice Int -> ControlPattern -> ControlPattern
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/randslice
+slice:
+    cmd: slice Pattern Int -> Pattern Int -> ControlPattern -> ControlPattern
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/slice
+smash:
+    cmd: smash Int -> [Pattern Time] -> ControlPattern -> Pattern ControlMap
+    params:
+    help: |
+        `smash'`
+    links:
+        - https://tidalcycles.org/index.php/smash
+spin:
+    cmd: spin Pattern Int -> ControlPattern -> ControlPattern
+    params:
+striate:
+    cmd: striate Pattern Int -> Pattern Double -> ControlPattern -> ControlPattern
+    params:
+    help: |
+        `striate'`
+    links:
+        - https://tidalcycles.org/index.php/striate
+striateBy:
+    cmd: striateBy Pattern Int -> Pattern Double -> ControlPattern -> ControlPattern
+    params:
+stut:
+    cmd: stut Pattern Int -> Pattern Time -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+    params:
+    help: |
+        `stut'`
+    links:
+        - https://tidalcycles.org/index.php/stut
+stutWith:
+    cmd: stutWith Pattern Int -> Pattern Time -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+    params:
+weave:
+    cmd: weave Time -> Pattern a -> [Pattern a -> Pattern a] -> Pattern a
+    params:
+    help: |
+        `weave'`
+    links:
+        - https://tidalcycles.org/index.php/weave
+weaveWith:
+    cmd: weaveWith Time -> Pattern a -> [Pattern a -> Pattern a] -> Pattern a
+    params:
+_degradeBy:
+    cmd: _degradeBy Double -> Pattern a -> Pattern a
+    params:
+_distrib:
+    cmd: _distrib [Int] -> Pattern a -> Pattern a
+    params:
+_euclid:
+    cmd: _euclid Int -> Int -> Pattern a -> Pattern a
+    params:
+    help: |
+        `_euclid'`
+    links:
+        - https://tidalcycles.org/index.php/_euclid
+_euclidBool:
+    cmd: _euclidBool Int -> Int -> Pattern Bool
+    params:
+_euclidFull:
+    cmd: _euclidFull Int -> Int -> Pattern a -> Pattern a -> Pattern a
+    params:
+_euclidInv:
+    cmd: _euclidInv Int -> Int -> Pattern a -> Pattern a
+    params:
+_euclidOff:
+    cmd: _euclidOff Int -> Int -> Integer -> Pattern a -> Pattern a
+    params:
+_euclidOffBool:
+    cmd: _euclidOffBool Int -> Int -> Integer -> Pattern Bool -> Pattern Bool
+    params:
+_iter:
+    cmd: _iter Int -> Pattern a -> Pattern a
+    params:
+    help: |
+        `_iter'`
+    links:
+        - https://tidalcycles.org/index.php/_iter
+_linger:
+    cmd: _linger Time -> Pattern a -> Pattern a
+    params:
+_off:
+    cmd: _off Time -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+    params:
+_ply:
+    cmd: _ply Int -> Pattern a -> Pattern a
+    params:
+_range:
+    cmd: _range (Functor f, Num b) => b -> b -> f b -> f b
+    params:
+_rot:
+    cmd: _rot Ord a => Int -> Pattern a -> Pattern a
+    params:
+_segment:
+    cmd: _segment Time -> Pattern a -> Pattern a
+    params:
+_select:
+    cmd: _select Double -> [Pattern a] -> Pattern a
+    params:
+_stripe:
+    cmd: _stripe Int -> Pattern a -> Pattern a
+    params:
+_trunc:
+    cmd: _trunc Time -> Pattern a -> Pattern a
+    params:
+_unDegradeBy:
+    cmd: _unDegradeBy Double -> Pattern a -> Pattern a
+    params:
+almostAlways:
+    cmd: almostAlways (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+    params:
+almostNever:
+    cmd: almostNever (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+    params:
+always:
+    cmd: always (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+    params:
+arpeggiate:
+    cmd: arpeggiate Pattern a -> Pattern a
+    params:
+arpg:
+    cmd: arpg Pattern a -> Pattern a
+    params:
+brak:
+    cmd: brak Pattern a -> Pattern a
+    params:
+choose:
+    cmd: choose [a] -> Pattern a
+    params:
+chooseBy:
+    cmd: chooseBy Pattern Double -> [a] -> Pattern a
+    params:
+chunk:
+    cmd: chunk Integral a => a -> (Pattern b -> Pattern b) -> Pattern b -> Pattern b
+    params:
+    help: |
+        TODO
+        `chunk'`
+    links:
+        - https://tidalcycles.org/index.php/chunk
+contrast:
+    cmd: contrast (ControlPattern -> ControlPattern) -> (ControlPattern -> ControlPattern) -> ControlPattern -> ControlPattern -> ControlPattern
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/contrast
+contrastBy:
+    cmd: contrastBy (a -> Value -> Bool) -> (ControlPattern -> Pattern b) -> (ControlPattern -> Pattern b) -> Pattern (containers-0.5.7.1:Data.Map.Base.Map String a) -> Pattern (containers-0.5.7.1:Data.Map.Base.Map String Value) -> Pattern b
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/contrastBy
+contrastRange:
+    cmd: contrastRange (ControlPattern -> Pattern a) -> (ControlPattern -> Pattern a) -> Pattern (containers-0.5.7.1:Data.Map.Base.Map String (Value, Value)) -> ControlPattern -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/contrastRange
+cycleChoose:
+    cmd: cycleChoose [a] -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/cycleChoose
+degrade:
+    cmd: degrade Pattern a -> Pattern a
+    params:
+degradeBy:
+    cmd: degradeBy Pattern Double -> Pattern a -> Pattern a
+    params:
+degradeOverBy:
+    cmd: degradeOverBy Int -> Pattern Double -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/degradeOverBy
+discretise:
+    cmd: discretise Pattern Time -> Pattern a -> Pattern a
+    params:
+distrib:
+    cmd: distrib [Pattern Int] -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/distrib
+double:
+    cmd: double Time -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/double
+echo:
+    cmd: echo Time -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/echo
+enclosingArc:
+    cmd: enclosingArc [Arc] -> Arc
+    params:
+euclid:
+    cmd: euclid Pattern Int -> Pattern Int -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/euclid
+euclidFull:
+    cmd: euclidFull Pattern Int -> Pattern Int -> Pattern a -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/euclidFull
+euclidInv:
+    cmd: euclidInv Pattern Int -> Pattern Int -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/euclidInv
+euclidOff:
+    cmd: euclidOff Pattern Int -> Pattern Int -> Pattern Integer -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/euclidOff
+euclidOffBool:
+    cmd: euclidOffBool Pattern Int -> Pattern Int -> Pattern Integer -> Pattern Bool -> Pattern Bool
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/euclidOffBool
+fadeIn:
+    cmd: fadeIn Time -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/fadeIn
+fadeInFrom:
+    cmd: fadeInFrom Time -> Time -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/fadeInFrom
+fadeOut:
+    cmd: fadeOut Time -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/fadeOut
+fadeOutFrom:
+    cmd: fadeOutFrom Time -> Time -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/fadeOutFrom
+fastspread:
+    cmd: fastspread (a -> t -> Pattern b) -> [a] -> t -> Pattern b
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/fastspread
+fit:
+    cmd: fit Pattern Time -> Int -> Pattern Int -> Pattern Int -> Pattern a -> Pattern a
+    params:
+    help: |
+        `fit'`
+    links:
+        - https://tidalcycles.org/index.php/fit
+fix:
+    cmd: fix (ControlPattern -> ControlPattern) -> ControlPattern -> ControlPattern -> ControlPattern
+    params:
+fixRange:
+    cmd: fixRange (ControlPattern -> Pattern ControlMap) -> Pattern (containers-0.5.7.1:Data.Map.Base.Map String (Value, Value)) -> ControlPattern -> Pattern ControlMap
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/fixRange
+flatpat:
+    cmd: flatpat Pattern [a] -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/flatpat
+ghost:
+    cmd: ghost Time -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+        `ghost'`
+        `ghost''`
+    links:
+        - https://tidalcycles.org/index.php/ghost
+ifp:
+    cmd: ifp (Int -> Bool) -> (Pattern a -> Pattern a) -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+    params:
+index:
+    cmd: index Real b => b -> Pattern b -> Pattern c -> Pattern c
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/index
+inhabit:
+    cmd: inhabit [(String, Pattern a)] -> Pattern String -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/inhabit
+inside:
+    cmd: inside Pattern Time -> (Pattern a1 -> Pattern a) -> Pattern a1 -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/inside
+inv:
+    cmd: inv Functor f => f Bool -> f Bool
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/inv
+irand:
+    cmd: irand Num a => Int -> Pattern a
+    params:
+iter:
+    cmd: iter Pattern Int -> Pattern c -> Pattern c
+    params:
+    help: |
+        `iter'`
+    links:
+        - https://tidalcycles.org/index.php/iter
+jux:
+    cmd: jux [t -> Pattern ControlMap] -> t -> Pattern ControlMap
+    params:
+    help: |
+        `jux'`
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/jux
+jux4:
+    cmd: jux4 (Pattern ControlMap -> Pattern ControlMap) -> Pattern ControlMap -> Pattern ControlMap
+    params:
+    help: |
+        remove?
+    links:
+        - https://tidalcycles.org/index.php/jux4
+juxBy:
+    cmd: juxBy Pattern Double -> (Pattern ControlMap -> Pattern ControlMap) -> Pattern ControlMap -> Pattern ControlMap
+    params:
+juxcut:
+    cmd: juxcut [t -> Pattern ControlMap] -> t -> Pattern ControlMap
+    params:
+    help: |
+        TODO
+        `juxcut'`
+    links:
+        - https://tidalcycles.org/index.php/juxcut
+layer:
+    cmd: layer [a -> Pattern b] -> a -> Pattern b
+    params:
+lindenmayer:
+    cmd: lindenmayer Int -> String -> String -> String
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/lindenmayer
+lindenmayerI:
+    cmd: lindenmayerI Num b => Int -> String -> String -> [b]
+    params:
+linger:
+    cmd: linger Pattern Time -> Pattern a -> Pattern a
+    params:
+loopFirst:
+    cmd: loopFirst Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/loopFirst
+mask:
+    cmd: mask Pattern Bool -> Pattern a -> Pattern a
+    params:
+never:
+    cmd: never (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+    params:
+off:
+    cmd: off Pattern Time -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/off
+offadd:
+    cmd: offadd Num a => Pattern Time -> Pattern a -> Pattern a -> Pattern a
+    params:
+    help: |
+        deprecate?
+    links:
+        - https://tidalcycles.org/index.php/offadd
+often:
+    cmd: often (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+    params:
+outside:
+    cmd: outside Pattern Time -> (Pattern a1 -> Pattern a) -> Pattern a1 -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/outside
+palindrome:
+    cmd: palindrome Pattern a -> Pattern a
+    params:
+parseLMRule:
+    cmd: parseLMRule String -> [(Char, String)]
+    params:
+    help: |
+        TODO
+        `parseLMRule'`
+    links:
+        - https://tidalcycles.org/index.php/parseLMRule
+permstep:
+    cmd: permstep RealFrac b => Int -> [a] -> Pattern b -> Pattern a
+    params:
+pick:
+    cmd: pick String -> Int -> String
+    params:
+    help: |
+        deprecate?
+    links:
+        - https://tidalcycles.org/index.php/pick
+ply:
+    cmd: ply Pattern Int -> Pattern a -> Pattern a
+    params:
+quad:
+    cmd: quad Time -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/quad
+quantise:
+    cmd: quantise (Functor f, RealFrac b) => b -> f b -> f b
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/quantise
+rand:
+    cmd: rand Fractional a => Pattern a
+    params:
+randArcs:
+    cmd: randArcs Int -> Pattern [Arc]
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/randArcs
+randStruct:
+    cmd: randStruct Int -> Pattern Int
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/randStruct
+randcat:
+    cmd: randcat [Pattern a] -> Pattern a
+    params:
+range:
+    cmd: range Num a => Pattern a -> Pattern a -> Pattern a -> Pattern a
+    params:
+rangex:
+    cmd: rangex (Functor f, Floating b) => b -> b -> f b -> f b
+    params:
+rarely:
+    cmd: rarely (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+    params:
+revArc:
+    cmd: revArc Arc -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/revArc
+rot:
+    cmd: rot Ord a => Pattern Int -> Pattern a -> Pattern a
+    params:
+runWith:
+    cmd: runWith Integral a => a -> (Pattern b -> Pattern b) -> Pattern b -> Pattern b
+    params:
+    help: |
+        TODO
+        `runWith'`
+    links:
+        - https://tidalcycles.org/index.php/runWith
+samples:
+    cmd: samples Applicative f => f String -> f Int -> f String
+    params:
+    help: |
+        deprecate?
+        `samples'`
+    links:
+        - https://tidalcycles.org/index.php/samples
+scramble:
+    cmd: scramble Int -> Pattern a -> Pattern a
+    params:
+segment:
+    cmd: segment Pattern Time -> Pattern a -> Pattern a
+    params:
+select:
+    cmd: select Pattern Double -> [Pattern a] -> Pattern a
+    params:
+seqP:
+    cmd: seqP [(Time, Time, Pattern a)] -> Pattern a
+    params:
+seqPLoop:
+    cmd: seqPLoop [(Time, Time, Pattern a)] -> Pattern a
+    params:
+sew:
+    cmd: sew Pattern Bool -> Pattern a -> Pattern a -> Pattern a
+    params:
+shuffle:
+    cmd: shuffle Int -> Pattern a -> Pattern a
+    params:
+slowspread:
+    cmd: slowspread (a -> t -> Pattern b) -> [a] -> t -> Pattern b
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/slowspread
+slowstripe:
+    cmd: slowstripe Pattern Int -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/slowstripe
+someCycles:
+    cmd: someCycles (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+    params:
+someCyclesBy:
+    cmd: someCyclesBy Double -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+    params:
+somecycles:
+    cmd: somecycles (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+    params:
+somecyclesBy:
+    cmd: somecyclesBy Double -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+    params:
+sometimes:
+    cmd: sometimes (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+    params:
+sometimesBy:
+    cmd: sometimesBy Pattern Double -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+    params:
+spaceOut:
+    cmd: spaceOut [Time] -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/spaceOut
+spread:
+    cmd: spread Monad m => (a -> b -> m c) -> m a -> b -> m c
+    params:
+    help: |
+        TODO
+        `spread'`
+    links:
+        - https://tidalcycles.org/index.php/spread
+spreadChoose:
+    cmd: spreadChoose (t -> t1 -> Pattern b) -> [t] -> t1 -> Pattern b
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/spreadChoose
+spreadf:
+    cmd: spreadf [a -> Pattern b] -> a -> Pattern b
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/spreadf
+spreadr:
+    cmd: spreadr (t -> t1 -> Pattern b) -> [t] -> t1 -> Pattern b
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/spreadr
+stackwith:
+    cmd: stackwith Sound.Tidal.Context.Unionable a => Pattern a -> [Pattern a] -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/stackwith
+step:
+    cmd: step [String] -> String -> Pattern String
+    params:
+    help: |
+        TODO
+        `step'`
+    links:
+        - https://tidalcycles.org/index.php/step
+steps:
+    cmd: steps [(String, String)] -> Pattern String
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/steps
+stretch:
+    cmd: stretch Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/stretch
+stripe:
+    cmd: stripe Pattern Int -> Pattern a -> Pattern a
+    params:
+struct:
+    cmd: struct Pattern Bool -> Pattern a -> Pattern a
+    params:
+stutter:
+    cmd: stutter Integral i => i -> Time -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/stutter
+substruct:
+    cmd: substruct Pattern Int -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+        `substruct'`
+    links:
+        - https://tidalcycles.org/index.php/substruct
+superimpose:
+    cmd: superimpose (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+    params:
+swing:
+    cmd: swing Pattern Time -> Pattern a -> Pattern a
+    params:
+swingBy:
+    cmd: swingBy Pattern Time -> Pattern Time -> Pattern a -> Pattern a
+    params:
+tabby:
+    cmd: tabby Integer -> Pattern a -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/tabby
+timeLoop:
+    cmd: timeLoop Pattern Time -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/timeLoop
+timeToRand:
+    cmd: timeToRand RealFrac a => a -> Double
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/timeToRand
+toScale:
+    cmd: toScale Num a => Int -> [a] -> Pattern Int -> Pattern a
+    params:
+    help: |
+        TODO
+        `toScale'`
+    links:
+        - https://tidalcycles.org/index.php/toScale
+triple:
+    cmd: triple Time -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/triple
+trunc:
+    cmd: trunc Pattern Time -> Pattern a -> Pattern a
+    params:
+unDegradeBy:
+    cmd: unDegradeBy Pattern Double -> Pattern a -> Pattern a
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/unDegradeBy
+unfix:
+    cmd: unfix (ControlPattern -> ControlPattern) -> ControlPattern -> ControlPattern -> ControlPattern
+    params:
+    help: |
+        TODO
+    links:
+        - https://tidalcycles.org/index.php/unfix
+unfixRange:
+    cmd: unfixRange Pattern (Pattern a) -> Pattern a
+    params:
+    help: |
+        TODO
+        `unwrap'`
+    links:
+        - https://tidalcycles.org/index.php/unfixRange
+ur:
+    cmd: ur Time -> Pattern String -> [(String, Pattern a)] -> [(String, Pattern a -> Pattern a)] -> Pattern a
+    params:
+wchoose:
+    cmd: wchoose [(a, Double)] -> Pattern a
+    params:
+wchooseBy:
+    cmd: wchooseBy Pattern Double -> [(a, Double)] -> Pattern a
+    params:
+wedge:
+    cmd: wedge Time -> Pattern a -> Pattern a -> Pattern a
+    params:
+whenmod:
+    cmd: whenmod Int -> Int -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+    params:
+within:
+    cmd: within Pattern (a -> b) -> Pattern a -> Pattern b
+    params:
+    help: |
+        `within'`
+    links:
+        - https://tidalcycles.org/index.php/within
+__compress:
+    cmd: __compress Arc -> Pattern a -> Pattern a
+    params:
+__compressTo:
+    cmd: __compressTo Arc -> Pattern a -> Pattern a
+    params:
+_fastGap:
+    cmd: _fastGap Time -> Pattern a -> Pattern a
+    params:
+applyFIS:
+    cmd: applyFIS (Double -> Double) -> (Int -> Int) -> (String -> String) -> Value -> Value
+    params:
+arcCycles:
+    cmd: arcCycles Arc -> [Arc]
+    params:
+arcCyclesZW:
+    cmd: arcCyclesZW Arc -> [Arc]
+    params:
+compareDefrag:
+    cmd: compareDefrag (Eq a, Ord a) => [Event a] -> [Event a] -> Bool
+    params:
+cycleArcsInArc:
+    cmd: cycleArcsInArc Arc -> [Arc]
+    params:
+cyclePos:
+    cmd: cyclePos Time -> Time
+    params:
+cyclesInArc:
+    cmd: cyclesInArc Integral a => Arc -> [a]
+    params:
+defragParts:
+    cmd: defragParts Eq a => [Event a] -> [Event a]
+    params:
+empty:
+    cmd: empty Pattern a
+    params:
+eventHasOnset:
+    cmd: eventHasOnset Event a -> Bool
+    params:
+eventPart:
+    cmd: eventPart Event a -> Arc
+    params:
+eventValue:
+    cmd: eventValue Event a -> a
+    params:
+eventWhole:
+    cmd: eventWhole Event a -> Arc
+    params:
+eventWholeOnset:
+    cmd: eventWholeOnset Event a -> Time
+    params:
+fNum2:
+    cmd: fNum2 (Int -> Int -> Int) -> (Double -> Double -> Double) -> Value -> Value -> Value
+    params:
+filterJust:
+    cmd: filterJust Pattern (Maybe a) -> Pattern a
+    params:
+filterValues:
+    cmd: filterValues (a -> Bool) -> Pattern a -> Pattern a
+    params:
+filterWhen:
+    cmd: filterWhen (Time -> Bool) -> Pattern a -> Pattern a
+    params:
+getF:
+    cmd: getF Value -> Maybe Double
+    params:
+getI:
+    cmd: getI Value -> Maybe Int
+    params:
+getS:
+    cmd: getS Value -> Maybe String
+    params:
+innerJoin:
+    cmd: innerJoin Pattern (Pattern a) -> Pattern a
+    params:
+isAdjacent:
+    cmd: isAdjacent Eq a => Event a -> Event a -> Bool
+    params:
+isAnalog:
+    cmd: isAnalog Pattern a -> Bool
+    params:
+isDigital:
+    cmd: isDigital Pattern a -> Bool
+    params:
+isIn:
+    cmd: isIn Arc -> Time -> Bool
+    params:
+mapArc:
+    cmd: mapArc (Time -> Time) -> Arc -> Arc
+    params:
+mapCycle:
+    cmd: mapCycle (Time -> Time) -> Arc -> Arc
+    params:
+matchManyToOne:
+    cmd: matchManyToOne
+    help: |
+        ``  (b -> a -> Bool) -> Pattern a -> Pattern b -> Pattern (Bool, b)
+    links:
+        - https://tidalcycles.org/index.php/matchManyToOne
+nextSam:
+    cmd: nextSam Time -> Time
+    params:
+noOv:
+    cmd: noOv String -> a
+    params:
+onsetIn:
+    cmd: onsetIn Arc -> Event a -> Bool
+    params:
+outerJoin:
+    cmd: outerJoin Pattern (Pattern a) -> Pattern a
+    params:
+playFor:
+    cmd: playFor Time -> Time -> Pattern a -> Pattern a
+    params:
+prettyRat:
+    cmd: prettyRat Rational -> String
+    params:
+queryArc:
+    cmd: queryArc Pattern a -> Arc -> [Event a]
+    params:
+rotL:
+    cmd: rotL Time -> Pattern a -> Pattern a
+    params:
+rotR:
+    cmd: rotR Time -> Pattern a -> Pattern a
+    params:
+sam:
+    cmd: sam Time -> Time
+    params:
+showFrac:
+    cmd: showFrac Integer -> Integer -> String
+    params:
+showPattern:
+    cmd: showPattern Show a => Arc -> Pattern a -> String
+    params:
+splitQueries:
+    cmd: splitQueries Pattern a -> Pattern a
+    params:
+subArc:
+    cmd: subArc Arc -> Arc -> Maybe Arc
+    params:
+tParam:
+    cmd: tParam (t1 -> t2 -> Pattern a) -> Pattern t1 -> t2 -> Pattern a
+    params:
+tParam2:
+    cmd: tParam2 (a -> b -> c -> Pattern d) -> Pattern a -> Pattern b -> c -> Pattern d
+    params:
+tParam3:
+    cmd: tParam3 (a -> b -> c -> Pattern d -> Pattern e) -> Pattern a -> Pattern b -> Pattern c -> Pattern d -> Pattern e
+    params:
+tParamSqueeze:
+    cmd: tParamSqueeze (a -> Pattern b -> Pattern c) -> Pattern a -> Pattern b -> Pattern c
+    params:
+timeToCycleArc:
+    cmd: timeToCycleArc Time -> Arc
+    params:
+toTime:
+    cmd: toTime Real a => a -> Rational
+    params:
+unwrap:
+    cmd: unwrap Pattern (Pattern a) -> Pattern a
+    params:
+unwrapSqueeze:
+    cmd: unwrapSqueeze Pattern (Pattern a) -> Pattern a
+    params:
+withEvent:
+    cmd: withEvent (Event a -> Event b) -> Pattern a -> Pattern b
+    params:
+withEvents:
+    cmd: withEvents ([Event a] -> [Event b]) -> Pattern a -> Pattern b
+    params:
+withPart:
+    cmd: withPart (Arc -> Arc) -> Pattern a -> Pattern a
+    params:
+withQueryArc:
+    cmd: withQueryArc (Arc -> Arc) -> Pattern a -> Pattern a
+    params:
+withQueryTime:
+    cmd: withQueryTime (Time -> Time) -> Pattern a -> Pattern a
+    params:
+withResultArc:
+    cmd: withResultArc (Arc -> Arc) -> Pattern a -> Pattern a
+    params:
+withResultTime:
+    cmd: withResultTime (Time -> Time) -> Pattern a -> Pattern a
+    params:
+## ../tmp/doc-control.txt
+s:
+    cmd: s Pattern String
+    params:
+    help: |
+        An alias of `sound`
+    links:
+        - https://tidalcycles.org/index.php/s
+n:
+    cmd: n Pattern Double
+    params:
+sound:
+    cmd: sound Pattern String
+    params:
+    help: |
+        Sounds - either sample sets or synth names. This control is *required* when triggering sounds via SuperDirt.
+    links:
+        - https://tidalcycles.org/index.php/sound
+begin:
+    cmd: begin Pattern Double
+    params:
+    help: |
+        Starts sample playback some fraction from the beginning. 0.5 would start playback at the middle.
+    links:
+        - https://tidalcycles.org/index.php/begin
+end:
+    cmd: end Pattern Double
+    params:
+    help: |
+        Stops sample playback some fraction from the end. 0.5 would stop playback at the middle.
+    links:
+        - https://tidalcycles.org/index.php/end
+accelerate:
+    cmd: accelerate Pattern Double
+    params:
+    help: |
+        Speeds up (or slows down) samples while they play.
+    links:
+        - https://tidalcycles.org/index.php/accelerate
+cps:
+    cmd: cps Pattern Double
+    params:
+nudge:
+    cmd: nudge Pattern Double
+    params:
+unit:
+    cmd: unit Pattern String
+    params:
+loop:
+    cmd: loop Pattern Double
+    params:
+    help: |
+        Specifies how many times to loop through the sample.
+    links:
+        - https://tidalcycles.org/index.php/loop
+legato:
+    cmd: legato Pattern Double
+    params:
+sustain:
+    cmd: sustain Pattern Double
+    params:
+gain:
+    cmd: gain Pattern Double
+    params:
+    help: |
+        Specifies volume. Values less than 1 make the sound quieter. Values greater than 1 make the sound louder.
+    links:
+        - https://tidalcycles.org/index.php/gain
+channel:
+    cmd: channel Pattern Int
+    params:
+pan:
+    cmd: pan Pattern Double
+    params:
+    help: |
+        Controls stereo position for playback. With the default two-channel setup, zero is left, one is right.
+    links:
+        - https://tidalcycles.org/index.php/pan
+note:
+    cmd: note Pattern Double
+    params:
+freq:
+    cmd: freq Pattern Double
+    params:
+midinote:
+    cmd: midinote Pattern Double
+    params:
+octave:
+    cmd: octave Pattern Int
+    params:
+    help: |
+        Sets where "middle" C is. Default is 5, so "n 0" corresponds to "midinote 60"
+    links:
+        - https://tidalcycles.org/index.php/octave
+offset:
+    cmd: offset Pattern Double
+    params:
+cut:
+    cmd: cut Pattern Int
+    params:
+orbit:
+    cmd: orbit Pattern Int
+    params:
+shape:
+    cmd: shape Pattern Double
+    params:
+    help: |
+        Distorts the sound, has a maximum value of 1.
+    links:
+        - https://tidalcycles.org/index.php/shape
+hcutoff:
+    cmd: hcutoff Pattern Double
+    params:
+    help: |
+        Frequency in Hz for a high-pass filter.  Alias is "hpf".
+    links:
+        - https://tidalcycles.org/index.php/hcutoff
+hresonance:
+    cmd: hresonance Pattern Double
+    params:
+    help: |
+        Resonance for high-pass filter.  Alias is "hpq".
+    links:
+        - https://tidalcycles.org/index.php/hresonance
+bandf:
+    cmd: bandf Pattern Double
+    params:
+bandq:
+    cmd: bandq Pattern Double
+    params:
+crush:
+    cmd: crush Pattern Double
+    params:
+coarse:
+    cmd: coarse Pattern Int
+    params:
+cutoff:
+    cmd: cutoff Pattern Double
+    params:
+attack:
+    cmd: attack Pattern Double
+    params:
+release:
+    cmd: release Pattern Double
+    params:
+hold:
+    cmd: hold Pattern Double
+    params:
+tremolorate:
+    cmd: tremolorate Pattern Double
+    params:
+tremolodepth:
+    cmd: tremolodepth Pattern Double
+    params:
+phaserrate:
+    cmd: phaserrate Pattern Double
+    params:
+phaserdepth:
+    cmd: phaserdepth Pattern Double
+    params:
+vowel:
+    cmd: vowel Pattern String
+    params:
+delaytime:
+    cmd: delaytime Pattern Double
+    params:
+delayfeedback:
+    cmd: delayfeedback Pattern Double
+    params:
+delayAmp:
+    cmd: delayAmp Pattern Double
+    params:
+    help: |
+        ''missing from params?''
+    links:
+        - https://tidalcycles.org/index.php/delayAmp
+delaySend:
+    cmd: delaySend Pattern Double
+    params:
+    help: |
+        ''missing from params?''
+    links:
+        - https://tidalcycles.org/index.php/delaySend
+lock:
+    cmd: lock Pattern Double
+    params:
+    help: |
+        1 to lock delay to cycles per second (cps) aka tempo sync so with `\# lock 1 \# delayt 0.25` = 1/4 of cycle delay etc
+    links:
+        - https://tidalcycles.org/index.php/lock
+size:
+    cmd: size Pattern Double
+    params:
+room:
+    cmd: room Pattern Double
+    params:
+dry:
+    cmd: dry Pattern Double
+    params:
+leslie:
+    cmd: leslie Pattern Double
+    params:
+lrate:
+    cmd: lrate Pattern Double
+    params:
+lsize:
+    cmd: lsize Pattern Double
+    params:
+waveloss:
+    cmd: waveloss Pattern Double
+    params:
+    help: |
+        Drops samples n out of 100.
+    links:
+        - https://tidalcycles.org/index.php/waveloss
+squiz:
+    cmd: squiz Pattern Double
+    params:
+    help: |
+        A weird pitch-shifter. Accepts numbers over 1.
+    links:
+        - https://tidalcycles.org/index.php/squiz
+## ../tmp/doc-transitions.txt
+anticipate:
+    cmd: anticipate Time -> [ControlPattern] -> ControlPattern
+    params:
+    help: |
+        An increasing comb filter.
+    links:
+        - https://tidalcycles.org/index.php/anticipate
+anticipateIn:
+    cmd: anticipateIn Time -> Time -> [ControlPattern] -> ControlPattern
+    params:
+    help: |
+        Same as anticipate though it allows you to specify the number of cycles until dropping to the new pattern.
+    links:
+        - https://tidalcycles.org/index.php/anticipateIn
+clutch:
+    cmd: clutch Time -> [Pattern a] -> Pattern a
+    params:
+    help: |
+        Degrades the current pattern while undegrading the next.
+    links:
+        - https://tidalcycles.org/index.php/clutch
+clutchIn:
+    cmd: clutchIn Time -> Time -> [Pattern a] -> Pattern a
+    params:
+interpolate:
+    cmd: interpolate Time -> [ControlPattern] -> ControlPattern
+    params:
+interpolateIn:
+    cmd: interpolateIn Time -> Time -> [ControlPattern] -> ControlPattern
+    params:
+jump:
+    cmd: jump Time -> [ControlPattern] -> ControlPattern
+    params:
+    help: |
+        Jumps directly into the given pattern, this is essentially the ''no_transition''-transition.
+    links:
+        - https://tidalcycles.org/index.php/jump
+jumpIn:
+    cmd: jumpIn Int -> Time -> [ControlPattern] -> ControlPattern
+    params:
+    help: |
+        `jumpIn'`
+        Unlike jumpIn the variant jumpIn' will only transition at cycle boundary (e.g. when the cycle count is an integer).
+    links:
+        - https://tidalcycles.org/index.php/jumpIn
+jumpMod:
+    cmd: jumpMod Int -> Time -> [ControlPattern] -> ControlPattern
+    params:
+    help: |
+        Sharp jump transition at next cycle boundary where cycle mod n == 0.
+    links:
+        - https://tidalcycles.org/index.php/jumpMod
+histpan:
+    cmd: histpan Time -> Time -> [ControlPattern] -> ControlPattern
+    params:
+    help: |
+        Pans the last n versions of the pattern across the field.
+    links:
+        - https://tidalcycles.org/index.php/histpan
+wait:
+    cmd: wait Time -> Time -> [ControlPattern] -> ControlPattern
+    params:
+    help: |
+        Just stop for a bit before playing new pattern.
+    links:
+        - https://tidalcycles.org/index.php/wait
+waitT:
+    cmd: waitT (Time -> [ControlPattern] -> ControlPattern) -> Time -> Time -> [ControlPattern] -> ControlPattern
+    params:
+    help: |
+        Just as wait, waitT stops for a bit and then applies the given transition to the playing pattern.
+    links:
+        - https://tidalcycles.org/index.php/waitT
+wash:
+    cmd: wash (Pattern a -> Pattern a) -> (Pattern a -> Pattern a) -> Time -> Time -> Time -> Time -> [Pattern a] -> Pattern a
+    params:
+    help: |
+        Washes away the current pattern after a certain delay by applying a function to it over time, then switching over to the next pattern to which another function is applied.
+    links:
+        - https://tidalcycles.org/index.php/wash
+washIn:
+    cmd: washIn (Pattern a -> Pattern a) -> Time -> Time -> [Pattern a] -> Pattern a
+    params:
+xfade:
+    cmd: xfade Time -> [ControlPattern] -> ControlPattern
+    params:
+xfadeIn:
+    cmd: xfadeIn Time -> Time -> [ControlPattern] -> ControlPattern
+    params:
+    help: |
+        Applies a crossfade, and fades one pattern out while fading a new pattern in.
+    links:
+        - https://tidalcycles.org/index.php/xfadeIn
