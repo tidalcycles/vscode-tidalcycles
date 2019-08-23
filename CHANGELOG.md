@@ -1,5 +1,10 @@
 # Change Log
 
+## "1.2.0"
+
+- Tidal function autocompletion
+- Fix on MacOS and Linux for leading `~` in boot file path config setting
+
 ## "1.1.1"
 
 - update to latest standard Tidal bootup code: https://github.com/tidalcycles/Tidal/blob/12c4dd2d805628b73162abfc34d77f5dd0c825b8/BootTidal.hs
