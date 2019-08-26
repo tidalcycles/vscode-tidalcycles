@@ -103,6 +103,28 @@
                     "default": false,
                     "description": "Use the GHCi instance provided by Stack in the current folder. If false, use the system-wide GHCi path."
                 }
+                , "tidalcycles.codehelp.hover.level" :{
+                    "type": "string"
+                    , "default": "Full"
+                    , "enum": [
+                        "Off"
+                        , "Minimum"
+                        , "No examples or links"
+                        , "Full"
+                    ]
+                    , "description": "How much information to show for hovering Tidal code info."
+                }
+                , "tidalcycles.codehelp.completion.level" :{
+                    "type": "string"
+                    , "default": "Full"
+                    , "enum": [
+                        "Off"
+                        , "Minimum"
+                        , "No examples or links"
+                        , "Full"
+                    ]
+                    , "description": "How much information to show for Tidal code completion info."
+                }
             }
         }
     },

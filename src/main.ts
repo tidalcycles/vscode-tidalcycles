@@ -25,7 +25,9 @@ export function activate(context: ExtensionContext) {
             const ydef = yaml.load(readFileSync(defPath).toString());
             return {source: source, ydef};
         })
+        , config
     );
+    
     [languages.registerHoverProvider, languages.registerCompletionItemProvider]
         .forEach((regFunc:((selector:any, provider:any) => void)) => {
             regFunc({scheme:"*", language: 'haskell',pattern: '**/*.tidal'}, hoveAndMarkdownPrivder);

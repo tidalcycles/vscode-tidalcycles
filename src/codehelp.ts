@@ -1,6 +1,14 @@
 import { Hover, HoverProvider } from 'vscode';
 import { Position, TextDocument, CancellationToken, MarkdownString, Range, CompletionItemKind } from 'vscode';
 import { CompletionItemProvider, CompletionContext, ProviderResult, CompletionItem, CompletionList, Uri, window } from 'vscode';
+import { Config } from './config';
+
+export enum CodeHelpDetailLevel {
+    OFF = 0
+    , MINIMUM = 1
+    , NO_EXAMPLES_NO_LINKS = 2
+    , FULL = 3
+}
 
 enum TidalTypeDescription {
     UNKNOWN
@@ -22,7 +30,7 @@ class TidalParameterDescription {
 class TidalCommandDescription {
     public readonly formattedCommand:MarkdownString;
     public readonly parameters:TidalParameterDescription[] | undefined;
-    public readonly returns:{help:MarkdownString,type:TidalTypeDescription | undefined} | undefined;
+    public readonly returns:MarkdownString | undefined;
     public readonly help:MarkdownString |  undefined;
     public readonly examples:MarkdownString[];
     public readonly links:({url:string, title:MarkdownString})[];
@@ -31,7 +39,7 @@ class TidalCommandDescription {
         public readonly command:string
         , formattedCommand?:string | MarkdownString
         , parameters?:TidalParameterDescription[]
-        , returns?:{help:MarkdownString | string, type:TidalTypeDescription | undefined}
+        , returns?:string
         , help?:MarkdownString | string
         , links:({url:string, title:string | MarkdownString})[] = []
         , examples:string | string[] | MarkdownString | MarkdownString[] = []
@@ -72,10 +80,8 @@ class TidalCommandDescription {
             this.returns = undefined;
         }
         else {
-            this.returns = {...returns, help:typeof returns.help === 'string' ?
-                new MarkdownString(returns.help)
-                : returns.help};
-            this.returns.help.isTrusted = true;
+            this.returns = typeof returns === 'string' ? new MarkdownString(returns) : returns;
+            this.returns.isTrusted = true;
         }
         
         if(typeof help === 'undefined'){
@@ -115,15 +121,26 @@ ${x}
         this.examples.forEach(x => x.isTrusted = true);
     }
 
-    public format(withCommand:boolean=true): MarkdownString {
+    public format(detailLevel:CodeHelpDetailLevel, withCommand:boolean=true): MarkdownString | undefined {
+        if(detailLevel === CodeHelpDetailLevel.OFF){
+            return undefined;
+        }
+        
         const hline = "\r\n- - -\r\n\r\n";
-        const ms = new MarkdownString();
+        let ms = new MarkdownString("");
         ms.isTrusted = true;
+        
+        ms = ms.appendMarkdown(withCommand ? this.formattedCommand.value : "");
+        if(detailLevel === CodeHelpDetailLevel.MINIMUM){
+            return ms;
+        }
 
-        return ms
-            .appendMarkdown(withCommand ? this.formattedCommand.value : "")
-            .appendMarkdown(typeof this.help === 'undefined' ? "" : hline + this.help.value)
-            .appendMarkdown(typeof this.parameters === 'undefined' || this.parameters.length === 0 ? "" :
+        ms = ms.appendMarkdown(typeof this.help === 'undefined' ?
+            ""
+            : (ms.value.length > 0 ? hline : "") + this.help.value
+        );
+
+        ms = ms.appendMarkdown(typeof this.parameters === 'undefined' || this.parameters.length === 0 ? "" :
                 hline + this.parameters
                     .map(x => 
                     `\`${x.name}\` `
@@ -133,10 +150,14 @@ ${x}
             )
             .appendMarkdown(typeof this.returns === 'undefined' ? "" :
                 "\r\n\r\n" + "Returns: "
-                + (typeof this.returns.type === 'undefined' ? "" : `\`${TidalTypeDescription[this.returns.type]}\``)
-                + this.returns.help
-            )
-            .appendMarkdown(this.examples.length === 0 ? "" :
+                + this.returns.value
+            );
+        
+        if(detailLevel === CodeHelpDetailLevel.NO_EXAMPLES_NO_LINKS){
+            return ms;
+        }
+
+        ms = ms.appendMarkdown(this.examples.length === 0 ? "" :
                 hline + "Examples:\r\n\r\n"
                 + this.examples.map(x => x.value).reduce((x,y) => x+"    \r\n"+y,"")
             )
@@ -147,8 +168,8 @@ ${x}
                         + `<${lnk.url}>`
                     )
                     .reduce((x,y) => x+"    \r\n"+y,"")
-            )
-            ;
+            );
+        return ms;
     }
 
 }
@@ -158,6 +179,7 @@ export class TidalLanguageHelpProvider implements HoverProvider, CompletionItemP
 
     constructor(
         yamlCommandDefinitions:({source: string, ydef:object})[]
+        , private readonly config:Config
     ){
         yamlCommandDefinitions.forEach(({source, ydef}) => {
             try {
@@ -181,7 +203,7 @@ export class TidalLanguageHelpProvider implements HoverProvider, CompletionItemP
             let links:({url:string, title:string})[] | undefined = undefined;
             let formattedCommand:string | undefined = undefined;
             let help:string | undefined = undefined;
-            let returns:{help:MarkdownString | string, type:TidalTypeDescription | undefined} | undefined = undefined;
+            let returns:string | undefined = undefined;
 
             if(typeof v === 'object'){
                 Object.entries(v === null ? {} : v).map(([property, value, ..._]) => {
@@ -191,6 +213,11 @@ export class TidalLanguageHelpProvider implements HoverProvider, CompletionItemP
                     if(property === 'cmd' || property === 'formattedCommand'){
                         if(typeof value === 'string'){
                             formattedCommand = value;
+                        }
+                    }
+                    else if(property === 'return' || property === 'returns'){
+                        if(typeof value === 'string'){
+                            returns = value;
                         }
                     }
                     else if(property === 'help' || property === 'doc'){
@@ -298,6 +325,9 @@ export class TidalLanguageHelpProvider implements HoverProvider, CompletionItemP
         , token: CancellationToken
         , context: CompletionContext
     ): ProviderResult<CompletionItem[] | CompletionList> {
+        if(this.config.getCompletionHelpDetailLevel() === CodeHelpDetailLevel.OFF){
+            return [];
+        }
         const {word, range} = this.getWordAtCursor(document, position);
         if(typeof word === 'undefined' || typeof range === 'undefined'){
             return undefined;
@@ -311,7 +341,7 @@ export class TidalLanguageHelpProvider implements HoverProvider, CompletionItemP
                 item.kind = CompletionItemKind.Snippet;
 
                 if(typeof cdesc !== 'undefined'){
-                    item.documentation = cdesc.format(false);
+                    item.documentation = cdesc.format(this.config.getCompletionHelpDetailLevel(), false);
                 }
                 item.range = range;
                 item.detail = cdesc.formattedCommand.value.replace(/`/g,'');
@@ -333,6 +363,10 @@ export class TidalLanguageHelpProvider implements HoverProvider, CompletionItemP
     }
 
     public provideHover(document:TextDocument, position:Position, token:CancellationToken): Hover | undefined {
+        if(this.config.getHoverHelpDetailLevel() === CodeHelpDetailLevel.OFF){
+            return undefined;
+        }
+        
         const {word, range} = this.getWordAtCursor(document, position);
         if(typeof word === 'undefined' || typeof range === 'undefined'){
             return undefined;
@@ -342,8 +376,11 @@ export class TidalLanguageHelpProvider implements HoverProvider, CompletionItemP
             return undefined;
         }
 
-        return new Hover(hoverText.format(true), range);
+        const hovermd = hoverText.format(this.config.getHoverHelpDetailLevel(), true);
+        if(typeof hovermd === 'undefined'){
+            return undefined;
+        }
+        return new Hover(hovermd, range);
     }
-
 }
 
