@@ -30,7 +30,7 @@ export function activate(context: ExtensionContext) {
     
     [languages.registerHoverProvider, languages.registerCompletionItemProvider]
         .forEach((regFunc:((selector:any, provider:any) => void)) => {
-            regFunc({scheme:"*", language: 'haskell',pattern: '**/*.tidal'}, hoveAndMarkdownPrivder);
+            regFunc({scheme:"*", pattern: '**/*.tidal'}, hoveAndMarkdownPrivder);
         });
 
     function getRepl(repls: Map<TextEditor, Repl>, textEditor: TextEditor | undefined): Repl | undefined {
