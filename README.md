@@ -97,7 +97,7 @@ Available levels for bothh options are:
 
  * `OFF`: Disables the feature
  * `FULL`: Enables all available information 
- * `NO_LINKS_NO_EXAMPLES`: Only show command format, parameters and return value
+ * `NO_EXAMPLES_NO_LINKS`: Only show command format, parameters and return value
                            information
  * `MINIMUM`: Only show command format information
 
