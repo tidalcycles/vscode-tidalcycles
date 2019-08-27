@@ -103,9 +103,9 @@ Available levels for bothh options are:
 
 **Note**: Not every command is documented yet and the detail level of the
 documentation varies from command to command. The files
-[commands.yaml] and [commands-generated.yaml] contain the currently supported
-commands and their documentation. If you'd like to contribute, please add new
-documentation to [commands.yaml].
+[commands.yaml](commands.yaml) and [commands-generated.yaml](commands-generated.yaml)
+contain the currently available documentation. If you'd like to contribute,
+please add new documentation to [commands.yaml](commands.yaml).
 
 ### Full Config Example
 
