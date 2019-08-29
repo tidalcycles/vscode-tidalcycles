@@ -68,3 +68,58 @@ export class Repl implements IRepl {
     }
 
 }
+
+interface ICommandInfo {
+    cmd: string;
+    range?: vscode.Range;
+}
+
+export function splitCommands(
+        commands: string | ICommandInfo | (string | ICommandInfo)[]
+    ): TidalExpression[] {
+
+    if(typeof commands === 'string' || (typeof commands === 'object' && !Array.isArray(commands))) {
+        commands = [commands];
+    }
+    if(commands.length === 0) {
+        return [];
+    }
+
+    const normalizedCommands = commands.map(x => typeof x === 'string' ? ({cmd: x}) : x);
+
+    return normalizedCommands.map(command => {
+        /*
+        this is a pragmatic way of splitting a list of commands into
+        distinct top level commands to executem them separately in
+        GHCi. The idea is that every time there's a not-indented
+        line, then all previous, unexecuted liens are executed up to
+        that line.
+        */
+
+        const lines = command.cmd.split(/\r?\n/);
+        let startLine = 0;
+        
+        const expressions:TidalExpression[] = [];
+
+        for(let i=0;i<lines.length;i++){
+            if(lines[i].length === 0){
+                continue;
+            }
+            let c = lines[i].charAt(0);
+            let m = c.match(/\S/);
+            let isEmpty = typeof m === 'undefined' || m === null || m.length === 0;
+            if(i !== lines.length - 1){
+                if(isEmpty){
+                    continue;
+                }
+            }
+            let currentCommand = lines.slice(startLine, i+1).reduce((x,y)=>x+"\r\n"+y);
+            startLine = i+1;
+
+            let commandRange = typeof command.range === 'undefined' ? new vscode.Range(0, 0, 0, 0) : command.range;
+            expressions.push(new TidalExpression(currentCommand, commandRange));
+        }
+        return expressions;
+    })
+    .reduce((x, y) => {y.forEach(z => x.push(z)); return x;}, []);
+}

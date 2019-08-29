@@ -1,5 +1,5 @@
 import { TextEditor, ExtensionContext, window, commands, languages, Range } from 'vscode';
-import { Repl } from './repl';
+import { Repl, splitCommands } from './repl';
 import { Logger } from './logging';
 import { Config } from './config';
 import { Ghci } from './ghci';
@@ -7,7 +7,6 @@ import { Tidal } from './tidal';
 import { History } from './history';
 import { TidalLanguageHelpProvider } from './codehelp';
 import * as path from 'path';
-import { TidalExpression } from './editor';
 import * as yaml from 'js-yaml';
 import { readFileSync } from 'fs';
 
@@ -65,34 +64,10 @@ export function activate(context: ExtensionContext) {
                         range = new Range(0,0,0,0);
                     }
 
-                    /*
-                    this is a pragmatic way of splitting a list of commands into
-                    distinct top level commands to executem them separately in
-                    GHCi. The idea is that every time there's a not-indented
-                    line, then all previous, unexecuted liens are executed up to
-                    that line.
-                    */
-
-                    const lines = command.split(/\r?\n/);
-                    let startLine = 0;
-
-                    for(let i=0;i<lines.length;i++){
-                        if(lines[i].length === 0){
-                            continue;
-                        }
-                        let c = lines[i].charAt(0);
-                        let m = c.match(/\S/);
-                        let isEmpty = typeof m === 'undefined' || m === null || m.length === 0;
-                        if(i !== lines.length - 1){
-                            if(isEmpty){
-                                continue;
-                            }
-                        }
-                        let currentCommand = lines.slice(startLine, i+1).reduce((x,y)=>x+"\r\n"+y);
-                        repl.evaluateExpression(new TidalExpression(currentCommand, range), true);
-                        startLine = i+1;
-                    }
+                    const expressions = splitCommands({cmd: command, range});
+                    expressions.forEach(x => repl.evaluateExpression(x, true));
                 }
+
                 return;
             }
         
