@@ -89,17 +89,21 @@ export function activate(context: ExtensionContext) {
         }
     });
 
+    const executeShortcut = (shortcut: string | undefined) => {
+        if(typeof shortcut === 'undefined' || shortcut === null || shortcut.trim() === ''){
+            return;
+        }
+        const repl = getRepl(repls, window.activeTextEditor);
+        if (repl !== undefined) {
+            const expressions = splitCommands(shortcut);
+            expressions.forEach(e => repl.evaluateExpression(e, true));
+        }
+    };
+
     const shortcutCommands = Array(9).fill(1).map((_, i) => {
         i = i + 1;
         return commands.registerCommand(`tidal.shortcut.no${i}`, function() {
-            const shortcut = config.getShortcutCommand(i);
-            if(typeof shortcut === 'undefined' || shortcut === null || shortcut.trim() === ''){
-                return;
-            }
-            const repl = getRepl(repls, window.activeTextEditor);
-            if (repl !== undefined) {
-                repl.executeTemplate(shortcut);
-            }
+            executeShortcut(config.getShortcutCommand(i));
         });
     });
 
@@ -110,14 +114,7 @@ export function activate(context: ExtensionContext) {
             }
             let command = Object.keys(args).filter(x => x === 'command').map(x=>args[x]).pop() as string | undefined;
 
-            if(typeof command === 'undefined'){
-                return undefined;
-            }
-            
-            const repl = getRepl(repls, window.activeTextEditor);
-            if (repl !== undefined) {
-                repl.executeTemplate(command);
-            }
+            executeShortcut(command);
         });
     })());
 

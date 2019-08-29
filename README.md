@@ -41,14 +41,15 @@ Note that the extension does not come with default key bindings to not interfere
 the commands through key combinations you need to wire them up in the `Keyboard Shortcut` preferences.
 
 If the 9 predefined shortcut slots are not enough, you can also define new ones by creating new keyboard mappings.
-Below is an example that needs to go into your `keybindings.json` file.
+Defining a shortcut like this also has the added benefit of allowing for multiple, top level commands to be specified in
+the same shortcut. Below is an example that needs to go into your `keybindings.json` file.
 
 ```
 {
     "key": "shift+ctrl+1"
     , "command": "tidal.shortcut"
     , "args": {
-        "command": "d1 $ stack [ s \"bd!4\", ((1/2) ~>) $ s \"sn!2\" ]"
+        "command": "d1 $ stack [ s \"bd!4\", ((1/2) ~>) $ s \"sn!2\" ]\r\nd2 $ s \"hh!8\""
     }
 }
 ```

@@ -1,10 +1,11 @@
 import { Position, Selection } from 'vscode';
 import * as TypeMoq from 'typemoq';
 import { createMockDocument, createMockEditor, createMockCreateTextEditorDecorationType } from './mock';
-import { Repl } from '../src/repl';
+import { Repl, splitCommands } from '../src/repl';
 import { ITidal } from '../src/tidal';
 import { IHistory } from '../src/history';
 import { Config } from '../src/config';
+import { assert } from 'chai';
 
 
 suite('Repl', () => {
@@ -133,4 +134,19 @@ suite('Repl', () => {
         mockTidal.verify(t => t.sendTidalExpression('bar'), TypeMoq.Times.once());
         mockHistory.verify(h => h.log(TypeMoq.It.isAny()), TypeMoq.Times.once());
     });
+
+    test('Command splitting', async () => {
+        let commands = splitCommands("hello\r\nworld");
+
+        assert.isArray(commands);
+        assert.lengthOf(commands, 2);
+        commands.forEach((x, i) => {
+            assert.typeOf(x, 'object', `Expected command ${i} to be an object`);
+            assert.hasAllKeys(x, ["expression","range"], `Expected command ${i} to look like a TidalExpression`);
+        });
+        assert.equal(commands[0].expression, "hello");
+        assert.equal(commands[1].expression, "world");
+        
+    });
+
 });
