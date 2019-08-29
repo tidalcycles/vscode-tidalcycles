@@ -1,7 +1,7 @@
 import { Position, Selection } from 'vscode';
 import * as TypeMoq from 'typemoq';
 import { createMockDocument, createMockEditor, createMockCreateTextEditorDecorationType } from './mock';
-import { Repl, splitCommands } from '../src/repl';
+import { Repl, splitCommands, replaceTemplateValues, extractTemplateValues } from '../src/repl';
 import { ITidal } from '../src/tidal';
 import { IHistory } from '../src/history';
 import { Config } from '../src/config';
@@ -148,5 +148,22 @@ suite('Repl', () => {
         assert.equal(commands[1].expression, "world");
         
     });
+
+    test('Template replacements', async () => {
+        assert.equal(replaceTemplateValues("#a#",{"a":"foo"},/#([ab])#/g), "foo");
+        assert.equal(replaceTemplateValues("#a#b#",{"a":"foo"},/#([ab])#/g), "foob#");
+        assert.equal(replaceTemplateValues("b#a#",{"a":"foo"},/#([ab])#/g), "bfoo");
+        assert.equal(replaceTemplateValues("b#a#c#a#",{"a":"foo"},/#([ab])#/g), "bfoocfoo");
+    });
+
+    test('Template extraction', async () => {
+        assert.deepEqual(extractTemplateValues("d1 $\r\n  foobar $ baz"), {"s": "1", "c": "\r\n  foobar $ baz"});
+        assert.deepEqual(extractTemplateValues("d1 $\r\n  foobar # baz"), {"s": "1", "c": "\r\n  foobar # baz"});
+        assert.deepEqual(extractTemplateValues("d1 #\r\n  foobar # baz"), {"s": "1", "c": "\r\n  foobar # baz"});
+        assert.deepEqual(extractTemplateValues("d1 #\r\n  foobar $ baz"), {"s": "1", "c": "\r\n  foobar $ baz"});
+        assert.deepEqual(extractTemplateValues("xfadeIn 2 10 $\r\n  foobar"), {"s": "2", "c": "\r\n  foobar"});
+        assert.deepEqual(extractTemplateValues("jump' 3 $\r\n  foobar"), {"s": "3", "c": "\r\n  foobar"});
+    });
+
 
 });

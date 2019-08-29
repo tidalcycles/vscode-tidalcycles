@@ -192,17 +192,17 @@
                 },
                 "tidalcycles.shortcuts.no6": {
                     "type": "string",
-                    "default": "",
+                    "default": "mapM unmute [1..12]\r\nmapM unsolo [1..12]",
                     "markdownDescription": "The tidal command to execute when the `Tidal Shortcut #6` extension command is executed."
                 },
                 "tidalcycles.shortcuts.no7": {
                     "type": "string",
-                    "default": "",
+                    "default": "xfadeIn #s# 4 $ #c#",
                     "markdownDescription": "The tidal command to execute when the `Tidal Shortcut #7` extension command is executed."
                 },
                 "tidalcycles.shortcuts.no8": {
                     "type": "string",
-                    "default": "",
+                    "default": "xfadeIn #s# 4 $ silence",
                     "markdownDescription": "The tidal command to execute when the `Tidal Shortcut #8` extension command is executed."
                 },
                 "tidalcycles.shortcuts.no9": {

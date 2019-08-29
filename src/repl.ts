@@ -35,36 +35,38 @@ export class Repl implements IRepl {
         this.history.log(new TidalExpression('hush', new vscode.Range(0, 0, 0, 0)));
     }
 
-    public async executeTemplate(template: string, replaceWithStreamNo=/[#]s[#]/g) {
+    public async executeTemplate(template: string, marker=RegExp(/[#](s|c)[#]/g)) {
         if (!this.editingTidalFile()) { 
             return; 
         }
 
         let block = new TidalEditor(this.textEditor).getTidalExpressionUnderCursor(true);
         let range = new vscode.Range(0,0,0,0);
-        let streamNo = undefined;
+        const replacements: ({[key:string]:string}) = {};
 
-        if(template.search(replaceWithStreamNo) >= 0){
+        if(template.search(marker) >= 0){
             if(block === null){
-                vscode.window.showErrorMessage(`    Could not determine stream number from current 
-                                                    selection for command template: ${template}`
+                vscode.window.showErrorMessage(`    Command template contains merkers but
+                                                    there is no valid code block at the
+                                                    cursor location: ${template}`
                 );
                 return;
             }
             else {
-                let m = block.expression.match(/^d([0-9]+)(?:[^a-zA-Z0-9].*)?$/s);
-                
-                if(m !== null && m.length > 0){
+                let valueFound = false;
+                Object.entries(extractTemplateValues(block.expression)).forEach(([key, value]) => {
+                    valueFound = true;
+                    replacements[key] = value;
+                });
+
+                if(valueFound) {
                     range = block.range;
-                    streamNo = m[1];
                 }
             }
         }
 
-        block = new TidalExpression(
-            typeof streamNo === 'undefined' ? template : template.replace(replaceWithStreamNo, streamNo)
-            , range
-        );
+        template = replaceTemplateValues(template, replacements, marker);
+        block = new TidalExpression(template, range);
 
         this.evaluateExpression(block, true);
     }
@@ -101,6 +103,58 @@ export class Repl implements IRepl {
         }, 250);
     }
 
+}
+
+export function extractTemplateValues(s: string): ({[key:string]:string}) {
+    const values:({[key:string]:string}) = {};
+
+    let m = s.match(/^d([0-9]+)(?:[^a-zA-Z0-9_].*)?$/s);
+                
+    if(m !== null && m.length > 0){
+        values["s"] = m[1];
+    }
+    else {
+        const transitions = [
+            'xfade', 'anticipate', 'clutch', 'interpolate'
+            , 'jump', 'jumpMod', 'histpan', 'mortal', 'wait', 'waitT'
+            , 'wash'
+        ].map(x => ['','In','\''].map(y => x+y))
+        .reduce((x, y) => {y.forEach(z => x.push(z)); return x;}, []);
+        
+        const m2 = s.match(/^\s*(\S+)\s+(\S+)\s/s);
+
+        if(m2 !== null && m2.length > 0){
+            if(transitions.filter(x => x === m2[1]).length > 0){
+                values["s"] = m2[2];
+            }
+        }
+    }
+
+    m = s.match(/^.+?[$#](.*)$/s);
+
+    if(m !== null && m.length > 0){
+        values["c"] = m[1];
+    }
+
+    return values;
+}
+
+export function replaceTemplateValues(s: string, values:{[key:string]:string}, marker: RegExp): string {
+    let m;
+    let marker2 = new RegExp(marker);
+
+    while((m = marker2.exec(s)) !== null){
+        let v = values[m[1]];
+        if(typeof v === 'undefined'){
+            marker2.lastIndex = marker2.lastIndex - m[0].length + 1;
+        }
+        else {
+            s = s.substr(0, marker2.lastIndex - m[0].length) + v + s.substr(marker2.lastIndex);
+            marker2.lastIndex = 0;
+        }
+    }
+
+    return s;
 }
 
 interface ICommandInfo {
