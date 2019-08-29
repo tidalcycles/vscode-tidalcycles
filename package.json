@@ -17,6 +17,15 @@
         "onCommand:tidal.eval",
         "onCommand:tidal.evalMulti",
         "onCommand:tidal.hush",
+        "onCommand:tidal.shortcut.no1",
+        "onCommand:tidal.shortcut.no2",
+        "onCommand:tidal.shortcut.no3",
+        "onCommand:tidal.shortcut.no4",
+        "onCommand:tidal.shortcut.no5",
+        "onCommand:tidal.shortcut.no6",
+        "onCommand:tidal.shortcut.no7",
+        "onCommand:tidal.shortcut.no8",
+        "onCommand:tidal.shortcut.no9",
         "onLanguage:haskell"
     ],
     "main": "./out/src/main",
@@ -33,6 +42,59 @@
             {
                 "command": "tidal.hush",
                 "title": "Tidal Hush"
+            },
+            {
+                "command": "tidal.shush",
+                "title": "Tidal Shush"
+            },
+            {
+                "command": "tidal.shortcut",
+                "title": "Tidal Shortcut with arguments"
+            },
+            {
+                "command": "tidal.shortcut.no1",
+                "title": "Tidal Shortcut #1",
+                "category": "Tidal Shortcuts"
+            },
+            {
+                "command": "tidal.shortcut.no2",
+                "title": "Tidal Shortcut #2",
+                "category": "Tidal Shortcuts"
+            },
+            {
+                "command": "tidal.shortcut.no3",
+                "title": "Tidal Shortcut #3",
+                "category": "Tidal Shortcuts"
+            },
+            {
+                "command": "tidal.shortcut.no4",
+                "title": "Tidal Shortcut #4",
+                "category": "Tidal Shortcuts"
+            },
+            {
+                "command": "tidal.shortcut.no5",
+                "title": "Tidal Shortcut #5",
+                "category": "Tidal Shortcuts"
+            },
+            {
+                "command": "tidal.shortcut.no6",
+                "title": "Tidal Shortcut #6",
+                "category": "Tidal Shortcuts"
+            },
+            {
+                "command": "tidal.shortcut.no7",
+                "title": "Tidal Shortcut #7",
+                "category": "Tidal Shortcuts"
+            },
+            {
+                "command": "tidal.shortcut.no8",
+                "title": "Tidal Shortcut #8",
+                "category": "Tidal Shortcuts"
+            },
+            {
+                "command": "tidal.shortcut.no9",
+                "title": "Tidal Shortcut #9",
+                "category": "Tidal Shortcuts"
             }
         ],
         "keybindings": [
@@ -102,6 +164,51 @@
                     "type": "boolean",
                     "default": false,
                     "description": "Use the GHCi instance provided by Stack in the current folder. If false, use the system-wide GHCi path."
+                },
+                "tidalcycles.shortcuts.no1": {
+                    "type": "string",
+                    "default": "d#s# $ silence",
+                    "markdownDescription": "The tidal command to execute when the `Tidal Shortcut #1` extension command is executed."
+                },
+                "tidalcycles.shortcuts.no2": {
+                    "type": "string",
+                    "default": "mute #s#",
+                    "markdownDescription": "The tidal command to execute when the `Tidal Shortcut #2` extension command is executed."
+                },
+                "tidalcycles.shortcuts.no3": {
+                    "type": "string",
+                    "default": "unmute #s#",
+                    "markdownDescription": "The tidal command to execute when the `Tidal Shortcut #3` extension command is executed."
+                },
+                "tidalcycles.shortcuts.no4": {
+                    "type": "string",
+                    "default": "solo #s#",
+                    "markdownDescription": "The tidal command to execute when the `Tidal Shortcut #4` extension command is executed."
+                },
+                "tidalcycles.shortcuts.no5": {
+                    "type": "string",
+                    "default": "unsolo #s#",
+                    "markdownDescription": "The tidal command to execute when the `Tidal Shortcut #5` extension command is executed."
+                },
+                "tidalcycles.shortcuts.no6": {
+                    "type": "string",
+                    "default": "",
+                    "markdownDescription": "The tidal command to execute when the `Tidal Shortcut #6` extension command is executed."
+                },
+                "tidalcycles.shortcuts.no7": {
+                    "type": "string",
+                    "default": "",
+                    "markdownDescription": "The tidal command to execute when the `Tidal Shortcut #7` extension command is executed."
+                },
+                "tidalcycles.shortcuts.no8": {
+                    "type": "string",
+                    "default": "",
+                    "markdownDescription": "The tidal command to execute when the `Tidal Shortcut #8` extension command is executed."
+                },
+                "tidalcycles.shortcuts.no9": {
+                    "type": "string",
+                    "default": "d#s# $ ((1/#s#) ~>) $ s \"bd\" # speed #s#",
+                    "markdownDescription": "The tidal command to execute when the `Tidal Shortcut #9` extension command is executed."
                 }
             }
         }

@@ -17,6 +17,42 @@ This VSCode extension for TidalCycles is inspired by the commands from the popul
 - `Ctrl+Enter` to evaluate multiple lines
 - `Ctrl+Alt+H` to hush
 
+### Customizeable shortcuts
+
+You have 9 customizeable shortcuts for executing commands e.g. through key combinations. By default shortcuts 1 through
+5 and 9 are initially set up to do the following:
+
+1. `silence` the current stream
+2. `mute` the current stream
+3. `unmute` the current stream
+4. `solo` the current stream
+5. `unsolo` the current stream
+9. The more complex example below
+
+The current stream number is determined by determining of theres a `d1`, `d2`, etc at the beginning of the first line.
+The number is then taken as the current stream number.
+
+You can use this number in the commands by putting a `#s#` at the position you want the number to be. Note that it's
+replaced with the number only, no spaces are added. So if you're on stream `4` and you have a shortcut command that's
+defined as `d#s# $ ((1/#s#) ~>) $ s \"bd\" # speed #s#` it'll be translated to `d4 $ ((1/4) ~>) $ s \"bd\" # speed 4`
+before being sent to Tidal.
+
+Note that the extension does not come with default key bindings to not interfere with your set up. In order to execute
+the commands through key combinations you need to wire them up in the `Keyboard Shortcut` preferences.
+
+If the 9 predefined shortcut slots are not enough, you can also define new ones by creating new keyboard mappings.
+Below is an example that needs to go into your `keybindings.json` file.
+
+```
+{
+    "key": "shift+ctrl+1"
+    , "command": "tidal.shortcut"
+    , "args": {
+        "command": "d1 $ stack [ s \"bd!4\", ((1/2) ~>) $ s \"sn!2\" ]"
+    }
+}
+```
+
 ## Syntax Highlighting
 
 In order to get syntax highlighting in `.tidal` files you must do

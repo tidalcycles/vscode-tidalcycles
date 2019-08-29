@@ -89,7 +89,42 @@ export function activate(context: ExtensionContext) {
         }
     });
 
-    context.subscriptions.push(evalSingleCommand, evalMultiCommand, hushCommand);
+    const shortcutCommands = Array(9).fill(1).map((_, i) => {
+        i = i + 1;
+        return commands.registerCommand(`tidal.shortcut.no${i}`, function() {
+            const shortcut = config.getShortcutCommand(i);
+            if(typeof shortcut === 'undefined' || shortcut === null || shortcut.trim() === ''){
+                return;
+            }
+            const repl = getRepl(repls, window.activeTextEditor);
+            if (repl !== undefined) {
+                repl.executeTemplate(shortcut);
+            }
+        });
+    });
+
+    shortcutCommands.push((() => {
+        return commands.registerCommand('tidal.shortcut', (args?:{[key:string]:any}) => {
+            if(typeof args === 'undefined'){
+                return undefined;
+            }
+            let command = Object.keys(args).filter(x => x === 'command').map(x=>args[x]).pop() as string | undefined;
+
+            if(typeof command === 'undefined'){
+                return undefined;
+            }
+            
+            const repl = getRepl(repls, window.activeTextEditor);
+            if (repl !== undefined) {
+                repl.executeTemplate(command);
+            }
+        });
+    })());
+
+    context.subscriptions.push(
+        evalSingleCommand, evalMultiCommand, hushCommand
+        , ...shortcutCommands.filter(x => typeof x !== 'undefined')
+    );
 }
 
 export function deactivate() { }

@@ -35,4 +35,8 @@ export class Config {
     public useStackGhci(): boolean {
         return this.getConfiguration(this.configSection).get('useStackGhci', false);
     }
+
+    public getShortcutCommand(num: number): string {
+        return this.getConfiguration(this.configSection).get(`shortcuts.no${num}`, "");
+    }
 }

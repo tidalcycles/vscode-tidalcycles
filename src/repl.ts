@@ -35,6 +35,40 @@ export class Repl implements IRepl {
         this.history.log(new TidalExpression('hush', new vscode.Range(0, 0, 0, 0)));
     }
 
+    public async executeTemplate(template: string, replaceWithStreamNo=/[#]s[#]/g) {
+        if (!this.editingTidalFile()) { 
+            return; 
+        }
+
+        let block = new TidalEditor(this.textEditor).getTidalExpressionUnderCursor(true);
+        let range = new vscode.Range(0,0,0,0);
+        let streamNo = undefined;
+
+        if(template.search(replaceWithStreamNo) >= 0){
+            if(block === null){
+                vscode.window.showErrorMessage(`    Could not determine stream number from current 
+                                                    selection for command template: ${template}`
+                );
+                return;
+            }
+            else {
+                let m = block.expression.match(/^d([0-9]+)(?:[^a-zA-Z0-9].*)?$/s);
+                
+                if(m !== null && m.length > 0){
+                    range = block.range;
+                    streamNo = m[1];
+                }
+            }
+        }
+
+        block = new TidalExpression(
+            typeof streamNo === 'undefined' ? template : template.replace(replaceWithStreamNo, streamNo)
+            , range
+        );
+
+        this.evaluateExpression(block, true);
+    }
+
     public async evaluate(isMultiline: boolean) {
         if (!this.editingTidalFile()) { 
             return; 
