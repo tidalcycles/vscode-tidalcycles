@@ -96,7 +96,7 @@ export function activate(context: ExtensionContext) {
         const repl = getRepl(repls, window.activeTextEditor);
         if (repl !== undefined) {
             const expressions = splitCommands(shortcut);
-            expressions.forEach(e => repl.evaluateExpression(e, true));
+            expressions.forEach(e => repl.executeTemplate(e.expression));
         }
     };
 
