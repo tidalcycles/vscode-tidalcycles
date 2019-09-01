@@ -19,7 +19,6 @@ export class History implements IHistory {
     public log(expression: TidalExpression): void {
         this.evalCount++;
         if (this.config.showEvalCount()) {
-            
             this.logger.log(`${this.config.evalCountPrefix()}${this.evalCount} `, false);
         }
     }
