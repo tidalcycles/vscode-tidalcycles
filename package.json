@@ -83,6 +83,11 @@
                     "default": false,
                     "description": "Show an incremented count of evaluations in the console output on each eval."
                 },
+                "tidalcycles.evalCountPrefix": {
+                    "type": "string",
+                    "default": "Evals: ",
+                    "description": "The text to write just before the eval count number."
+                },
                 "tidalcycles.showGhciOutput": {
                     "type": "boolean",
                     "default": true,
