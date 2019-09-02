@@ -13,7 +13,7 @@ SuperCollider orbits 0 through 11, respectively.
 
 This VSCode extension for TidalCycles is inspired by the commands from the popular Atom package:
 
-- `Shift+Enter` to evalulate a single line
+- `Shift+Enter` to evaluate a single line
 - `Ctrl+Enter` to evaluate multiple lines
 - `Ctrl+Alt+H` to hush
 
@@ -93,7 +93,7 @@ configuration settings, one for the `hover` feature and one for `completion`:
 "tidalcycles.codehelp.completion.level" : "FULL"
 ```
 
-Available levels for bothh options are:
+Available levels for both options are:
 
  * `OFF`: Disables the feature
  * `FULL`: Enables all available information 
