@@ -21,6 +21,10 @@ export class Config {
         return this.getConfiguration(this.configSection).get('showEvalCount', false);
     }
 
+    public evalCountPrefix(): string {
+        return this.getConfiguration(this.configSection).get('evalCountPrefix', 'Evals: ');
+    }
+
     public showGhciOutput(): boolean {
         return this.getConfiguration(this.configSection).get('showGhciOutput', false);
     }
