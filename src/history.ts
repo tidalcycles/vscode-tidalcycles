@@ -21,9 +21,29 @@ export class History implements IHistory {
         if (this.config.showEvalCount()) {
             this.logger.log(`Evals: ${this.evalCount} `, false);
         }
+
+        this.logRandomMessage();
     }
 
     public getEvalCount(): number {
         return this.evalCount;
+    }
+
+    private logRandomMessage(){
+        const messages = this.config.randomMessages();
+        const prob = this.config.randomMessageProbability();
+        const rand = Math.random()
+        if (messages.length > 0 && rand < prob){
+            const message = this.getRandomMessage(messages);
+            this.logger.log(`${message} `, false)
+        } else{
+            console.log('info', {prob, rand, messages})
+        }
+
+    }
+
+    private getRandomMessage(messages: string[]){
+        const index = Math.floor(Math.random() * messages.length);
+        return messages[index];
     }
 }

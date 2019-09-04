@@ -37,6 +37,17 @@ export class Config {
         return this.getConfiguration(this.configSection).get('useStackGhci', false);
     }
 
+<<<<<<< HEAD
+    public randomMessageProbability(): number {
+        return parseFloat(this.getConfiguration(this.configSection)
+            .get('randomMessageProbability', '0'));
+    }
+
+    public randomMessages(): string[] {
+        return this.getConfiguration(this.configSection).get('randomMessages', [])
+    }
+
+=======
     public getShortcutCommand(num: number): string {
         return this.getConfiguration(this.configSection).get(`shortcuts.no${num}`, "");
     }
@@ -72,4 +83,5 @@ export class Config {
         }
         return enumLevel;
     }
+>>>>>>> master
 }
