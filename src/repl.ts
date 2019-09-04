@@ -46,7 +46,7 @@ export class Repl implements IRepl {
 
         if(template.search(marker) >= 0){
             if(block === null){
-                vscode.window.showErrorMessage(`    Command template contains merkers but
+                vscode.window.showErrorMessage(`    Command template contains markers but
                                                     there is no valid code block at the
                                                     cursor location: ${template}`
                 );
