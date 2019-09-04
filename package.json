@@ -210,6 +210,28 @@
                     "default": "d#s# $ ((1/#s#) ~>) $ s \"bd\" # speed #s#",
                     "markdownDescription": "The tidal command to execute when the `Tidal Shortcut #9` extension command is executed."
                 }
+                , "tidalcycles.codehelp.hover.level" :{
+                    "type": "string"
+                    , "default": "Full"
+                    , "enum": [
+                        "Off"
+                        , "Minimum"
+                        , "No examples or links"
+                        , "Full"
+                    ]
+                    , "description": "How much information to show for hovering Tidal code info."
+                }
+                , "tidalcycles.codehelp.completion.level" :{
+                    "type": "string"
+                    , "default": "Full"
+                    , "enum": [
+                        "Off"
+                        , "Minimum"
+                        , "No examples or links"
+                        , "Full"
+                    ]
+                    , "description": "How much information to show for Tidal code completion info."
+                }
             }
         }
     },

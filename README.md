@@ -13,7 +13,7 @@ SuperCollider orbits 0 through 11, respectively.
 
 This VSCode extension for TidalCycles is inspired by the commands from the popular Atom package:
 
-- `Shift+Enter` to evalulate a single line
+- `Shift+Enter` to evaluate a single line
 - `Ctrl+Enter` to evaluate multiple lines
 - `Ctrl+Alt+H` to hush
 
@@ -128,6 +128,33 @@ Examples:
 "tidalcycles.useBootFileInCurrentDirectory" : true
 ```
 
+### Hover / completion support for Tidal statements
+
+This extension implements some code support features for Tidal specific
+statements, providing code completion and hover information.
+
+You can set the detail level of the provided information through two
+configuration settings, one for the `hover` feature and one for `completion`:
+
+```
+"tidalcycles.codehelp.hover.level": "FULL"
+"tidalcycles.codehelp.completion.level" : "FULL"
+```
+
+Available levels for both options are:
+
+ * `OFF`: Disables the feature
+ * `FULL`: Enables all available information 
+ * `NO_EXAMPLES_NO_LINKS`: Only show command format, parameters and return value
+                           information
+ * `MINIMUM`: Only show command format information
+
+**Note**: Not every command is documented yet and the detail level of the
+documentation varies from command to command. The files
+[commands.yaml](commands.yaml) and [commands-generated.yaml](commands-generated.yaml)
+contain the currently available documentation. If you'd like to contribute,
+please add new documentation to [commands.yaml](commands.yaml).
+
 ### Full Config Example
 
 ```
@@ -140,7 +167,9 @@ Examples:
     "tidalcycles.showGhciOutput": false,
     "tidalcycles.showOutputInConsoleChannel": true,
     "tidalcycles.useBootFileInCurrentDirectory": false,
-    "tidalcycles.bootTidalPath" : "c:\\path\\to\\file\\boot.tidal"
+    "tidalcycles.bootTidalPath" : "c:\\path\\to\\file\\boot.tidal",
+    "tidalcycles.codehelp.hover.level": "FULL",
+    "tidalcycles.codehelp.completion.level" : "FULL"
 }
 ```
 
