@@ -1,5 +1,5 @@
 import { TextEditor, ExtensionContext, window, commands, languages, Range } from 'vscode';
-import { Repl, splitCommands } from './repl';
+import { DEFAULT_TEMPLATE_MARKER, Repl, splitCommands } from './repl';
 import { Logger } from './logging';
 import { Config } from './config';
 import { Ghci } from './ghci';
@@ -98,7 +98,9 @@ export function activate(context: ExtensionContext) {
         const repl = getRepl(repls, window.activeTextEditor);
         if (repl !== undefined) {
             const expressions = splitCommands(shortcut);
-            expressions.forEach(e => repl.executeTemplate(e.expression));
+            expressions.forEach(e =>
+                repl.executeTemplate(e.expression, DEFAULT_TEMPLATE_MARKER, config.showShortcutCommandInConsole())
+            );
         }
     };
 

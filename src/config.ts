@@ -41,6 +41,10 @@ export class Config {
         return this.getConfiguration(this.configSection).get(`shortcuts.no${num}`, "");
     }
 
+    public showShortcutCommandInConsole(): boolean {
+        return this.getConfiguration(this.configSection).get('shortcuts.showInConsole', false);
+    }
+
     public getHoverHelpDetailLevel(): CodeHelpDetailLevel {
         let level = this.getConfiguration(this.configSection)
             .get("codehelp.hover.level", CodeHelpDetailLevel[CodeHelpDetailLevel.FULL] as string);

@@ -13,6 +13,8 @@ export interface IRepl {
     evaluate(isMultiline: boolean): Promise<void>;
 }
 
+export const DEFAULT_TEMPLATE_MARKER = RegExp(/[#](s|c)[#]/g);
+
 export class Repl implements IRepl {
     public readonly postChannel: vscode.OutputChannel | null = null;
 
@@ -35,7 +37,7 @@ export class Repl implements IRepl {
         this.history.log(new TidalExpression('hush', new vscode.Range(0, 0, 0, 0)));
     }
 
-    public async executeTemplate(template: string, marker=RegExp(/[#](s|c)[#]/g)) {
+    public async executeTemplate(template: string, marker=DEFAULT_TEMPLATE_MARKER, echoCommandToLogger: boolean=false) {
         if (!this.editingTidalFile()) { 
             return; 
         }
@@ -68,26 +70,26 @@ export class Repl implements IRepl {
         template = replaceTemplateValues(template, replacements, marker);
         block = new TidalExpression(template, range);
 
-        this.evaluateExpression(block, true);
+        this.evaluateExpression(block, true, echoCommandToLogger);
     }
 
-    public async evaluate(isMultiline: boolean) {
+    public async evaluate(isMultiline: boolean, echoCommandToLogger: boolean=false) {
         if (!this.editingTidalFile()) { 
             return; 
         }
 
         const block = new TidalEditor(this.textEditor).getTidalExpressionUnderCursor(isMultiline);
         
-        this.evaluateExpression(block, isMultiline);
+        this.evaluateExpression(block, isMultiline, echoCommandToLogger);
     }
 
-    public async evaluateExpression(block:TidalExpression | null,isMultiline: boolean) {
+    public async evaluateExpression(block:TidalExpression | null,isMultiline: boolean, echoCommandToLogger: boolean=false) {
         if (!this.editingTidalFile()) { 
             return; 
         }
         
         if (block) {
-            await this.tidal.sendTidalExpression(block.expression);
+            await this.tidal.sendTidalExpression(block.expression, echoCommandToLogger);
             this.feedback(block.range);
             this.history.log(block);
         }

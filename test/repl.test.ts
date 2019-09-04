@@ -41,7 +41,7 @@ suite('Repl', () => {
             mockConfig.object, mockCreateTextEditorDecorationType.object);
         await repl.hush();
 
-        mockTidal.verify(t => t.sendTidalExpression(TypeMoq.It.isAnyString()), TypeMoq.Times.never());
+        mockTidal.verify(t => t.sendTidalExpression(TypeMoq.It.isAnyString(), TypeMoq.It.isAny()), TypeMoq.Times.never());
         mockHistory.verify(h => h.log(TypeMoq.It.isAny()), TypeMoq.Times.never());
     });
 
@@ -59,7 +59,7 @@ suite('Repl', () => {
             mockConfig.object, mockCreateTextEditorDecorationType.object);
         await repl.executeTemplate("d#s# $ silence");
 
-        mockTidal.verify(t => t.sendTidalExpression('d1 $ silence'), TypeMoq.Times.once());
+        mockTidal.verify(t => t.sendTidalExpression('d1 $ silence', false), TypeMoq.Times.once());
         mockHistory.verify(h => h.log(TypeMoq.It.isAny()), TypeMoq.Times.once());
     });
 
@@ -113,7 +113,7 @@ suite('Repl', () => {
             mockConfig.object, mockCreateTextEditorDecorationType.object);
         await repl.evaluate(true);
 
-        mockTidal.verify(t => t.sendTidalExpression('Foo\r\nbar'), TypeMoq.Times.once());
+        mockTidal.verify(t => t.sendTidalExpression('Foo\r\nbar', false), TypeMoq.Times.once());
         mockHistory.verify(h => h.log(TypeMoq.It.isAny()), TypeMoq.Times.once());
     });
 
@@ -131,7 +131,7 @@ suite('Repl', () => {
             mockConfig.object, mockCreateTextEditorDecorationType.object);
         await repl.evaluate(false);
 
-        mockTidal.verify(t => t.sendTidalExpression('bar'), TypeMoq.Times.once());
+        mockTidal.verify(t => t.sendTidalExpression('bar', false), TypeMoq.Times.once());
         mockHistory.verify(h => h.log(TypeMoq.It.isAny()), TypeMoq.Times.once());
     });
 

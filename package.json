@@ -209,8 +209,13 @@
                     "type": "string",
                     "default": "d#s# $ ((1/#s#) ~>) $ s \"bd\" # speed #s#",
                     "markdownDescription": "The tidal command to execute when the `Tidal Shortcut #9` extension command is executed."
-                }
-                , "tidalcycles.codehelp.hover.level" :{
+                },
+                "tidalcycles.shortcuts.showInConsole": {
+                    "type": "boolean",
+                    "default": false,
+                    "markdownDescription": "Show the shortcut commands that are executed in the console. Useful for debugging."
+                },
+                "tidalcycles.codehelp.hover.level" :{
                     "type": "string"
                     , "default": "Full"
                     , "enum": [
