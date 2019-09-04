@@ -17,6 +17,56 @@ This VSCode extension for TidalCycles is inspired by the commands from the popul
 - `Ctrl+Enter` to evaluate multiple lines
 - `Ctrl+Alt+H` to hush
 
+### Customizable shortcuts
+
+You have 9 customizable, predefined shortcuts for executing commands e.g. through key combinations. By default
+the shortcuts are initially set up to do the following (you can change them to your liking though):
+
+1. `silence` the current stream
+2. `mute` the current stream
+3. `unmute` the current stream
+4. `solo` the current stream
+5. `unsolo` the current stream
+6. `unsolo` and `unmute` streams 1 to 12
+7. `xfadeIn` the block to the current stream over 4 cycles (see below)
+8. `xfadeIn` `silence` to the current stream over 4 cycles. Effectively this is a fade out
+9. The more complex example below
+
+The current stream number is determined by checking for a `d1`, `d2`, etc. at the beginning of the first line of the
+code block the cursor is currently in. This number is then taken as the current stream number, sans the `d`.
+
+You can use the stream number in the commands by putting a `#s#` at the position you want the number to be. Note that
+it is replaced by the number only, no spaces are added. So if you're on stream `4` and you have a shortcut command
+that's defined as `d#s# $ ((1/#s#) ~>) $ s \"bd\" # speed #s#` it'll be translated to
+`d4 $ ((1/4) ~>) $ s \"bd\" # speed 4` before being sent to Tidal (see default command 9).
+
+Another useful replacement value is `#c#` which is the remainder of the command after the first `$` or `#`. This makes
+it easy to set up shortcuts for transitions. The following shortcut will cross fade in the block under the cursor over 4
+cycles:
+
+```
+xfadeIn #s# 4 $ #c#
+```
+
+Note that the extension **does not come with default key bindings** as to not interfere with your current key bindings.
+In order to execute the commands through key combinations you need to wire them up in the `Keyboard Shortcut`
+preferences.
+
+If the 9 predefined shortcut commands are not enough, you can also define new ones by creating new keyboard mappings.
+Defining a shortcut like this also has the added benefit of allowing for multiple, top level commands to be specified in
+the same shortcut. Below is an example that needs to go into your `keybindings.json` file. Note the `\r\n` added to
+define two top level commands in the same shortcut.
+
+```
+{
+    "key": "shift+ctrl+1"
+    , "command": "tidal.shortcut"
+    , "args": {
+        "command": "d1 $ stack [ s \"bd!4\", ((1/2) ~>) $ s \"sn!2\" ]\r\nd2 $ s \"hh!8\""
+    }
+}
+```
+
 ## Syntax Highlighting
 
 In order to get syntax highlighting in `.tidal` files you must do
