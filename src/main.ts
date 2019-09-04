@@ -9,6 +9,8 @@ import { TidalLanguageHelpProvider } from './codehelp';
 import * as path from 'path';
 import * as yaml from 'js-yaml';
 import { readFileSync } from 'fs';
+import { SoundBrowserSoundsView, SoundItem } from './soundbrowser';
+const WavPlayer = require('node-wav-player');
 
 export function activate(context: ExtensionContext) {
     const config = new Config();
@@ -122,10 +124,20 @@ export function activate(context: ExtensionContext) {
         });
     })());
 
+    const playSoundCommand = commands.registerCommand("tidalcycles.sounds.play", (node: SoundItem) => {
+        WavPlayer.play({path: node.filePath}).catch((err:any) => {
+            window.showErrorMessage(`Error playing wav: ${err}`);
+        });
+    });
+
     context.subscriptions.push(
         evalSingleCommand, evalMultiCommand, hushCommand
         , ...shortcutCommands.filter(x => typeof x !== 'undefined')
+        , playSoundCommand
     );
+
+    window.registerTreeDataProvider("tidalcycles-soundbrowser-sounds", new SoundBrowserSoundsView(config));
+
 }
 
 export function deactivate() { }

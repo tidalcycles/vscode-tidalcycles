@@ -26,7 +26,9 @@
         "onCommand:tidal.shortcut.no7",
         "onCommand:tidal.shortcut.no8",
         "onCommand:tidal.shortcut.no9",
-        "onLanguage:haskell"
+        "onLanguage:haskell",
+        "onView:tidalcycles-soundbrowser-sounds",
+        "onView:tidalcycles-soundbrowser"
     ],
     "main": "./out/src/main",
     "contributes": {
@@ -95,6 +97,15 @@
                 "command": "tidal.shortcut.no9",
                 "title": "Tidal Shortcut #9",
                 "category": "Tidal Shortcuts"
+            },
+            {
+                "command": "tidalcycles.sounds.play",
+                "title": "Play a sound file",
+                "category": "Tidal Extra",
+                "icon": {
+                    "dark": "images/play.svg"
+                    , "light": "images/play_lt.svg"
+                }
             }
         ],
         "keybindings": [
@@ -215,29 +226,65 @@
                     "default": false,
                     "markdownDescription": "Show the shortcut commands that are executed in the console. Useful for debugging."
                 },
-                "tidalcycles.codehelp.hover.level" :{
-                    "type": "string"
-                    , "default": "Full"
-                    , "enum": [
-                        "Off"
-                        , "Minimum"
-                        , "No examples or links"
-                        , "Full"
-                    ]
-                    , "description": "How much information to show for hovering Tidal code info."
-                }
-                , "tidalcycles.codehelp.completion.level" :{
-                    "type": "string"
-                    , "default": "Full"
-                    , "enum": [
-                        "Off"
-                        , "Minimum"
-                        , "No examples or links"
-                        , "Full"
-                    ]
-                    , "description": "How much information to show for Tidal code completion info."
+                "tidalcycles.codehelp.hover.level": {
+                    "type": "string",
+                    "default": "Full",
+                    "enum": [
+                        "Off",
+                        "Minimum",
+                        "No examples or links",
+                        "Full"
+                    ],
+                    "description": "How much information to show for hovering Tidal code info."
+                },
+                "tidalcycles.codehelp.completion.level": {
+                    "type": "string",
+                    "default": "Full",
+                    "enum": [
+                        "Off",
+                        "Minimum",
+                        "No examples or links",
+                        "Full"
+                    ],
+                    "description": "How much information to show for Tidal code completion info."
+                },
+                "tidalcycles.samples.directories": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [
+                        ":SuperDirt"
+                    ],
+                    "description": "Sample directory to display in the samples browser. Set this e.g. to your Dirt-Samples directory."
                 }
             }
+        },
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "tidalcycles",
+                    "title": "Tidal Cycles",
+                    "icon": "images/tidal.svg"
+                }
+            ]
+        },
+        "views": {
+            "tidalcycles": [
+                {
+                    "id": "tidalcycles-soundbrowser-sounds",
+                    "name": "Sounds"
+                }
+            ]
+        }
+        , "menus": {
+            "view/item/context": [
+                {
+                    "command": "tidalcycles.sounds.play"
+                    , "group": "inline"
+                    , "when": "view == tidalcycles-soundbrowser-sounds && viewItem == wav"
+                }   
+            ]
         }
     },
     "scripts": {
@@ -251,16 +298,18 @@
         "@types/chai": "^4.1.6",
         "@types/js-yaml": "^3.12.1",
         "@types/mocha": "^5.2.5",
-        "@types/node": "^7.0.0",
+        "@types/node": "^11.0.0",
         "@types/split2": "^2.1.6",
         "chai": "^4.1.2",
         "mocha": "^5.2.0",
+        "tslint": "^5.19.0",
         "typemoq": "^2.1.0",
-        "typescript": "^3.1.1",
+        "typescript": "^3.6.2",
         "vscode": "^1.1.24"
     },
     "dependencies": {
         "js-yaml": "^3.13.1",
+        "node-wav-player": "^0.1.0",
         "split2": "^3.0.0"
     }
 }
