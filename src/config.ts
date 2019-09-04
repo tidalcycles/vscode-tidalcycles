@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { CodeHelpDetailLevel } from './codehelp';
 
 export class Config {
     getConfiguration = vscode.workspace.getConfiguration;
@@ -36,6 +37,7 @@ export class Config {
         return this.getConfiguration(this.configSection).get('useStackGhci', false);
     }
 
+<<<<<<< HEAD
     public randomMessageProbability(): number {
         return parseFloat(this.getConfiguration(this.configSection)
             .get('randomMessageProbability', '0'));
@@ -45,4 +47,41 @@ export class Config {
         return this.getConfiguration(this.configSection).get('randomMessages', [])
     }
 
+=======
+    public getShortcutCommand(num: number): string {
+        return this.getConfiguration(this.configSection).get(`shortcuts.no${num}`, "");
+    }
+
+    public showShortcutCommandInConsole(): boolean {
+        return this.getConfiguration(this.configSection).get('shortcuts.showInConsole', false);
+    }
+
+    public getHoverHelpDetailLevel(): CodeHelpDetailLevel {
+        let level = this.getConfiguration(this.configSection)
+            .get("codehelp.hover.level", CodeHelpDetailLevel[CodeHelpDetailLevel.FULL] as string);
+        return this.stringToCodeHelpDetailLevel(level);
+    }
+
+    public getCompletionHelpDetailLevel(): CodeHelpDetailLevel {
+        let level = this.getConfiguration(this.configSection)
+            .get("codehelp.completion.level", CodeHelpDetailLevel[CodeHelpDetailLevel.FULL] as string);
+        return this.stringToCodeHelpDetailLevel(level);
+    }
+
+    public stringToCodeHelpDetailLevel(level:string){
+        level = level.toUpperCase().replace(/\s+/g,'_');
+
+        let enumLevel:CodeHelpDetailLevel | undefined = CodeHelpDetailLevel.FULL;
+        try {
+            enumLevel = CodeHelpDetailLevel[<keyof typeof CodeHelpDetailLevel>level];
+            if(typeof enumLevel === 'undefined'){
+                enumLevel = CodeHelpDetailLevel.FULL;
+            }
+        }
+        catch(error){
+            vscode.window.showErrorMessage("Could not convert "+level+" to CodeHelpDetailLevel: "+error);
+        }
+        return enumLevel;
+    }
+>>>>>>> master
 }
