@@ -7,7 +7,7 @@ import { homedir } from 'os';
  * Provides an interface to send instructions to the current Tidal instance.
  */
 export interface ITidal {
-    sendTidalExpression(expression: string): Promise<void>;
+    sendTidalExpression(expression: string, echoCommandToLogger?: boolean): Promise<void>;
 }
 
 export class Tidal implements ITidal {
@@ -73,7 +73,7 @@ export class Tidal implements ITidal {
         return true;
     }
 
-    public async sendTidalExpression(expression: string) {
+    public async sendTidalExpression(expression: string, echoCommandToLogger: boolean=false) {
         if (!(await this.bootTidal())) {
             this.logger.error('Could not boot Tidal');
             return;
@@ -82,7 +82,11 @@ export class Tidal implements ITidal {
         this.ghci.writeLn(':{');
         const splits = expression.split(/[\r\n]+/);
         for (let i = 0; i < splits.length; i++) {
-            this.ghci.writeLn(splits[i]);
+            const line = splits[i];
+            if(echoCommandToLogger){
+                this.logger.log(line);
+            }
+            this.ghci.writeLn(line);
         }
         this.ghci.writeLn(':}');
     }

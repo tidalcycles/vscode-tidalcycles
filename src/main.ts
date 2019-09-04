@@ -1,5 +1,5 @@
 import { TextEditor, ExtensionContext, window, commands, languages, Range } from 'vscode';
-import { Repl } from './repl';
+import { DEFAULT_TEMPLATE_MARKER, Repl, splitCommands } from './repl';
 import { Logger } from './logging';
 import { Config } from './config';
 import { Ghci } from './ghci';
@@ -7,7 +7,6 @@ import { Tidal } from './tidal';
 import { History } from './history';
 import { TidalLanguageHelpProvider } from './codehelp';
 import * as path from 'path';
-import { TidalExpression } from './editor';
 import * as yaml from 'js-yaml';
 import { readFileSync } from 'fs';
 
@@ -25,10 +24,12 @@ export function activate(context: ExtensionContext) {
             const ydef = yaml.load(readFileSync(defPath).toString());
             return {source: source, ydef};
         })
+        , config
     );
+    
     [languages.registerHoverProvider, languages.registerCompletionItemProvider]
         .forEach((regFunc:((selector:any, provider:any) => void)) => {
-            regFunc({scheme:"*", language: 'haskell',pattern: '**/*.tidal'}, hoveAndMarkdownPrivder);
+            regFunc({scheme:"*", pattern: '**/*.tidal'}, hoveAndMarkdownPrivder);
         });
 
     function getRepl(repls: Map<TextEditor, Repl>, textEditor: TextEditor | undefined): Repl | undefined {
@@ -65,34 +66,10 @@ export function activate(context: ExtensionContext) {
                         range = new Range(0,0,0,0);
                     }
 
-                    /*
-                    this is a pragmatic way of splitting a list of commands into
-                    distinct top level commands to executem them separately in
-                    GHCi. The idea is that every time there's a not-indented
-                    line, then all previous, unexecuted liens are executed up to
-                    that line.
-                    */
-
-                    const lines = command.split(/\r?\n/);
-                    let startLine = 0;
-
-                    for(let i=0;i<lines.length;i++){
-                        if(lines[i].length === 0){
-                            continue;
-                        }
-                        let c = lines[i].charAt(0);
-                        let m = c.match(/\S/);
-                        let isEmpty = typeof m === 'undefined' || m === null || m.length === 0;
-                        if(i !== lines.length - 1){
-                            if(isEmpty){
-                                continue;
-                            }
-                        }
-                        let currentCommand = lines.slice(startLine, i+1).reduce((x,y)=>x+"\r\n"+y);
-                        repl.evaluateExpression(new TidalExpression(currentCommand, range), true);
-                        startLine = i+1;
-                    }
+                    const expressions = splitCommands({cmd: command, range});
+                    expressions.forEach(x => repl.evaluateExpression(x, true));
                 }
+
                 return;
             }
         
@@ -114,7 +91,41 @@ export function activate(context: ExtensionContext) {
         }
     });
 
-    context.subscriptions.push(evalSingleCommand, evalMultiCommand, hushCommand);
+    const executeShortcut = (shortcut: string | undefined) => {
+        if(typeof shortcut === 'undefined' || shortcut === null || shortcut.trim() === ''){
+            return;
+        }
+        const repl = getRepl(repls, window.activeTextEditor);
+        if (repl !== undefined) {
+            const expressions = splitCommands(shortcut);
+            expressions.forEach(e =>
+                repl.executeTemplate(e.expression, DEFAULT_TEMPLATE_MARKER, config.showShortcutCommandInConsole())
+            );
+        }
+    };
+
+    const shortcutCommands = Array(9).fill(1).map((_, i) => {
+        i = i + 1;
+        return commands.registerCommand(`tidal.shortcut.no${i}`, function() {
+            executeShortcut(config.getShortcutCommand(i));
+        });
+    });
+
+    shortcutCommands.push((() => {
+        return commands.registerCommand('tidal.shortcut', (args?:{[key:string]:any}) => {
+            if(typeof args === 'undefined'){
+                return undefined;
+            }
+            let command = Object.keys(args).filter(x => x === 'command').map(x=>args[x]).pop() as string | undefined;
+
+            executeShortcut(command);
+        });
+    })());
+
+    context.subscriptions.push(
+        evalSingleCommand, evalMultiCommand, hushCommand
+        , ...shortcutCommands.filter(x => typeof x !== 'undefined')
+    );
 }
 
 export function deactivate() { }
