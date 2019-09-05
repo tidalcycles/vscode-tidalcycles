@@ -44,6 +44,10 @@ export class Config {
         return this.getConfiguration(this.configSection).get('showEvalCount', false);
     }
 
+    public evalCountPrefix(): string {
+        return this.getConfiguration(this.configSection).get('evalCountPrefix', 'Evals: ');
+    }
+
     public showGhciOutput(): boolean {
         return this.getConfiguration(this.configSection).get('showGhciOutput', false);
     }
@@ -58,6 +62,15 @@ export class Config {
 
     public useStackGhci(): boolean {
         return this.getConfiguration(this.configSection).get('useStackGhci', false);
+    }
+
+    public randomMessageProbability(): number {
+        return parseFloat(this.getConfiguration(this.configSection)
+            .get('randomMessageProbability', '0'));
+    }
+
+    public randomMessages(): string[] {
+        return this.getConfiguration(this.configSection).get('randomMessages', [])
     }
 
     public getShortcutCommand(num: number): string {
