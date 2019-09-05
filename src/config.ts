@@ -16,7 +16,7 @@ export class Config {
         return this.workspaceState.get<T>(`${this.configSection}.${key}`);
     }
 
-    public putWorkspaceState(key:string, value: any){
+    public updateWorkspaceState(key:string, value: any){
         return this.workspaceState.update(`${this.configSection}.${key}`, value);
     }
 
