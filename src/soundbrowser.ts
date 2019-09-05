@@ -289,7 +289,7 @@ export class SoundBrowserSoundsView implements vscode.TreeDataProvider<SoundItem
         const xl = this.getExpansionList();
 
         const entries = Promise.resolve(dpaths.map((x, i) => {
-            const root = x.startsWith(':') ? x : path.basename(x);
+            const root = (""+i).padStart(3, "0") + "_" + (x.startsWith(':') ? x : path.basename(x));
             return new SoundItem(
                 root
                 , 'virt'
