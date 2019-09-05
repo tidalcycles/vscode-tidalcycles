@@ -137,6 +137,9 @@
                 },
                 "tidalcycles.randomMessages": {
                     "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
                     "default": [],
                     "description": "An array of strings of random messages."
                 },
@@ -220,27 +223,27 @@
                     "default": false,
                     "markdownDescription": "Show the shortcut commands that are executed in the console. Useful for debugging."
                 },
-                "tidalcycles.codehelp.hover.level" :{
-                    "type": "string"
-                    , "default": "Full"
-                    , "enum": [
-                        "Off"
-                        , "Minimum"
-                        , "No examples or links"
-                        , "Full"
-                    ]
-                    , "description": "How much information to show for hovering Tidal code info."
-                }
-                , "tidalcycles.codehelp.completion.level" :{
-                    "type": "string"
-                    , "default": "Full"
-                    , "enum": [
-                        "Off"
-                        , "Minimum"
-                        , "No examples or links"
-                        , "Full"
-                    ]
-                    , "description": "How much information to show for Tidal code completion info."
+                "tidalcycles.codehelp.hover.level": {
+                    "type": "string",
+                    "default": "Full",
+                    "enum": [
+                        "Off",
+                        "Minimum",
+                        "No examples or links",
+                        "Full"
+                    ],
+                    "description": "How much information to show for hovering Tidal code info."
+                },
+                "tidalcycles.codehelp.completion.level": {
+                    "type": "string",
+                    "default": "Full",
+                    "enum": [
+                        "Off",
+                        "Minimum",
+                        "No examples or links",
+                        "Full"
+                    ],
+                    "description": "How much information to show for Tidal code completion info."
                 }
             }
         }
