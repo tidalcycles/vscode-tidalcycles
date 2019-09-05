@@ -2,8 +2,23 @@ import * as vscode from 'vscode';
 import { CodeHelpDetailLevel } from './codehelp';
 
 export class Config {
-    getConfiguration = vscode.workspace.getConfiguration;
-    configSection: string = 'tidalcycles';
+    readonly getConfiguration = vscode.workspace.getConfiguration;
+    readonly configSection: string = 'tidalcycles';
+    private workspaceState: vscode.Memento;
+
+    constructor(
+        private readonly context: vscode.ExtensionContext
+    ){
+        this.workspaceState = this.context.workspaceState;
+    }
+
+    public getWorkspaceState<T>(key: string){
+        return this.workspaceState.get<T>(`${this.configSection}.${key}`);
+    }
+
+    public putWorkspaceState(key:string, value: any){
+        return this.workspaceState.update(`${this.configSection}.${key}`, value);
+    }
 
     public bootTidalPath(): string | null {
         return this.getConfiguration(this.configSection).get('bootTidalPath', null);

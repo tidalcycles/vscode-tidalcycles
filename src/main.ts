@@ -13,12 +13,13 @@ import { SoundBrowserSoundsView, SoundItem } from './soundbrowser';
 const WavPlayer = require('node-wav-player');
 
 export function activate(context: ExtensionContext) {
-    const config = new Config();
+    const config = new Config(context);
     const logger = new Logger(window.createOutputChannel('TidalCycles'));
 
     const ghci = new Ghci(logger, config.useStackGhci(), config.ghciPath(), config.showGhciOutput());
     const tidal = new Tidal(logger, ghci, config.bootTidalPath(), config.useBootFileInCurrentDirectory());
     const history = new History(logger, config);
+    const soundBrowser = new SoundBrowserSoundsView(config);
 
     const hoveAndMarkdownPrivder = new TidalLanguageHelpProvider(
         ["commands-generated.yaml","commands.yaml"].map(x => ([x, path.join(context.extensionPath, x)]))
@@ -136,7 +137,10 @@ export function activate(context: ExtensionContext) {
         , playSoundCommand
     );
 
-    window.registerTreeDataProvider("tidalcycles-soundbrowser-sounds", new SoundBrowserSoundsView(config));
+    window.registerTreeDataProvider(
+        "tidalcycles-soundbrowser-sounds"
+        , soundBrowser
+    );
 
 }
 
