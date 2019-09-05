@@ -109,8 +109,8 @@
             },
             {
                 "command": "tidalcycles.sounds.copytoclipboard",
-                "title": "Copy sound name to clipboard",
-                "category": "Tidal sounds",
+                "title": "Copy sound name to clipboard", 
+                "category": "Tidal Sounds",
                 "icon": {
                     "dark": "images/material-icons/clipboard.svg",
                     "light": "images/material-icons/clipboard_lt.svg"
@@ -304,7 +304,7 @@
             "view/title": [
                 {
                     "command": "tidalcycles.sounds.refresh",
-                    "group": "",
+                    "group": "inline",
                     "when": "view == tidalcycles-soundbrowser-sounds"
                 }
             ],
