@@ -139,7 +139,8 @@
                 "title": "Stop all sound previews",
                 "category": "Tidal Sounds",
                 "icon": {
-                    
+                    "dark": "images/material-icons/stop.svg",
+                    "light": "images/material-icons/stop_lt.svg"
                 }
             }
         ],
