@@ -101,10 +101,28 @@
             {
                 "command": "tidalcycles.sounds.play",
                 "title": "Play a sound file",
-                "category": "Tidal Extra",
+                "category": "Tidal Sounds",
                 "icon": {
-                    "dark": "images/play.svg",
-                    "light": "images/play_lt.svg"
+                    "dark": "images/material-icons/play.svg",
+                    "light": "images/material-icons/play_lt.svg"
+                }
+            },
+            {
+                "command": "tidalcycles.sounds.copytoclipboard",
+                "title": "Copy sound name to clipboard",
+                "category": "Tidal sounds",
+                "icon": {
+                    "dark": "images/material-icons/clipboard.svg",
+                    "light": "images/material-icons/clipboard_lt.svg"
+                }
+            },
+            {
+                "command": "tidalcycles.sounds.refresh",
+                "title": "Refresh the list of sounds",
+                "category": "Tidal Sounds",
+                "icon": {
+                    "dark": "images/material-icons/refresh.svg",
+                    "light": "images/material-icons/refresh_lt.svg"
                 }
             }
         ],
@@ -120,6 +138,11 @@
             {
                 "command": "tidal.hush",
                 "key": "Ctrl+Alt+H"
+            },
+            {
+                "command": "tidalcycles.sounds.play",
+                "key": "Space",
+                "when": "listFocus && listHasSelectionOrFocus"
             }
         ],
         "configuration": {
@@ -278,7 +301,24 @@
             ]
         },
         "menus": {
+            "view/title": [
+                {
+                    "command": "tidalcycles.sounds.refresh",
+                    "group": "",
+                    "when": "view == tidalcycles-soundbrowser-sounds"
+                }
+            ],
             "view/item/context": [
+                {
+                    "command": "tidalcycles.sounds.refresh",
+                    "group": "inline",
+                    "when": "view == tidalcycles-soundbrowser-sounds && viewItem != wav"
+                },
+                {
+                    "command": "tidalcycles.sounds.copytoclipboard",
+                    "group": "inline",
+                    "when": "view == tidalcycles-soundbrowser-sounds && viewItem == wav || viewItem == dir"
+                },
                 {
                     "command": "tidalcycles.sounds.play",
                     "group": "inline",
