@@ -11,7 +11,8 @@ https://github.com/microsoft/vscode-extension-samples/blob/master/tree-view-samp
 
 export class SoundItem extends vscode.TreeItem {
     constructor(
-        public readonly type: ('virt' | 'dir' | 'file')
+        public readonly root: string
+        , public readonly type: ('virt' | 'dir' | 'file')
         , public readonly position: number
         , public readonly fileName: string
         , public readonly filePath: string
@@ -33,7 +34,7 @@ export class SoundItem extends vscode.TreeItem {
 
         this.resourceUri = vscode.Uri.file(filePath);
         this.contextValue = contextValue;
-        
+        this.id = root+":"+this.resourceUri;
     }
 }
 
@@ -43,8 +44,7 @@ export class SoundBrowserSoundsView implements vscode.TreeDataProvider<SoundItem
 
     constructor(
         private config: Config
-    ){
-    }
+    ){}
 
     refresh(): void {
 		this._onDidChangeTreeData.fire();
@@ -60,33 +60,39 @@ export class SoundBrowserSoundsView implements vscode.TreeDataProvider<SoundItem
                 return Promise.resolve([]);
             }
             else if (element.type === 'dir') {
-                return this.getVirtEntries(element.filePath);
+                return this.getVirtEntries(element.root, element.filePath);
             }
             else if (element.type === 'virt') {
-                return this.getVirtEntries(element.fileName);
+                return this.getVirtEntries(element.root, element.fileName);
             }
             return Promise.resolve([]);
         }
         
         const dpaths = this.config.getDirtSamplesDirectories();
+
+        let entries: Promise<SoundItem[]>;
     
         if(dpaths.length === 1){
-            return this.getVirtEntries(dpaths[0]);
+            entries = this.getVirtEntries(dpaths[0], dpaths[0]);
         }
-        
-        return Promise.resolve(dpaths.map((x, i) =>
-            new SoundItem(
-                'virt'
-                , i
-                , x
-                , x
-                , x
-                , vscode.TreeItemCollapsibleState.Expanded
-            )
-        ));
+        else {
+            entries = Promise.resolve(dpaths.map((x, i) =>
+                new SoundItem(
+                    x
+                    , 'virt'
+                    , i
+                    , x
+                    , x
+                    , x
+                    , vscode.TreeItemCollapsibleState.Expanded
+                )
+            ));
+        }
+
+        return entries;
     }
 
-    private async getVirtEntries(vpath: string): Promise<SoundItem[]> {
+    private async getVirtEntries(root: string, vpath: string): Promise<SoundItem[]> {
         if(vpath.toLowerCase() === ':superdirt'){
             vscode.window.showErrorMessage("Fetching sample information from SuperDirt is currently not supported");
             return [];
@@ -131,7 +137,8 @@ export class SoundBrowserSoundsView implements vscode.TreeDataProvider<SoundItem
                         .map(({fn, stat}, i) => {
                             const isDir = stat && !stat.isFile();
                             return new SoundItem(
-                                isDir ? 'dir' : 'file'
+                                vpath
+                                , isDir ? 'dir' : 'file'
                                 , i
                                 , fn
                                 , path.join(vpath, fn)
