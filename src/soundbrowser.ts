@@ -44,6 +44,11 @@ export class SoundItem extends vscode.TreeItem {
         this.resourceUri = vscode.Uri.parse(filePath.indexOf('://') >=0 ? filePath : `file://${filePath}`);
         this.contextValue = contextValue;
         this.id = root+":"+this.resourceUri;
+        this.command = {
+            command: `${TREE_VIEW_NAME}.selectNode`
+            , title: "Play"
+            , arguments: [this]
+        };
     }
 
     get numChildren(): number {
@@ -81,6 +86,8 @@ function instanceOfSoundItem(object: vscode.TreeItem): object is SoundItem {
     return ["fileName"].filter(x => keys[x]).length > 0;
 }
 
+export const TREE_VIEW_NAME = "tidalcycles-soundbrowser-sounds";
+
 export class SoundBrowserSoundsView implements vscode.TreeDataProvider<SoundItem> {
     private _onDidChangeTreeData: vscode.EventEmitter<SoundItem | undefined> = new vscode.EventEmitter<SoundItem | undefined>();
 	readonly onDidChangeTreeData: vscode.Event<SoundItem | undefined> = this._onDidChangeTreeData.event;
@@ -96,7 +103,7 @@ export class SoundBrowserSoundsView implements vscode.TreeDataProvider<SoundItem
         const dispoables = [];
 
         this._treeView = vscode.window.createTreeView<SoundItem>(
-            "tidalcycles-soundbrowser-sounds"
+            TREE_VIEW_NAME
             , {
                 treeDataProvider: this
                 , showCollapseAll: true
@@ -193,6 +200,11 @@ export class SoundBrowserSoundsView implements vscode.TreeDataProvider<SoundItem
                 }
                 vscode.env.clipboard.writeText(dn);
             })
+            , vscode.commands.registerCommand(`${TREE_VIEW_NAME}.selectNode`, (node?: SoundItem) => {
+                if(this.config.getPlaySoundOnSelection()){
+                    vscode.commands.executeCommand("tidalcycles.sounds.play", node);
+                }
+            })
         ];
     }
 
@@ -224,12 +236,23 @@ export class SoundBrowserSoundsView implements vscode.TreeDataProvider<SoundItem
             return Promise.resolve([]);
         }
         
-        const dpaths = this.config.getDirtSamplesDirectories();
+        const dpaths = this.config.getSoundsPaths();
 
-        let entries: Promise<SoundItem[]>;
+        if(dpaths.length === 0){
+            vscode.window.showWarningMessage(
+                "You haven't configured any Tidal sound paths yet."
+                , "Configure sounds paths"
+            ).then(x => 
+                vscode.commands.executeCommand(
+                    "workbench.action.openSettings"
+                    , `@ext:${this.config.getExtensionId()} ${this.config.getPreferencesStringFor("sounds.paths")}`
+                )
+            );
+        }
+
         const xl = this.getExpansionList();
 
-        entries = Promise.resolve(dpaths.map((x, i) => {
+        const entries = Promise.resolve(dpaths.map((x, i) => {
             const root = x.startsWith(':') ? x : path.basename(x);
             return new SoundItem(
                 root
@@ -250,12 +273,21 @@ export class SoundBrowserSoundsView implements vscode.TreeDataProvider<SoundItem
 
     private async getVirtEntries(root: string, parent: SoundItem): Promise<SoundItem[]> {
         const vpath = parent.filePath;
-        if(parent.root.startsWith("superdirt:")){
-            vscode.window.showErrorMessage("Fetching sample information from SuperDirt is currently not supported");
+        
+        if(parent.root.toLowerCase().startsWith(":superdirt")){
+            vscode.window.showErrorMessage(
+                "Fetching sound information from SuperDirt is currently not supported."
+                , "Configure sounds paths"
+            ).then(x => 
+                vscode.commands.executeCommand(
+                    "workbench.action.openSettings"
+                    , `@ext:${this.config.getExtensionId()} ${this.config.getPreferencesStringFor("sounds.paths")}`
+                )
+            );
             return [];
         }
         if(!this.pathExists(vpath)){
-            vscode.window.showErrorMessage(`The path you defined for loading dirt smaple infos does not exist: ${vpath}`);
+            vscode.window.showErrorMessage(`The path you defined for loading dirt sound information does not exist: ${vpath}`);
             return [];
         }
 

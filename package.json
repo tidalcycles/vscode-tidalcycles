@@ -271,15 +271,19 @@
                     ],
                     "description": "How much information to show for Tidal code completion info."
                 },
-                "tidalcycles.samples.directories": {
+                "tidalcycles.sounds.paths": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     },
                     "default": [
-                        ":SuperDirt"
                     ],
-                    "description": "Sample directory to display in the samples browser. Set this e.g. to your Dirt-Samples directory."
+                    "description": "Sound paths to display in the sound browser. Set this e.g. to your Dirt-Samples directory."
+                }, 
+                "tidalcycles.sounds.playonselection": {
+                    "type": "boolean"
+                    , "default": true
+                    , "description": "Play the sounds you click on. If you set this to false you have to explicitly click the play button in the sounds browser."
                 }
             }
         },

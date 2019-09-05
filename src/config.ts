@@ -12,6 +12,14 @@ export class Config {
         this.workspaceState = this.context.workspaceState;
     }
 
+    public getExtensionId(){
+        return "tidalcycles.vscode-tidalcycles";
+    }
+
+    public getPreferencesStringFor(s: string){
+        return `${this.configSection}.${s}`;
+    }
+
     public getWorkspaceState<T>(key: string){
         return this.workspaceState.get<T>(`${this.configSection}.${key}`);
     }
@@ -60,10 +68,10 @@ export class Config {
         return this.getConfiguration(this.configSection).get('shortcuts.showInConsole', false);
     }
 
-    public getDirtSamplesDirectories(): string[] {
-        return this.getConfiguration(this.configSection).get('samples.directories', []);
+    public getSoundsPaths(): string[] {
+        return this.getConfiguration(this.configSection).get('sounds.paths', []);
     }
-    
+
     public getHoverHelpDetailLevel(): CodeHelpDetailLevel {
         let level = this.getConfiguration(this.configSection)
             .get("codehelp.hover.level", CodeHelpDetailLevel[CodeHelpDetailLevel.FULL] as string);
@@ -90,5 +98,9 @@ export class Config {
             vscode.window.showErrorMessage("Could not convert "+level+" to CodeHelpDetailLevel: "+error);
         }
         return enumLevel;
+    }
+
+    public getPlaySoundOnSelection(){
+        return this.getConfiguration(this.configSection).get('sounds.playonselection', true);
     }
 }
