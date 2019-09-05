@@ -133,6 +133,14 @@
                     "dark": "images/material-icons/refresh.svg",
                     "light": "images/material-icons/refresh_lt.svg"
                 }
+            },
+            {
+                "command": "tidalcycles.sounds.stop",
+                "title": "Stop all sound previews",
+                "category": "Tidal Sounds",
+                "icon": {
+                    
+                }
             }
         ],
         "keybindings": [
@@ -152,6 +160,11 @@
                 "command": "tidalcycles.sounds.play",
                 "key": "Space",
                 "when": "listFocus && listHasSelectionOrFocus"
+            },
+            {
+                "command": "tidalcycles.sounds.stop"
+                , "key": "Escape"
+                , "when": "listFocus && listHasSelectionOrFocus"
             }
         ],
         "configuration": {
@@ -321,6 +334,11 @@
         "menus": {
             "view/title": [
                 {
+                    "command": "tidalcycles.sounds.stop"
+                    , "group": "navigation"
+                    , "when": "view == tidalcycles-soundbrowser-sounds"
+                },
+                {
                     "command": "tidalcycles.sounds.refresh",
                     "group": "navigation",
                     "when": "view == tidalcycles-soundbrowser-sounds"
@@ -330,22 +348,22 @@
                 {
                     "command": "tidalcycles.sounds.insertineditor",
                     "group": "inline@10",
-                    "when": "view == tidalcycles-soundbrowser-sounds && viewItem == wav || viewItem == dir"
+                    "when": "view == tidalcycles-soundbrowser-sounds && viewItem == sound || viewItem == dir"
                 },
                 {
                     "command": "tidalcycles.sounds.copytoclipboard",
                     "group": "inline@20",
-                    "when": "view == tidalcycles-soundbrowser-sounds && viewItem == wav || viewItem == dir"
+                    "when": "view == tidalcycles-soundbrowser-sounds && viewItem == sound || viewItem == dir"
                 },
                 {
                     "command": "tidalcycles.sounds.play",
                     "group": "inline@30",
-                    "when": "view == tidalcycles-soundbrowser-sounds && viewItem == wav"
+                    "when": "view == tidalcycles-soundbrowser-sounds && viewItem == sound"
                 },
                 {
                     "command": "tidalcycles.sounds.refresh",
                     "group": "inline@40",
-                    "when": "view == tidalcycles-soundbrowser-sounds && viewItem != wav"
+                    "when": "view == tidalcycles-soundbrowser-sounds && viewItem == virt || viewItem == dir"
                 }
             ]
         }

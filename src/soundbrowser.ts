@@ -14,28 +14,50 @@ https://github.com/microsoft/vscode-extension-samples/blob/master/tree-view-samp
 export class SoundItem extends vscode.TreeItem {
     private _numChildren: number = 0;
 
-    constructor(
-        public readonly root: string
-        , public readonly type: ('virt' | 'dir' | 'file')
-        , public readonly position: number
-        , public readonly fileName: string
-        , public readonly filePath: string
-        , public readonly prettyName: string
-        , public readonly collapsibleState: vscode.TreeItemCollapsibleState
-        , public readonly contextValue?: string
-        , public readonly parent?: SoundItem
-    ){
-        super(
-            prettyName
-            , collapsibleState
-        );
-        this.tooltip = fileName;
-        this.label = prettyName;
+    public readonly type: ('virt' | 'dir' | 'sound');
+    public readonly position: number;
+    public readonly itemName: string;
+    public readonly fullPath: string;
+    public readonly prettyName: string;
+    public readonly virtualRoot: string;
+    public readonly parent?: SoundItem;
 
-        if(type === 'file'){
-            const dirName = path.basename(path.dirname(filePath));
-            this.label = `${this.dirtName} / ${prettyName}`;
-            this.tooltip = path.join(dirName, fileName);
+    constructor(config: ({
+        virtualRoot: string
+        , type: ('virt' | 'dir' | 'sound')
+        , position: number
+        , fullPath: string
+        , parent?: SoundItem
+    })){
+        super(
+            ""
+            , config.type === 'sound'
+                ? vscode.TreeItemCollapsibleState.None
+                : (
+                    !config.parent || config.parent.type === 'virt'
+                        ? vscode.TreeItemCollapsibleState.Collapsed
+                        : vscode.TreeItemCollapsibleState.None
+                )
+        );
+
+        this.virtualRoot = config.virtualRoot;
+        this.fullPath = config.fullPath;
+        this.itemName = path.basename(this.fullPath);
+        this.type = config.type;
+        this.contextValue = config.type;
+        this.prettyName = this.type === 'sound'
+            ? this.itemName.replace(/^(\s|\d)*[_]+\s*/i,'').replace(/\.[^.]+$/i,'')
+            : this.itemName;
+        this.tooltip = this.itemName;
+        this.position = config.position;
+        this.label = this.prettyName;
+
+        this.id = SoundItem.makeId(this.virtualRoot, this.fullPath);
+        this.resourceUri = SoundItem.makeResourceUri(this.fullPath);
+
+        if(this.type === 'sound'){
+            this.label = `${this.dirtName} / ${this.prettyName}`;
+            this.tooltip = this.virtPath;
 
             this.command = {
                 command: `${TREE_VIEW_NAME}.selectNode`
@@ -46,10 +68,14 @@ export class SoundItem extends vscode.TreeItem {
         else {
             this.numChildren = 0;
         }
+    }
 
-        this.resourceUri = vscode.Uri.parse(filePath.indexOf('://') >=0 ? filePath : `file://${filePath}`);
-        this.contextValue = contextValue;
-        this.id = root+":"+this.resourceUri;
+    static makeId(root: string, filePath: string){
+        return root+"#"+this.makeResourceUri(filePath);
+    }
+
+    static makeResourceUri(filePath: string){
+        return vscode.Uri.parse(filePath.indexOf('://') >=0 ? filePath : `file://${filePath}`);
     }
 
     get numChildren(): number {
@@ -66,25 +92,34 @@ export class SoundItem extends vscode.TreeItem {
             return undefined;
         }
         if(this.type === 'dir'){
-            return this.fileName;
+            return this.itemName;
         }
-        return `${path.basename(path.dirname(this.filePath))}:${this.position}`;
+        return `${path.basename(path.dirname(this.fullPath))}:${this.position}`;
     }
 
     get virtPath(): string {
-        return SoundItem.makeVirtPath(this.root, this.fileName, this.parent);
+        return SoundItem.makeVirtPath(this.itemName, this.parent);
     }
 
-    static makeVirtPath(root: string, fileName: string, parent?: SoundItem){
-        const ppath = parent ? parent.virtPath : root;
-        return path.join(ppath, fileName);
+    static makeVirtPath(itemName: string, parent?: SoundItem){
+        const ppath = parent ? parent.virtPath : "";
+        return path.join(ppath, itemName);
     }
 }
 
-
 function instanceOfSoundItem(object: vscode.TreeItem): object is SoundItem {
     const keys = Object.keys(object).reduce((x, y) => {x[y] = true; return x;}, {} as ({[key:string]:boolean}));
-    return ["fileName"].filter(x => keys[x]).length > 0;
+    return ["itemName"].filter(x => keys[x]).length > 0;
+}
+
+interface SoundTreeProvider {
+    getEntries(parent: SoundItem, playerFilter: (filePath:string) => boolean): Promise<SoundItem[]>;
+}
+
+interface SoundPlayer {
+    match: RegExp;
+    play: (item: SoundItem) => Promise<void>;
+    stop: () => Promise<void>;
 }
 
 export const TREE_VIEW_NAME = "tidalcycles-soundbrowser-sounds";
@@ -95,14 +130,39 @@ export class SoundBrowserSoundsView implements vscode.TreeDataProvider<SoundItem
 
     private _treeView?: vscode.TreeView<SoundItem>;
     private currentSelection: SoundItem[] = [];
-    private lastPlayed: string | undefined;
+
+    private readonly virtualRoots: ({[id: string]: {
+        displayName: string
+        , provider: SoundTreeProvider
+        , root: SoundItem
+    }}) = {};
+    // private expansionList: ({[virt:string]:({[key:string]:boolean})}) = {};
+
+    private players: ({[name: string]: SoundPlayer}) = {
+        "wav": {
+            match: /\.(wav|ogg|mp3|aif)$/i
+            , play: async (item: SoundItem) => {
+                return WavPlayer.play({path: item.fullPath, sync: true});
+            }
+            , stop: async () => {
+                try {
+                    WavPlayer.stop();
+                }
+                catch(e){
+                    // no need to do anything here
+                }
+                return Promise.resolve();
+            }
+        }
+    };
 
     constructor(
         private config: Config
-    ){}
+    ){
+    }
 
     public createTreeView(){
-        const dispoables = [];
+        const disposables = [];
 
         this._treeView = vscode.window.createTreeView<SoundItem>(
             TREE_VIEW_NAME
@@ -111,89 +171,72 @@ export class SoundBrowserSoundsView implements vscode.TreeDataProvider<SoundItem
                 , showCollapseAll: true
             }
         );
-        dispoables.push(this._treeView);
 
-        dispoables.push(this._treeView.onDidChangeSelection(e => {
+        disposables.push(this._treeView);
+
+        disposables.push(this._treeView.onDidChangeSelection(e => {
             this.currentSelection = e.selection;
         }));
 
-        dispoables.push(this._treeView.onDidCollapseElement(e => {
-            this.toggleCollapse(e.element, true);
+        disposables.push(this._treeView.onDidCollapseElement(e => {
+            //this.setExpanded(e.element, false);
         }));
 
-        dispoables.push(this._treeView.onDidExpandElement(e => {
-            this.toggleCollapse(e.element, false);
+        disposables.push(this._treeView.onDidExpandElement(e => {
+            //this.setExpanded(e.element);
         }));
 
-        return dispoables;
-    }
-
-    private toggleCollapse(item: SoundItem, collapsed: boolean){
-        let xl = this.getExpansionList();
-
-        if(collapsed){
-            delete xl[item.virtPath];
+        /*
+        let stateList = this.config.getWorkspaceState(this.getMyStateKey("expanded"));
+        if(stateList){
+            if(typeof stateList === 'object' && stateList !== null){
+                if(Object.keys(stateList).filter(x => typeof x !== 'string').length === 0){
+                    this.expansionList = stateList as any;
+                }
+            }
         }
-        else {
-            xl[item.virtPath] = true;
-        }
+        */
 
-        this.setExpansionList(xl);
+        return disposables;
     }
 
-    private getExpansionList() {
-        let expandedList = this.config.getWorkspaceState(this.getMyStateKey("expanded"));
-        if(!expandedList){
-            expandedList = {};
-        }
-        return expandedList as ({[key:string]: boolean});
-    }
-
-    private setExpansionList(list: ({[key:string]: boolean})){
-        this.config.updateWorkspaceState(this.getMyStateKey("expanded"), list);
-    }
-
+    /*
     private getMyStateKey(key: string){
         return `soundbrowser.${key}`;
-    }
+    }*/
 
     public registerCommands(){
         return [
             vscode.commands.registerCommand("tidalcycles.sounds.play", (node?: vscode.TreeItem | vscode.TreeItem[]) => {
-                
                 if(!node){
                     node = this.currentSelection;
                 }
                 if(!Array.isArray(node)){
                     node = [node];
                 }
+                
                 if(node.length > 0){
-                    try {
-                        WavPlayer.stop();
-                    }
-                    catch(e){
-                        // no need to do anything here
-                    }
+                    this.stopPlayers();
                 }
                 
                 const item = (node.filter(x => instanceOfSoundItem(x)).pop()) as SoundItem;
                 
-                if(item && item.type === 'file'){
-                    if(!this.lastPlayed || item.id !== this.lastPlayed){
-                        this.lastPlayed = item.id;
-                        WavPlayer.play({path: item.filePath, sync: true})
-                            .then(() => {
-                                this.lastPlayed = undefined;
-                            })
+                if(item && item.type === 'sound'){
+                    const player = this.getPlayerFor(item.itemName);
+                    if(player){
+                        player.play(item)
                             .catch((err:any) => {
-                                vscode.window.showErrorMessage(`Error playing wav: ${err}`);
+                                vscode.window.showErrorMessage(`Error playing sound ${item.itemName}: ${err}`);
                             });
                     }
                     else {
-                        this.lastPlayed = undefined;
+                        vscode.window.showErrorMessage(`No player available for ${item.itemName}`);
                     }
                 }
                 
+            })
+            , vscode.commands.registerCommand("tidalcycles.sounds.stop", (node?: vscode.TreeItem | vscode.TreeItem[]) => {
+                this.stopPlayers();
             })
             , vscode.commands.registerCommand("tidalcycles.sounds.refresh", (node?: SoundItem) => {
                 if(!node){
@@ -244,12 +287,18 @@ export class SoundBrowserSoundsView implements vscode.TreeDataProvider<SoundItem
         ];
     }
 
+    private stopPlayers(){
+        Object.entries(this.players).forEach(([name, player]) => {
+            player.stop();
+        });
+    }
+
     refresh(): void {
 		this._onDidChangeTreeData.fire();
 	}
 
     refreshElement(element: SoundItem): void {
-        if(element.type === 'file'){
+        if(element.type === 'sound'){
             return;
         }
     }
@@ -258,21 +307,35 @@ export class SoundBrowserSoundsView implements vscode.TreeDataProvider<SoundItem
         return element;
     }
 
+    getParent(element: SoundItem) {
+        return element.parent;
+    }
+
     getChildren(element?: SoundItem): Thenable<SoundItem[]> {
         if(element){
-            if(element.type === 'file'){
+            if(element.type === 'sound'){
                 return Promise.resolve([]);
             }
-            else if (element.type === 'dir') {
-                return this.getVirtEntries(element.root, element);
-            }
-            else if (element.type === 'virt') {
-                return this.getVirtEntries(element.root, element);
+            else if (element.type === 'dir' || element.type === 'virt') {
+                return this.virtualRoots[element.virtualRoot].provider.getEntries(
+                    element
+                    , fn => {
+                        return  typeof (this.getPlayerFor(fn)) !== 'undefined';
+                    });
             }
             return Promise.resolve([]);
         }
         
         const dpaths = this.config.getSoundsPaths();
+
+        for(let i=0;i<dpaths.length;i++){
+            const fi = dpaths.indexOf(dpaths[i]);
+            let li;
+
+            while((li = dpaths.indexOf(dpaths[i], fi+1)) > 0){
+                dpaths.splice(li);
+            }
+        }
 
         if(dpaths.length === 0){
             vscode.window.showWarningMessage(
@@ -286,42 +349,58 @@ export class SoundBrowserSoundsView implements vscode.TreeDataProvider<SoundItem
             );
         }
 
-        const xl = this.getExpansionList();
+        const entries = Promise.resolve(dpaths.map((fullPath, i) => {
+            const root = new SoundItem({
+                virtualRoot: fullPath
+                , type: 'virt'
+                , position: i
+                , fullPath
+            });
 
-        const entries = Promise.resolve(dpaths.map((x, i) => {
-            const root = (""+i).padStart(3, "0") + "_" + (x.startsWith(':') ? x : path.basename(x));
-            return new SoundItem(
-                root
-                , 'virt'
-                , i
-                , x
-                , x
-                , x.startsWith(':') ? x : path.basename(x)
-                , dpaths.length === 1 || xl[SoundItem.makeVirtPath(root, x)]
-                    ? vscode.TreeItemCollapsibleState.Expanded
-                    : vscode.TreeItemCollapsibleState.Collapsed
-                , 'virt'
-            );
+            this.virtualRoots[fullPath] = {
+                displayName: (fullPath.startsWith(':') ? fullPath : path.basename(fullPath))
+                , provider: new FileSystemSoundTreeProvider()
+                , root: root
+            };
+
+            return root;
         }));
 
         return entries;
     }
 
-    private async getVirtEntries(root: string, parent: SoundItem): Promise<SoundItem[]> {
-        const vpath = parent.filePath;
-        
-        if(parent.root.toLowerCase().startsWith(":superdirt")){
-            vscode.window.showErrorMessage(
-                "Fetching sound information from SuperDirt is currently not supported."
-                , "Configure sounds paths"
-            ).then(x => 
-                vscode.commands.executeCommand(
-                    "workbench.action.openSettings"
-                    , `@ext:${this.config.getExtensionId()} ${this.config.getPreferencesStringFor("sounds.paths")}`
-                )
-            );
-            return [];
+    private getPlayerFor(fn: string){
+        let res = Object.entries(this.players)
+            .map(([name, player], i) => ({
+                i
+                , player
+                , matched: i === 0 ? (fn.match(player.match) !== null) : false
+            }))
+            .reduce((x, y) => {
+                if(x.matched){
+                    return x;
+                }
+
+                return (x.i === 0 ? [x, y] : [y])
+                    .filter(p => fn.match(p.player.match))
+                    .map(p => ({...p, matched: true}))
+                    .reverse()
+                    .pop()
+                    || x;
+            });
+        if(res.matched){
+            return res.player;
         }
+        return undefined;
+    }
+
+}
+
+
+class FileSystemSoundTreeProvider implements SoundTreeProvider {
+    async getEntries(parent: SoundItem, playerFilter: (filePath:string) => boolean): Promise<SoundItem[]>{
+        const vpath = parent.fullPath;
+
         if(!this.pathExists(vpath)){
             vscode.window.showErrorMessage(`The path you defined for loading dirt sound information does not exist: ${vpath}`);
             return [];
@@ -333,8 +412,6 @@ export class SoundBrowserSoundsView implements vscode.TreeDataProvider<SoundItem
                     reject(err);
                     return;
                 }
-
-                const xl = this.getExpansionList();
 
                 const filteredFiles =  files
                     .sort()
@@ -357,29 +434,21 @@ export class SoundBrowserSoundsView implements vscode.TreeDataProvider<SoundItem
                             return false;
                         }
                         if(stat.isDirectory()){
-                            return true;
+                            return !parent || parent.type === 'virt';
                         }
-                        return fn.match(/\.(wav|ogg|mp3|aif)$/i);
+                        return playerFilter(fn);
                     })
                     .map(({fn, stat}, i) => {
                         const isDir = stat && !stat.isFile();
+                        const filePath = path.join(vpath, fn);
                         
-                        return new SoundItem(
-                            parent.root
-                            , isDir ? 'dir' : 'file'
-                            , i
-                            , fn
-                            , path.join(vpath, fn)
-                            , isDir ? fn : fn.replace(/^(\s|\d)*[_]+\s*/i,'').replace(/\.[^.]+$/i,'')
-                            , isDir ?
-                                (xl[SoundItem.makeVirtPath(parent.root, fn, parent)]
-                                    ? vscode.TreeItemCollapsibleState.Expanded
-                                    : vscode.TreeItemCollapsibleState.Collapsed
-                                )
-                                : vscode.TreeItemCollapsibleState.None
-                            , isDir ? 'dir' : 'wav'
+                        return new SoundItem({
+                            virtualRoot: parent.virtualRoot
+                            , type: isDir ? 'dir' : 'sound'
+                            , position: i
+                            , fullPath: filePath
                             , parent
-                        );
+                        });
                     });
 
                 parent.numChildren = filteredFiles.length;
@@ -398,5 +467,4 @@ export class SoundBrowserSoundsView implements vscode.TreeDataProvider<SoundItem
 
 		return true;
 	}
-
 }
