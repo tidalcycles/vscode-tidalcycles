@@ -117,6 +117,15 @@
                 }
             },
             {
+                "command": "tidalcycles.sounds.insertineditor",
+                "title": "Insert sound name in editor", 
+                "category": "Tidal Sounds",
+                "icon": {
+                    "dark": "images/material-icons/arrowr.svg",
+                    "light": "images/material-icons/arrowr_lt.svg"
+                }
+            },
+            {
                 "command": "tidalcycles.sounds.refresh",
                 "title": "Refresh the list of sounds",
                 "category": "Tidal Sounds",
@@ -308,25 +317,30 @@
             "view/title": [
                 {
                     "command": "tidalcycles.sounds.refresh",
-                    "group": "inline",
+                    "group": "navigation",
                     "when": "view == tidalcycles-soundbrowser-sounds"
                 }
             ],
             "view/item/context": [
                 {
-                    "command": "tidalcycles.sounds.refresh",
-                    "group": "inline",
-                    "when": "view == tidalcycles-soundbrowser-sounds && viewItem != wav"
+                    "command": "tidalcycles.sounds.insertineditor",
+                    "group": "inline@10",
+                    "when": "view == tidalcycles-soundbrowser-sounds && viewItem == wav || viewItem == dir"
                 },
                 {
                     "command": "tidalcycles.sounds.copytoclipboard",
-                    "group": "inline",
+                    "group": "inline@20",
                     "when": "view == tidalcycles-soundbrowser-sounds && viewItem == wav || viewItem == dir"
                 },
                 {
                     "command": "tidalcycles.sounds.play",
-                    "group": "inline",
+                    "group": "inline@30",
                     "when": "view == tidalcycles-soundbrowser-sounds && viewItem == wav"
+                },
+                {
+                    "command": "tidalcycles.sounds.refresh",
+                    "group": "inline@40",
+                    "when": "view == tidalcycles-soundbrowser-sounds && viewItem != wav"
                 }
             ]
         }

@@ -36,6 +36,12 @@ export class SoundItem extends vscode.TreeItem {
             const dirName = path.basename(path.dirname(filePath));
             this.label = `${this.dirtName} / ${prettyName}`;
             this.tooltip = path.join(dirName, fileName);
+
+            this.command = {
+                command: `${TREE_VIEW_NAME}.selectNode`
+                , title: "Play"
+                , arguments: [this]
+            };
         }
         else {
             this.numChildren = 0;
@@ -44,11 +50,6 @@ export class SoundItem extends vscode.TreeItem {
         this.resourceUri = vscode.Uri.parse(filePath.indexOf('://') >=0 ? filePath : `file://${filePath}`);
         this.contextValue = contextValue;
         this.id = root+":"+this.resourceUri;
-        this.command = {
-            command: `${TREE_VIEW_NAME}.selectNode`
-            , title: "Play"
-            , arguments: [this]
-        };
     }
 
     get numChildren(): number {
@@ -199,6 +200,31 @@ export class SoundBrowserSoundsView implements vscode.TreeDataProvider<SoundItem
                     return;
                 }
                 vscode.env.clipboard.writeText(dn);
+            })
+            , vscode.commands.registerCommand("tidalcycles.sounds.insertineditor", (node?: SoundItem) => {
+                if(!node){
+                    return;
+                }
+                const dn = node.dirtName;
+                if(!dn){
+                    return;
+                }
+                const editor = vscode.window.activeTextEditor;
+                if(!editor){
+                    return;
+                }
+                if(editor.selection.isEmpty){
+                    const activePos = editor.selection.active;
+                    editor.edit(eb => {
+                        eb.insert(activePos, dn);
+                    });
+                }
+                else {
+                    const selectionRange = editor.selection;
+                    editor.edit(eb => {
+                        eb.replace(selectionRange, dn);
+                    });
+                }
             })
             , vscode.commands.registerCommand(`${TREE_VIEW_NAME}.selectNode`, (node?: SoundItem) => {
                 if(this.config.getPlaySoundOnSelection()){
