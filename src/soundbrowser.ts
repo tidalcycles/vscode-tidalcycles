@@ -95,6 +95,7 @@ export class SoundBrowserSoundsView implements vscode.TreeDataProvider<SoundItem
 
     private _treeView?: vscode.TreeView<SoundItem>;
     private currentSelection: SoundItem[] = [];
+    private lastPlayed: string | undefined;
 
     constructor(
         private config: Config
@@ -178,10 +179,19 @@ export class SoundBrowserSoundsView implements vscode.TreeDataProvider<SoundItem
                 const item = (node.filter(x => instanceOfSoundItem(x)).pop()) as SoundItem;
                 
                 if(item && item.type === 'file'){
-                    WavPlayer.play({path: item.filePath})
-                    .catch((err:any) => {
-                        vscode.window.showErrorMessage(`Error playing wav: ${err}`);
-                    });
+                    if(!this.lastPlayed || item.id !== this.lastPlayed){
+                        this.lastPlayed = item.id;
+                        WavPlayer.play({path: item.filePath, sync: true})
+                            .then(() => {
+                                this.lastPlayed = undefined;
+                            })
+                            .catch((err:any) => {
+                                vscode.window.showErrorMessage(`Error playing wav: ${err}`);
+                            });
+                    }
+                    else {
+                        this.lastPlayed = undefined;
+                    }
                 }
                 
             })
