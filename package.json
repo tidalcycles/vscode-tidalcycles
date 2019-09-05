@@ -8,7 +8,7 @@
     "repository": "https://github.com/tidalcycles/vscode-tidalcycles",
     "license": "GPL-3.0",
     "engines": {
-        "vscode": "^1.23.0"
+        "vscode": "^1.30.0"
     },
     "categories": [
         "Other"
@@ -103,8 +103,8 @@
                 "title": "Play a sound file",
                 "category": "Tidal Extra",
                 "icon": {
-                    "dark": "images/play.svg"
-                    , "light": "images/play_lt.svg"
+                    "dark": "images/play.svg",
+                    "light": "images/play_lt.svg"
                 }
             }
         ],
@@ -276,14 +276,14 @@
                     "name": "Sounds"
                 }
             ]
-        }
-        , "menus": {
+        },
+        "menus": {
             "view/item/context": [
                 {
-                    "command": "tidalcycles.sounds.play"
-                    , "group": "inline"
-                    , "when": "view == tidalcycles-soundbrowser-sounds && viewItem == wav"
-                }   
+                    "command": "tidalcycles.sounds.play",
+                    "group": "inline",
+                    "when": "view == tidalcycles-soundbrowser-sounds && viewItem == wav"
+                }
             ]
         }
     },
@@ -298,14 +298,14 @@
         "@types/chai": "^4.1.6",
         "@types/js-yaml": "^3.12.1",
         "@types/mocha": "^5.2.5",
-        "@types/node": "^11.0.0",
+        "@types/node": "^7.0.0",
         "@types/split2": "^2.1.6",
         "chai": "^4.1.2",
         "mocha": "^5.2.0",
         "tslint": "^5.19.0",
         "typemoq": "^2.1.0",
         "typescript": "^3.6.2",
-        "vscode": "^1.1.24"
+        "vscode": "^1.1.30"
     },
     "dependencies": {
         "js-yaml": "^3.13.1",
