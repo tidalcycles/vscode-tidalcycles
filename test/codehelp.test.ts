@@ -64,7 +64,7 @@ commandName:
 
     test("yaml processing", () => {
         const config = createMockTestConfig('FULL', 'FULL');
-        const provider = new TidalLanguageHelpProvider([{source:"test1",ydef:testData}], config.object);
+        const provider = new TidalLanguageHelpProvider("./", config.object, [{source:"test1",ydef:testData}]);
 
         assert.exists(provider.commandDescriptions);
         assert.isObject(provider.commandDescriptions);
@@ -100,8 +100,8 @@ commandName:
                 test("Level: "+level, () => {
                     const config = createMockTestConfig(level, level);
                     const provider = new TidalLanguageHelpProvider(
+                        "./", config.object,
                         [{source:"test1",ydef:testData}]
-                        , config.object
                     );
             
                     const ts = new CancellationTokenSource();
@@ -232,7 +232,7 @@ commandName:
 
             const config = createMockTestConfig('FULL', 'FULL');
         
-            const provider = new TidalLanguageHelpProvider(yf, config.object);
+            const provider = new TidalLanguageHelpProvider("./", config.object, yf);
 
             ["stut","slow"].forEach(x => {
                 assert.hasAnyKeys(provider.commandDescriptions, [x], "Expected command descirption for "+x+" to be present");
