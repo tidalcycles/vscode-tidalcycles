@@ -1,50 +1,44 @@
 slow:
-  cmd: slow times pattern
-  help:
-    Slow down a pattern. This effectively changes the number of cycles it takes
+  cmd:
+    - slow times cpattern
+    - fast times cpattern
+  help: |-
+    Slows down or speeds up a pattern. This effectively changes the number of cycles it takes
     for the pattern to repeat.
   params:
-    times: The amount to slow down the pattern by. Can be a pattern itself
-    pattern: The pattern to slow down
+    times: The amount to slow down or speed up the pattern by. Can be a pattern
+            itself.
   returns: A slowed down version of the pattern
   links:
     - url: https://tidalcycles.org/index.php/slow
-      title: Tidal Documentation
+      title: Slow - Tidal Documentation
+    - url: https://tidalcycles.org/index.php/fast
+      title: Fast - Tidal Documentation
   examples:
     - 'd1 $ slow 4 $ s "bd!8"'
     - 'd1 $ s "bd!8" # speed (slow 2 $ range 0.95 1.05 square)'
-fast:
-  cmd: fast times pattern
-  help:
-    Speed up a pattern. This effectively changes the number of cycles it takes
-    for the pattern to repeat.
-  params:
-    times: The amount to speed up the pattern by. Can be a pattern itself
-    pattern: The pattern to speed up
-  returns:
-    A sped up version of the pattern
-  links:
-    - url: https://tidalcycles.org/index.php/fast
-      title: Tidal Documentation
-  examples:
     - 'd1 $ fast 4 $ s "bd!2"'
     - 'd1 $ s "bd!8" # speed (fast 2 $ range 0.95 1.05 square)'
+fast:
+  alias: slow
 stut:
-  cmd: stut repeat time decay
-  help:
+  cmd: stut repeat decay time cpattern
+  help: |-
     Similar to a delay, this causes `repeat` versions of the pattern to play
     with an offset of `time` each. Every time the pattern is repeated, the gain
     is multiplied with the `decay` values.
   params:
-    repeat: The number of times to repeat the pattern
-    time: The delay between the repeated patterns
-    decay:
-      The amount to multiply the gain by on each repeat. Values `< 1` will
-      make the repeats more silent each time, values `> 1` will make their
-      volume increase.
+    repeat: An integer pattern that defines the number of times to repeat the
+      control pattern.
+    decay: |-
+      A frational pattern that defines amount to multiply the gain by on each
+      repeat. Values `< 1` will make the repeats more silent each time, values
+      `> 1` will make their volume increase with every repeat.
+    time: A frational that defines the delay between the repeated patterns.
   examples:
-    - 'd1 $ stut 3 (1/3) 0.8 $ s "sd!4"'
-    - 'd1 $ every 2 (stut 3 (1/8) 1.1) $ s "sd!4"'
+    - 'd1 $ slow 2 $ stut 3 0.6 (1/12) $ s "sd!4"'
+    - 'd1 $ every 2 (stut 3 1.3 (1/16)) $ s "sd!4"'
+    - 'd1 $ slow 2 $ stut "<3 6>" "<1.2 0.6>" (1/16) $ s "sd!4"'
 setcps:
   cmd: setcps numcycles
   help: Set the cycles per second that Tidal should evaluate.
@@ -59,3 +53,288 @@ setcps:
       d1 $ s "bd!4"
   links:
     - https://tidalcycles.org/index.php/Tutorial
+sound:
+  cmd: sound cpattern
+  help: |-
+    Set a sound pattern. The command can be abbreviated as `s`. The pattern for
+    sounds is `soundname:number`. If `:number` is omitted a default of `0`
+    is assumed. 
+
+    The sound can be either a sample or a SuperCollider synthesizer name. If
+    it's a sample then `soundname` specifies the folder the sample is located
+    in and `number` is the, alphabetically ordered, position of the sample in
+    that folder. If `soundname` is a synthesizer then `number` is the note
+    number.
+
+    Structure can either come form the pattern itself or for example from a
+    separate `note` instruction, which, depending on the position, can also
+    override the `number` parameter.
+  examples:
+    - 'd1 $ sound "bd"'
+    - 'd1 $ s "bd:18*2 sd:1 bd:10 sd"'
+    - 'd1 $ note "18*2 1 10 [0 0]" # s "bd sd bd sd" -- note the sligthly different ending'
+  links:
+    - https://tidalcycles.org/index.php/sound
+note:
+  cmd: note cpattern
+  help: |-
+    Creates a note pattern. Depending on where and how it's used it either
+    provides structure or just changes the note values in an existing control
+    pattern.
+  examples:
+    - 'd1 $ note "0 0 0 0" # sound "bd"'
+    - 'd1 $ note "0 1 2 3" # sound "supersaw"'
+    - 'd1 $ n "0 1 2 3" # sound "arpy"'
+    - 'd1 $ sound "alphabet alphabet alphabet alphabet ~ ~" # n "0 2 3 2 ~ ~" # cut 1' 
+hush:
+  cmd: hush
+  help: |-
+    Stop all running streams.
+  examples:
+    - 'hush'
+silence:
+  cmd: silence
+  help: |-
+    Silence generates an empty control pattern, effectively muting the stream.
+  examples:
+    - |-
+      d1 $ s "db!4"
+      xfadeIn 1 2 $ silence
+  links:
+    - https://tidalcycles.org/index.php/silence
+solo:
+  cmd:
+    - solo streamno
+    - unsolo streamno
+  help: |-
+    Set ur unset the `solo` flag on a stream. If at least one stream has `solo`
+    set only streams with `solo` enabled are audible.
+
+    Stacks with `mute`. Only streams that are not `mute`d are audible, even if
+    they have `solo` enabled.
+
+    Use [list](command:tidal.help?cmd=list) to view the current state of solo
+    and mute for each stream.
+  params:
+    streamno: The number of the stream to solo/unsolo. Note that it has to be a
+      number like `1` and can't be a stream alias like `d1`.
+  examples:
+    - |-
+      d1 $ fast 2 $ s "bd ~"
+      d2 $ fast 2 $ s "~ sn:1"
+      d3 $ s "hh!15 hh*3" # (fast 3 $ gain "1 <0.8 0.9 0.85>!3")
+      solo 3 -- only play hihats
+    - solo 2 -- add the snare back
+    - unsolo 3 -- remove the hihats
+    - list -- check tidal cycles output
+    - unsolo 2 -- play all streams again
+unsolo:
+  alias: solo
+mute:
+  cmd:
+    - mute streamno
+    - unmute streamno
+  help: |-
+    Mutes or unmutes a stream. This takes precedence over `solo` in that a muted
+    stream still does not play, even if it's `solo`ed.
+
+    Use [list](command:tidal.help?cmd=list) to view the current state of solo
+    and mute for each stream.
+  params:
+    streamno: The number of the stream to mute/unmute. Note that it has to be a
+      number like `1` and can't be a stream alias like `d1`.
+  examples:
+    - |-
+      d1 $ fast 2 $ s "bd ~"
+      d2 $ fast 2 $ s "~  sd"
+      mute 1 -- mute the bass drum
+    - 'mute 2 -- mute the snare as well'
+    - 'unmute 1 -- unmute the bass drum'
+    - 'list -- check tidal cycles output'
+unmute:
+  alias: mute
+rev:
+  cmd: rev cpattern
+  help: |-
+    Reverse a control pattern.
+  examples:
+    - 'd1 $ rev $ s "bd hh hh lt"'
+    - 'd1 $ every 2 (rev) $ s "bd hh hh lt"'
+every:
+  cmd: every numcycles function cpattern
+  help:
+    Apply a `function` to a pattern every `numcycles` cycles, effectively
+    replacing the orgiginal pattern with the modified one in that cycle.
+  examples:
+    - 'd1 $ every 2 (fast 4) $ s "hh!4"'
+    - 'd1 $ s "hh!8" # pan (every 2 (|+| 1) 0)'
+crush:
+  cmd: 'cpattern # crush strength'
+  help:
+    Apply a bit crushing effect to the stream.
+  parms:
+    strength: A fractional pattern that controls the strength of the bit
+      crushing effect. The numbers should be `>0` with lower numbers causing
+      the effect to be stronger.
+  examples:
+    - 'd1 $ slow 2 $ s "bd!8" # crush 4'
+    - 'd1 $ slow 2 $ s "bd!8" # crush (run 8 |+| 1)'
+gain:
+  cmd: gain number cpattern
+  help:
+    Apply a gain value to a control pattern.
+  params:
+    number: A frational pattern that controls the gain.
+  examples:
+    - 'd1 $ s "hh!8" # gain 0.8'
+    - 'd1 $ s "hh!8" # gain (fast 2 "1 0.8")'
+pan:
+  cmd: 'cpattern # pan number'
+  help:
+    Pan the output of a pattern between left (`0`) and right (`1`).
+  params:
+    number: A fractional pattern that defines how to pan the output.
+  examples:
+    - 'd1 $ s "hh!8" # pan (fast 2 "0 1")'
+    - 'd1 $ s "hh!16" # pan (fast 2 $ range 0 1 saw)'
+shape:
+  cmd: 'cpattern # shape number'
+  help:
+    Apply transient shaping to a pattern.
+  params:
+    number: An fractional pattern 
+  examples:
+    - 'd1 $ s "bd!4" # shape 0.9'
+    - 'd1 $ s "bd!4" # shape (slow 2 $ range 0 1 saw)'
+vowel:
+  cmd: 'cpattern # vowel pattern'
+  help:
+    Shapes a sound to a vowel. Works best with sounds with a low of noise or
+    distortion.
+  params:
+    pattern: A string pattern of vowels to use in the shaping.
+  examples:
+    - 'd1 $ s "bass2:0!4" # vowel "a e i u"'
+    - 'd1 $ s "sn:6!4" # vowel "a e i u"'
+chop:
+  cmd: chop number cpattern
+  help: |-
+    Cut up a sample event into multiple new events, plaing back that portion of
+    the sample at that interval of the cycle. If the sample is longer than a
+    cycle this compresses the sample and if it's shorter than a cycle it spreads
+    it (though the gaps are not filled). Both is without pitch shifting.
+
+      * `cut 1` plays the whole sample at the beginning of the cycle
+      * `cut 2` plays the first half of the sample at the beginning of the
+        cycle and the second half of the sample at half of the cycle
+      * `cut 3` plays the first third of the sample at the beginning of the
+        cycle, the second after the first third of the cycle and the third
+        third of the sampe at two thirds into the cycle.
+    
+    Note that `chop` affects `begin` and `end` of the sample.
+
+    See also [striate](command:tidal.help?cmd=striate) for another way to chop up a sample.
+  examples:
+    - 'd1 $ chop 2 $ s "xmas" # speed 2 -- notice the two distinct sample parts being played'
+    - 'd1 $ chop 16 $ s "xmas" # speed 2 -- sounds still choppy, but smoother'
+    - 'd1 $ chop 64 $ s "xmas" # speed 2 -- sounds quite robotic, but somewhat recognizable 1/2 cycle in length'
+    - 'd1 $ s "xmas" # speed 0.5 # cut 1 -- sample longer than 1/2 cycle, cut off'
+    - 'd1 $ chop 32 $ s "xmas" # speed 0.5 # cut 1 -- sample "fits" in 1/2 cycle without pitch shift'
+striate:
+  cmd:
+    - striate noparts cpattern
+    - striateBy noparts length cpattern
+    - striate' noparts length cpattern
+  help: |-
+    Chop up a sample event and intersperse the parts with other samples in the
+    pattern and cycle. Given two samples `a` and `b` and a total of `4` parts
+    per sample, the sample parts are played like this:
+    ~~~~
+    a0 b0 a1 b1 a2 b2 a3 b3
+    ~~~~
+
+    Note: If the effect you're going for does not emerge, make sure you're not
+    unintentionally `cut`ing the samples.
+  params:
+    noparts: The number of parts to chop the samples into.
+    length: The length of each part.
+  examples:
+    - 'd1 $ striate 16 $ sound "numbers:0 numbers:2 numbers:3" # speed 0.5'
+    - |-
+      d1 $ striate' 8 (1/32) $ sound "numbers:0 numbers:2 numbers:3" # speed 0.5
+    - |-
+      d1 $ striate 8 $ s "breaks125:0 breaks125:1"
+        # unit "c" # speed 1 -- makes the samples exactly one cycle long
+    - 'd1 $ striate 16 $ s "breaks125:0 breaks125:1" # unit "c" # speed 1 -- notice how the loop feels different'
+  links:
+    - https://tidalcycles.org/index.php/striate
+striateBy:
+  alias: striate
+striate':
+  alias: striate
+speed:
+  cmd: 'cpattern # speed number'
+  help: |-
+    Change the speed of the samples in the pattern. Changing the speed
+    effectively changes the pitch, so if you want to pitch a sample up or down
+    by an octave (depending on your tuning scheme) you can set the pitch to `2`
+    or `1/2`.
+    
+    Changing the speed also affects the sample length. Together with
+    [unit](command:tidal.help?cmd=unit) you can e.g. speed up and slow down the
+    sample to be a multiple of your cycle length.
+  params:
+    number: A pattern of fractionals that define the speed of the samples.
+      Values less than 1 slow down the sample, above 1 they speed it up.
+      Negative values cause the sample to be played in reverse.
+  examples:
+    - 'd1 $ s "numbers:0" # speed 2 # cut 1'
+    - 'd1 $ s "numbers:0" # speed 0.5 # cut 1'
+    - 'd1 $ n "0!8" # s "numbers" # speed (range 0.5 1.5 saw) # cut 1'
+    - 'd1 $ s "numbers:0" # speed 2 # cut 1'
+  links:
+    - https://tidalcycles.org/index.php/speed
+unit:
+  cmd: 'cpattern # unit type'
+  help: |-
+    Changes the intrepretation of the `speed` value.
+  params:
+    type: |-
+      One of `r` for sample length (default), `c` for the cycle length, `s` absolute seconds
+  examples:
+    - |-
+      setcps (74/60/4)
+      d1 $ s "breaks125" # unit "c" # gain 0.6
+      d2 $ s "hh!4" # gain "1.2 0.75 1 0.75"
+    - 'setcps (160/60/4) -- now go faster, notice how the pitch of the hihats stays the same'
+    - |-
+      setcps (125/60/4)
+      d1 $ slow 4 $
+        stack [
+            s "~!2 ho:2 ~" # speed (-1/2) # gain 0.7 # unit "c"
+            , s "cr:0 ~!3" # speed (3/8) # gain 0.8 # unit "r"
+            , s "breaks165!4" # speed 1 # unit "c"
+        ] 
+# off:
+# up:
+# down:
+# run:
+# euclid:
+# samples:
+# sine:
+# saw:
+# square:
+# tri:
+# rand:
+# irand:
+# range:
+# slowcat:
+# cat:
+# fastcat:
+# degrade:
+# whenmod:
+# const:
+# stack:
+# cut:
+# anticipate:
+# xfadeIn:
