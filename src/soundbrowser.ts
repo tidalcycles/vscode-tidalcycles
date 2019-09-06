@@ -136,7 +136,6 @@ export class SoundBrowserSoundsView implements vscode.TreeDataProvider<SoundItem
         , provider: SoundTreeProvider
         , root: SoundItem
     }}) = {};
-    // private expansionList: ({[virt:string]:({[key:string]:boolean})}) = {};
 
     private players: ({[name: string]: SoundPlayer}) = {
         "wav": {
@@ -178,25 +177,6 @@ export class SoundBrowserSoundsView implements vscode.TreeDataProvider<SoundItem
             this.currentSelection = e.selection;
         }));
 
-        disposables.push(this._treeView.onDidCollapseElement(e => {
-            //this.setExpanded(e.element, false);
-        }));
-
-        disposables.push(this._treeView.onDidExpandElement(e => {
-            //this.setExpanded(e.element);
-        }));
-
-        /*
-        let stateList = this.config.getWorkspaceState(this.getMyStateKey("expanded"));
-        if(stateList){
-            if(typeof stateList === 'object' && stateList !== null){
-                if(Object.keys(stateList).filter(x => typeof x !== 'string').length === 0){
-                    this.expansionList = stateList as any;
-                }
-            }
-        }
-        */
-
         return disposables;
     }
 
@@ -237,12 +217,6 @@ export class SoundBrowserSoundsView implements vscode.TreeDataProvider<SoundItem
             })
             , vscode.commands.registerCommand("tidalcycles.sounds.stop", (node?: vscode.TreeItem | vscode.TreeItem[]) => {
                 this.stopPlayers();
-            })
-            , vscode.commands.registerCommand("tidalcycles.sounds.refresh", (node?: SoundItem) => {
-                if(!node){
-                    return;
-                }
-                this.refreshElement(node);
             })
             , vscode.commands.registerCommand("tidalcycles.sounds.copytoclipboard", (node?: SoundItem) => {
                 if(!node){
@@ -296,12 +270,6 @@ export class SoundBrowserSoundsView implements vscode.TreeDataProvider<SoundItem
     refresh(): void {
 		this._onDidChangeTreeData.fire();
 	}
-
-    refreshElement(element: SoundItem): void {
-        if(element.type === 'sound'){
-            return;
-        }
-    }
 
     getTreeItem(element: SoundItem): vscode.TreeItem {
         return element;

@@ -126,15 +126,6 @@
                 }
             },
             {
-                "command": "tidalcycles.sounds.refresh",
-                "title": "Refresh the list of sounds",
-                "category": "Tidal Sounds",
-                "icon": {
-                    "dark": "images/material-icons/refresh.svg",
-                    "light": "images/material-icons/refresh_lt.svg"
-                }
-            },
-            {
                 "command": "tidalcycles.sounds.stop",
                 "title": "Stop all sound previews",
                 "category": "Tidal Sounds",
@@ -341,11 +332,6 @@
                     "command": "tidalcycles.sounds.stop"
                     , "group": "navigation"
                     , "when": "view == tidalcycles-soundbrowser-sounds"
-                },
-                {
-                    "command": "tidalcycles.sounds.refresh",
-                    "group": "navigation",
-                    "when": "view == tidalcycles-soundbrowser-sounds"
                 }
             ],
             "view/item/context": [
@@ -363,11 +349,6 @@
                     "command": "tidalcycles.sounds.play",
                     "group": "inline@30",
                     "when": "view == tidalcycles-soundbrowser-sounds && viewItem == sound"
-                },
-                {
-                    "command": "tidalcycles.sounds.refresh",
-                    "group": "inline@40",
-                    "when": "view == tidalcycles-soundbrowser-sounds && viewItem == virt || viewItem == dir"
                 }
             ]
         }
