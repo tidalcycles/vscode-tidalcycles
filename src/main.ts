@@ -6,9 +6,6 @@ import { Ghci } from './ghci';
 import { Tidal } from './tidal';
 import { History } from './history';
 import { TidalLanguageHelpProvider } from './codehelp';
-import * as path from 'path';
-import * as yaml from 'js-yaml';
-import { readFileSync } from 'fs';
 
 export function activate(context: ExtensionContext) {
     const config = new Config();
@@ -18,18 +15,11 @@ export function activate(context: ExtensionContext) {
     const tidal = new Tidal(logger, ghci, config.bootTidalPath(), config.useBootFileInCurrentDirectory());
     const history = new History(logger, config);
 
-    const hoveAndMarkdownPrivder = new TidalLanguageHelpProvider(
-        ["commands-generated.yaml","commands.yaml"].map(x => ([x, path.join(context.extensionPath, x)]))
-        .map(([source, defPath, ..._]) => {
-            const ydef = yaml.load(readFileSync(defPath).toString());
-            return {source: source, ydef};
-        })
-        , config
-    );
+    const hoveAndMarkdownProvider = new TidalLanguageHelpProvider(context.extensionPath, config);
     
     [languages.registerHoverProvider, languages.registerCompletionItemProvider]
         .forEach((regFunc:((selector:any, provider:any) => void)) => {
-            regFunc({scheme:"*", pattern: '**/*.tidal'}, hoveAndMarkdownPrivder);
+            regFunc({scheme:"*", pattern: '**/*.tidal'}, hoveAndMarkdownProvider);
         });
 
     function getRepl(repls: Map<TextEditor, Repl>, textEditor: TextEditor | undefined): Repl | undefined {
@@ -124,6 +114,7 @@ export function activate(context: ExtensionContext) {
 
     context.subscriptions.push(
         evalSingleCommand, evalMultiCommand, hushCommand
+        , ...hoveAndMarkdownProvider.createCommands()
         , ...shortcutCommands.filter(x => typeof x !== 'undefined')
     );
 }

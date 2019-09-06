@@ -1,7 +1,11 @@
-import { Hover, HoverProvider } from 'vscode';
+import { Hover, HoverProvider, Disposable } from 'vscode';
 import { Position, TextDocument, CancellationToken, MarkdownString, Range, CompletionItemKind } from 'vscode';
 import { CompletionItemProvider, CompletionContext, ProviderResult, CompletionItem, CompletionList, Uri, window } from 'vscode';
 import { Config } from './config';
+import * as yaml from 'js-yaml';
+import * as path from 'path';
+import { readFileSync } from 'fs';
+import * as vscode from 'vscode';
 
 export enum CodeHelpDetailLevel {
     OFF = 0
@@ -174,22 +178,84 @@ ${x}
 
 }
 
+export interface YamlInfo {
+    source: string;
+    ydef: object;
+}
+
 export class TidalLanguageHelpProvider implements HoverProvider, CompletionItemProvider {
     public readonly commandDescriptions: ({[word:string]:TidalCommandDescription}) = {};
 
     constructor(
-        yamlCommandDefinitions:({source: string, ydef:object})[]
-        , private readonly config:Config
+        private readonly extensionPath: string
+        , private readonly config: Config
+        , yamlCommandDefinitions?:YamlInfo[]
     ){
-        yamlCommandDefinitions.forEach(({source, ydef}) => {
-            try {
-                this.parseYamlDefinitions(ydef)
-                    .forEach(cmd => this.commandDescriptions[cmd.command] = cmd);
-            }
-            catch(error){
-                window.showErrorMessage(`Error loading Tidal command descriptions from ${source}: `+error);
-            }
-        });
+      this.init(yamlCommandDefinitions);
+    }
+
+    public init(yamlCommandDefinitions?:YamlInfo[]){
+        const extraFiles = this.config.getExtraCommandsFiles();
+        const defaultSources = ["commands-generated.yaml","commands.yaml"].map(x => path.join(this.extensionPath, x));
+
+        const combinedDefinitions = [
+                ...(typeof yamlCommandDefinitions === 'undefined' ? defaultSources : [])
+                , ...extraFiles
+            ].map((defPath) => {
+                try {
+                    return {source: defPath, ydef: yaml.load(readFileSync(defPath).toString())};
+                }
+                catch(error){
+                    window.showErrorMessage(`Error parsing Tidal command yaml from ${defPath}: `+error);
+                }
+                return undefined;
+            })
+            .filter(x => typeof x !== 'undefined')
+            .map(x => x as unknown as (({source: string, ydef: any}))) // makes typescript happy, because it can't infer the !undefined tpye from the filter
+            .reduce((x, y) => {
+                return [...x, y];
+            }, typeof yamlCommandDefinitions === 'undefined' ? [] as YamlInfo[] : yamlCommandDefinitions)
+            ;
+
+        const newKeys = combinedDefinitions
+            .map(({source, ydef}) => { // parse all yamls
+                try {
+                    return this.parseYamlDefinitions(ydef);
+                }
+                catch(error){
+                    window.showErrorMessage(`Error loading Tidal command descriptions from ${source}: `+error);
+                }
+                return [];
+            })
+            .reduce( // flatten array of arrays
+                (x, y) => {
+                    x = [...x, ...y];
+                    return x;
+                }
+            , [])
+            .map(cmd => { // add new commands and remember which were added/updated
+                this.commandDescriptions[cmd.command] = cmd;
+                return cmd.command;
+            })
+            .reduce((x, y) => { // convert array of added commands to object for faster indexing (see below)
+                x[y] = true;
+                return x;
+            }, {} as ({[key:string]:boolean}))
+            ;
+        
+        Object.keys(this.commandDescriptions)
+            .filter(x => typeof (newKeys[x]) === 'undefined') // check if the command is still documented
+            .forEach(x => { // if not, remove it
+                delete this.commandDescriptions[x];
+            });
+    }
+
+    public createCommands(): Disposable[] {
+        return [
+            vscode.commands.registerCommand("tidal.codehelp.reload", () => {
+                this.init();
+            })
+        ];
     }
 
     private parseYamlDefinitions(ydef:object): TidalCommandDescription[] {
