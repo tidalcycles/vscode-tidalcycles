@@ -5,13 +5,15 @@ import { TidalLanguageHelpProvider, CodeHelpDetailLevel } from '../src/codehelp'
 import { Position, CancellationTokenSource, MarkdownString } from 'vscode';
 import { createMockDocument } from './mock';
 import * as path from 'path';
-import { readFileSync } from 'fs';
+import * as os from 'os';
+import { readFileSync, mkdtempSync, writeFileSync } from 'fs';
 import * as vscode from 'vscode';
 
 import * as TypeMoq from 'typemoq';
 import { Config } from '../src/config';
 
 suite("Code helper", () => {
+    const tempdir = mkdtempSync(path.join(os.tmpdir(),"vstc-"));
 
     function createMockTestConfig(hoverLevel:string, completionLevel:string): TypeMoq.IMock<Config>{
         let config = new Config();
@@ -60,21 +62,38 @@ commandName:
     examples:
         - |+
             exampleText
+command2:
+    cmd: command2
 `);
 
     test("yaml processing", () => {
+        const extraFile = path.join(tempdir, "extra1.yaml")
+        writeFileSync(extraFile, `
+command2:
+    cmd: override
+extracmd:
+    cmd: extra
+`)
+
         const config = createMockTestConfig('FULL', 'FULL');
+        config.setup(cfg => cfg.getExtraCommandsFiles()).returns(() => [extraFile]);
         const provider = new TidalLanguageHelpProvider("./", config.object, [{source:"test1",ydef:testData}]);
 
         assert.exists(provider.commandDescriptions);
         assert.isObject(provider.commandDescriptions);
-        assert.hasAllKeys(provider.commandDescriptions, ["commandName"]);
+        assert.hasAllKeys(provider.commandDescriptions, ["commandName", "command2", "extracmd"]);
         assert.exists(provider.commandDescriptions["commandName"].command);
         assert.exists(provider.commandDescriptions["commandName"].formattedCommand);
         assert.hasAllKeys(provider.commandDescriptions["commandName"].formattedCommand, ["value","isTrusted"]);
         assert.equal(provider.commandDescriptions["commandName"].formattedCommand.value, "    commandLine");
         assert.isTrue(provider.commandDescriptions["commandName"].formattedCommand.isTrusted);
 
+        assert.exists(provider.commandDescriptions["command2"].command);
+        assert.equal(provider.commandDescriptions["command2"].formattedCommand.value, "    override");
+
+        assert.exists(provider.commandDescriptions["extracmd"].command);
+        assert.equal(provider.commandDescriptions["extracmd"].formattedCommand.value, "    extra");
+        
     });
 
     ["hover", "complete"].forEach(helpType => {

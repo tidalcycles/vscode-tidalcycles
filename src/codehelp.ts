@@ -200,7 +200,7 @@ export class TidalLanguageHelpProvider implements HoverProvider, CompletionItemP
 
         const combinedDefinitions = [
                 ...(typeof yamlCommandDefinitions === 'undefined' ? defaultSources : [])
-                , ...extraFiles
+                , ...(typeof extraFiles === 'undefined' ? [] : extraFiles)
             ].map((defPath) => {
                 try {
                     return {source: defPath, ydef: yaml.load(readFileSync(defPath).toString())};
