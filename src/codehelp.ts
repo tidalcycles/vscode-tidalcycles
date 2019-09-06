@@ -415,7 +415,7 @@ export class TidalLanguageHelpProvider implements HoverProvider, CompletionItemP
         for(let i=endChar;i<=line.length;i++){
             endChar = i;
             if(i < line.length){
-                const m = line.charAt(i).match(/^[0-9a-z_]$/i);
+                const m = line.charAt(i).match(/^[0-9a-z_']$/i);
                 if(m === null || m.length === 0){
                     break;
                 }

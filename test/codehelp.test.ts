@@ -72,8 +72,8 @@ command2:
 extracmd:
     cmd:
         - extra
-        - aliascmd
-aliascmd:
+        - aliascmd'
+aliascmd':
     alias: commandName
         `;
 
@@ -87,7 +87,7 @@ aliascmd:
 
         assert.exists(provider.commandDescriptions);
         assert.isObject(provider.commandDescriptions);
-        assert.hasAllKeys(provider.commandDescriptions, ["commandName", "command2", "extracmd", "aliascmd"]);
+        assert.hasAllKeys(provider.commandDescriptions, ["commandName", "command2", "extracmd", "aliascmd'"]);
         assert.exists(provider.commandDescriptions["commandName"].command);
         assert.exists(provider.commandDescriptions["commandName"].formattedCommand);
         assert.equal(provider.commandDescriptions["commandName"].formattedCommand.length, 1)
@@ -102,11 +102,11 @@ aliascmd:
         assert.exists(provider.commandDescriptions["extracmd"].command);
         assert.equal(provider.commandDescriptions["extracmd"].formattedCommand.length, 2);
         assert.equal(provider.commandDescriptions["extracmd"].formattedCommand[0].value, "    extra");
-        assert.equal(provider.commandDescriptions["extracmd"].formattedCommand[1].value, "    aliascmd");
+        assert.equal(provider.commandDescriptions["extracmd"].formattedCommand[1].value, "    aliascmd'");
         
-        assert.exists(provider.commandDescriptions["aliascmd"].command);
-        assert.equal(provider.commandDescriptions["aliascmd"].formattedCommand.length, 0);
-        assert.equal(provider.commandDescriptions["aliascmd"].alias, 'commandName');
+        assert.exists(provider.commandDescriptions["aliascmd'"].command);
+        assert.equal(provider.commandDescriptions["aliascmd'"].formattedCommand.length, 0);
+        assert.equal(provider.commandDescriptions["aliascmd'"].alias, 'commandName');
     });
 
     ["hover", "complete"].forEach(helpType => {
@@ -115,21 +115,21 @@ aliascmd:
                 {level: "FULL"
                     , contains:["    commandLine","param","paramValue"
                         ,"returnValue","link1","link2","link3","title3","exampleText"]
-                    , notContains:["commandName","aliascmd"]}
+                    , notContains:["commandName","aliascmd'"]}
                 , {level: "OFF"
                     , contains:[]
                     , notContains:["commandName","    commandLine","param","paramValue"
-                        , "returnValue","link1","link2","link3","title3","exampleText","aliascmd"]}
+                        , "returnValue","link1","link2","link3","title3","exampleText","aliascmd'"]}
                 , {level: "MINIMUM"
                     , contains:["    commandLine"]
                     , notContains:["param","paramValue"
-                        ,"returnValue","link1","link2","link3","title3","exampleText","aliascmd"]}
+                        ,"returnValue","link1","link2","link3","title3","exampleText","aliascmd'"]}
                 , {level: "NO_EXAMPLES_NO_LINKS"
                     , contains:["    commandLine","param","paramValue"
                         ,"returnValue"]
-                    , notContains:["commandName","link1","link2","link3","title3","exampleText","aliascmd"]}
+                    , notContains:["commandName","link1","link2","link3","title3","exampleText","aliascmd'"]}
             ].forEach(({level, contains, notContains}) => {
-                ["commandName", "aliascmd"].forEach(cmdname => {
+                ["commandName", "aliascmd'"].forEach(cmdname => {
                     test(`Level: ${level} / ${cmdname}`, () => {
                         const config = createMockTestConfig(level, level);
                         const provider = new TidalLanguageHelpProvider(
