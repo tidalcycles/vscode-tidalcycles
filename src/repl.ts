@@ -188,7 +188,7 @@ export function splitCommands(
 
         return command.cmd.split(/\r?\n/)
             .map(line => ({
-                matched: line.length > 0 && !line.match(/^(\s)|(\s*--)/)
+                matched: line.length > 0 && !line.match(/^((\s)|(\s*--))/)
                 , line
             }))
             .reduce((expressions, {matched, line}) => {
