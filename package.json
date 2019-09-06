@@ -194,6 +194,9 @@
                 },
                 "tidalcycles.randomMessages": {
                     "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
                     "default": [],
                     "description": "An array of strings of random messages."
                 },
