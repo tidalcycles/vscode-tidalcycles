@@ -15,10 +15,10 @@ slow:
     - url: https://tidalcycles.org/index.php/fast
       title: Fast - Tidal Documentation
   examples:
-    - 'd1 $ slow 4 $ s "bd!8"'
-    - 'd1 $ s "bd!8" # speed (slow 2 $ range 0.95 1.05 square)'
-    - 'd1 $ fast 4 $ s "bd!2"'
-    - 'd1 $ s "bd!8" # speed (fast 2 $ range 0.95 1.05 square)'
+    - 'd1 $ slow 4 $ s "hh!32"'
+    - 'd1 $ fast 4 $ s "hh!2"'
+    - 'd1 $ s "hh!8" # speed (slow 2 $ range 0.5 (3/2) square)'
+    - 'd1 $ s "hh!8" # speed (fast 2 $ range (1/2) 1.5 square)'
 fast:
   alias: slow
 stut:
@@ -54,11 +54,13 @@ setcps:
   links:
     - https://tidalcycles.org/index.php/Tutorial
 sound:
-  cmd: sound cpattern
+  cmd:
+    - sound cpattern
+    - s cpattern
   help: |-
-    Set a sound pattern. The command can be abbreviated as `s`. The pattern for
-    sounds is `soundname:number`. If `:number` is omitted a default of `0`
-    is assumed. 
+    Define a sound pattern. The command can be abbreviated as `s`. The pattern
+    for sounds is `soundname:number`. If `:number` is omitted a default of `0`
+    is assumed if this pattern is the structure generating pattern.
 
     The sound can be either a sample or a SuperCollider synthesizer name. If
     it's a sample then `soundname` specifies the folder the sample is located
@@ -72,18 +74,20 @@ sound:
   examples:
     - 'd1 $ sound "bd"'
     - 'd1 $ s "bd:18*2 sd:1 bd:10 sd"'
-    - 'd1 $ note "18*2 1 10 [0 0]" # s "bd sd bd sd" -- note the sligthly different ending'
+    - 'd1 $ note "18*2 1 10 [0 0]" # s "bd sd bd sd" -- note the slightly different ending'
   links:
     - https://tidalcycles.org/index.php/sound
-note:
+s:
+  alias: sound
+n:
   cmd: note cpattern
   help: |-
     Creates a note pattern. Depending on where and how it's used it either
     provides structure or just changes the note values in an existing control
     pattern.
   examples:
-    - 'd1 $ note "0 0 0 0" # sound "bd"'
-    - 'd1 $ note "0 1 2 3" # sound "supersaw"'
+    - 'd1 $ n "0 0 0 0" # sound "bd"'
+    - 'd1 $ n "0 1 2 3" # sound "supersaw"'
     - 'd1 $ n "0 1 2 3" # sound "arpy"'
     - 'd1 $ sound "alphabet alphabet alphabet alphabet ~ ~" # n "0 2 3 2 ~ ~" # cut 1' 
 hush:
@@ -107,7 +111,7 @@ solo:
     - solo streamno
     - unsolo streamno
   help: |-
-    Set ur unset the `solo` flag on a stream. If at least one stream has `solo`
+    Set or unset the `solo` flag on a stream. If at least one stream has `solo`
     set only streams with `solo` enabled are audible.
 
     Stacks with `mute`. Only streams that are not `mute`d are audible, even if
@@ -224,12 +228,12 @@ chop:
     cycle this compresses the sample and if it's shorter than a cycle it spreads
     it (though the gaps are not filled). Both is without pitch shifting.
 
-      * `cut 1` plays the whole sample at the beginning of the cycle
-      * `cut 2` plays the first half of the sample at the beginning of the
+      * `chop 1` plays the whole sample at the beginning of the cycle
+      * `chop 2` plays the first half of the sample at the beginning of the
         cycle and the second half of the sample at half of the cycle
-      * `cut 3` plays the first third of the sample at the beginning of the
+      * `chop 3` plays the first third of the sample at the beginning of the
         cycle, the second after the first third of the cycle and the third
-        third of the sampe at two thirds into the cycle.
+        third of the sample at two thirds into the cycle.
     
     Note that `chop` affects `begin` and `end` of the sample.
 
@@ -238,8 +242,9 @@ chop:
     - 'd1 $ chop 2 $ s "xmas" # speed 2 -- notice the two distinct sample parts being played'
     - 'd1 $ chop 16 $ s "xmas" # speed 2 -- sounds still choppy, but smoother'
     - 'd1 $ chop 64 $ s "xmas" # speed 2 -- sounds quite robotic, but somewhat recognizable 1/2 cycle in length'
-    - 'd1 $ s "xmas" # speed 0.5 # cut 1 -- sample longer than 1/2 cycle, cut off'
-    - 'd1 $ chop 32 $ s "xmas" # speed 0.5 # cut 1 -- sample "fits" in 1/2 cycle without pitch shift'
+    - 'd1 $ s "xmas" # speed 0.5 # cut 1 -- sample longer than 1 cycle, cut off'
+    - 'd1 $ chop 32 $ s "xmas" # speed 0.5 -- sample "fits" in 1 cycle without pitch shift'
+    - 'd1 $ chop 32 $ s "xmas!2" # speed 0.5 -- sample "fits" in 1/2 cycle without pitch shift'
 striate:
   cmd:
     - striate noparts cpattern
@@ -294,10 +299,11 @@ speed:
     - 'd1 $ s "numbers:0" # speed 2 # cut 1'
   links:
     - https://tidalcycles.org/index.php/speed
+    - https://tidalcycles.org/index.php/unit
 unit:
   cmd: 'cpattern # unit type'
   help: |-
-    Changes the intrepretation of the `speed` value.
+    Changes the interpretation of the `speed` value.
   params:
     type: |-
       One of `r` for sample length (default), `c` for the cycle length, `s` absolute seconds
@@ -315,19 +321,194 @@ unit:
             , s "cr:0 ~!3" # speed (3/8) # gain 0.8 # unit "r"
             , s "breaks165!4" # speed 1 # unit "c"
         ] 
-# off:
+superimpose:
+  cmd:
+    - superimpose function cpattern
+    - off time function cpattern
+  help: |-
+    Overlay a modified version of the pattern. For `superimpose` does not shift
+    the pattern, so both will be played at exactly the same time, while `off`
+    shifts the modified pattern by some offset.
+  params:
+    function: A function to apply to the pattern to modify it
+    time: A time pattern that defines how the modified pattern is shifted from
+      the original.
+  examples:
+    - 'd1 $ superimpose (# speed 0.5) $ s "arpy!2"'
+    - 'd1 $ off 0 (# speed 0.5) $ s "arpy!2" -- same as above'
+    - 'd1 $ off (-1/16) (# speed 0.5) $ s "arpy!2"'
+    - |- 
+      d1 $ fast 2 $ -- phase music
+        off (slow 256 $ range (-1) 1 tri) (# speed 0.5) $ s "arpy"
+    - |-
+      d1 $ fast 2 $ off (-1/32) -- imitate hitting some chord notes realy
+        (# note "c4 <c3 es3>")  -- the earlier notes
+        (note "c5 <es4 c5>" # s "arpy") -- the original notes
+  links:
+    - https://tidalcycles.org/index.php/superimpose
+    - https://tidalcycles.org/index.php/off
+off:
+  alias: superimpose
+run:
+  cmd: run number
+  help:
+    Generates a pattern of one cycle length of consecutive, ascending numbers
+    starting from 1 up to the specified `number`.
+  examples:
+    - 'd1 $ n (run 8) $ s "hh"'
+    - 'd1 $ up (run 8) $ s "hh"'
+    - 'd1 $ s "bass:1!4" # lpf 800 # resonance (slow 4 $ run 8 |*| (1/8) * 0.3) # cut 1'
+quantise:
+  cmd: quantise num function
+  help: |-
+    Limit values in a function to `num` equally spaced values. The `num`
+    parameter is not a hard-and-fast value, see examples.
+  params:
+    num: The number of discrete values. Actual values of the function will be
+      assigned to the nearest lower discrete value.
+    function: The function to quantise.
+  examples:
+    - 'd1 $ s "arpy!16" # speed (range 1 2 sine) -- every event has a distinct value'
+    - 'd1 $ s "arpy!16" # speed (quantise 2 $ range 1 2 sine) -- there''s only two values now'
+    - 'd1 $ s "arpy!16" # speed (quantise 2 $ range 1 2.4 sine) -- three values'
+    - 'd1 $ s "arpy!16" # speed (quantise 2 $ range 0.5 2.4 sine) -- four values'
+    - 'd1 $ s "arpy!16" # speed (quantise 2 $ range 2 2.4 sine) -- one values'
+    - 'd1 $ s "arpy!16" # speed (quantise 6 $ range 2 2.4 sine) -- three values'
+    - 'd1 $ s "arpy!32" # speed (quantise 32 $ range 2 2.4 sine) -- a lot of values'
+euclid:
+  cmd: euclid num parts cpattern
+  help:
+    Distribute `num` reoccurrences of a pattern evenly over `parts` slices of a
+    cycle. 
+  param:
+    num: The number of reoccurrences of the pattern. Should be less than
+      `parts`. Can be a pattern as well.
+    parts: The number of slices to divide the cycle into. The `num`
+      reoccurrences will be placed at the beginning of the parts. Can be a
+      pattern as well.
+  examples:
+    - 'd1 $ euclid 3 8 $ s "bd hh!3"'
+    - 'd1 $ euclid 5 8 $ s "bd hh!3"'
+    - |-
+      d1 $ superimpose
+        ((slow 4) . (euclid 3 8) . (# speed 2))
+        (euclid 3 8 $ s "lt:5")
+    - |-
+      d1 $ stack [
+        euclid "<3 5 3 [7, 13]>" "<8 8 8 16>" $ s "bd" # shape 0.3
+        , juxBy 0.3 (rev) $ euclid "<9 11>" 16 $ s "db"
+        , euclid "[5, <7 6>]" 8 $ s "sn:2" # gain 0.75
+        ]
+  links:
+    - https://tidalcycles.org/index.php/euclid
+    - https://en.wikipedia.org/wiki/Euclidean_rhythm
+sine:
+  cmd:
+    - sine 
+    - saw
+    - square
+    - tri
+  help:
+    Generate a value according to one of the shape functions. The frequency is
+    one per cycle, use `slow` or `fast` to change it. The values are between
+    `0` and `1`, both exclusive for all except square. The interval can be
+    scaled using the `range` function. Sine starts around 0.5, square at 0 and all
+    others at slightly more than 0
+
+    The generated values are continuously changing. You can get sample and
+    hold like behavior by 
+  examples:
+    - 'd1 $ s "hh!16" # speed (saw |+| 1)'
+    - 'd1 $ fast 2 $ s "numbers" # n (slow 2 $ square)'
+    - |-
+      d1 $ fast 2 $ n "0 [~ 0]" # s "bass:3" # cut 1
+        # lpf (slow 8 $ range 600 1000 $ sine)
+saw:
+  alias: sine
+square:
+  alias: sine
+tri:
+  alias: sine
+rand:
+  cmd: rand
+  help: |-
+    Generate a random number between 0 and 1. Use `range` to adjust the range
+    of values.
+
+    `rand` produces random numbers not over time but by invocation. So the
+    `n`-th invocation will always have the same value, no matter where in the
+    cycle it is:
+    ~~~~
+    n "0!4" # n (rand) -- run and check your TidalCycles output
+    n "0!8" # n (rand) -- run and compare the TidalCycles output with the previous one
+    ~~~~
+
+    Due to the implementation of TidalCycles the random values generated by all
+    `rand` calls that have the same offset have exactly the same sequence values.
+    If you want unique random values in various points in your patterns, the
+    easiest workaround is to shift the `rand` function around:
+    ~~~~
+    n "0!4" # n (rand) # gain (rand) -- speed and gain have the same values
+    n "0!8" # n (rand) # gain ((0.1 ~>) rand) -- speed and gain now have different values
+    ~~~~
+  examples:
+    - 'd1 $ s "hh!16" # gain (rand |+| 0.5)'
+    - |-
+      d1 $ stut 3
+            (range 0.02 0.8 rand)
+            (range (1/16) (3/16) square)
+          $ s "sn:2!4"
+irand:
+  cmd: irand number
+  help:
+    Generate random integer numbers between 0 and `number - 1`.
+  params:
+    number: The upper, exclusive bound for the random numbers.
+  examples:
+    - 'd1 $ s "arpy!4" # n (irand 4)'
+    - |-
+      d1 $ stut (irand 4)
+            (irand 10 |/| 20 |+| 0.3)
+            ((irand 3 |+| 1) |*| (1/16))
+          $ s "sn:2!4"
+range:
+  cmd: range lower upper function
+  help:
+    Scales the values of a function. If the values of `function` were in the
+    range of `0` to `1` before they'll be in the range of `lower` to `upper`
+    afterwards.
+
+    If the values of `function` had a different range, then the output won't be
+    scaled to the exact interval of `lower` to `upper`. The formula applied is
+    ~~~~
+    range(x) = function(x) * (upper-lower) + lower
+    ~~~~
+  examples:
+    - 'd1 $ s "arpy!4" # note (range 0 2 square)'
+    - 'd1 $ s "arpy!4" # note (range 0 2 $ range 0 2 square)'
+cut:
+  cmd: 'cpattern # cut n'
+  help:
+    Assigns a cut group to a pattern. All sounds in the cut group are played
+    exclusively with last note priority. That means if a sound in a cut group
+    is currently still playing and a new sound starts, the old one will be
+    stopped.
+  params:
+    n: The cut group number.
+  examples:
+    - 'd1 $ s "numbers:2!4" # speed 0.5'
+    - 'd1 $ s "numbers:2!4" # speed 0.5 # cut 1'
+    - |-
+      d1 $ stack [
+        s "hh:1" # cut 1
+        , fast 4 $ s "~ hh" # cut 1
+        , ((1/128) ~>) $ s "bass!4" # gain 0.7 # cut 2
+        , s "bd!4" # cut 2
+        ]
+
+
 # up:
-# down:
-# run:
-# euclid:
 # samples:
-# sine:
-# saw:
-# square:
-# tri:
-# rand:
-# irand:
-# range:
 # slowcat:
 # cat:
 # fastcat:
@@ -335,6 +516,6 @@ unit:
 # whenmod:
 # const:
 # stack:
-# cut:
+
 # anticipate:
 # xfadeIn:
