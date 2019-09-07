@@ -136,17 +136,23 @@ suite('Repl', () => {
     });
 
     test('Command splitting', async () => {
-        let commands = splitCommands("hello\r\nworld");
+        let commands = splitCommands("hello -- comment\r\nworld -- comment\r\n  foo\r\n    bar\r\n  baz\r\nlast");
 
         assert.isArray(commands);
-        assert.lengthOf(commands, 2);
+        assert.lengthOf(commands, 3);
         commands.forEach((x, i) => {
             assert.typeOf(x, 'object', `Expected command ${i} to be an object`);
             assert.hasAllKeys(x, ["expression","range"], `Expected command ${i} to look like a TidalExpression`);
         });
-        assert.equal(commands[0].expression, "hello");
-        assert.equal(commands[1].expression, "world");
-        
+        assert.equal(commands[0].expression, "hello -- comment");
+        assert.equal(commands[1].expression, "world -- comment\r\n  foo\r\n    bar\r\n  baz");
+        assert.equal(commands[2].expression, "last");
+
+        commands = splitCommands("hello -- comment\r\n  something");
+        assert.isArray(commands);
+        assert.lengthOf(commands, 1);
+        assert.equal(commands[0].expression, "hello -- comment\r\n  something");
+
     });
 
     test('Template replacements', async () => {

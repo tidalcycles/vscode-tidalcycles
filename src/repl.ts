@@ -186,30 +186,26 @@ export function splitCommands(
         that line.
         */
 
-        const lines = command.cmd.split(/\r?\n/);
-        let startLine = 0;
-        
-        const expressions:TidalExpression[] = [];
-
-        for(let i=0;i<lines.length;i++){
-            if(lines[i].length === 0){
-                continue;
-            }
-            let c = lines[i].charAt(0);
-            let m = c.match(/\S/);
-            let isEmpty = typeof m === 'undefined' || m === null || m.length === 0;
-            if(i !== lines.length - 1){
-                if(isEmpty){
-                    continue;
+        return command.cmd.split(/\r?\n/)
+            .map(line => ({
+                matched: line.length > 0 && !line.match(/^((\s)|(\s*--))/)
+                , line
+            }))
+            .reduce((expressions, {matched, line}) => {
+                if(matched){
+                    expressions.push([]);
                 }
-            }
-            let currentCommand = lines.slice(startLine, i+1).reduce((x,y)=>x+"\r\n"+y);
-            startLine = i+1;
-
-            let commandRange = typeof command.range === 'undefined' ? new vscode.Range(0, 0, 0, 0) : command.range;
-            expressions.push(new TidalExpression(currentCommand, commandRange));
-        }
-        return expressions;
+                const current = expressions.pop();
+                if(typeof current !== 'undefined'){
+                    current.push(line);
+                    expressions.push(current);
+                }
+                return expressions;
+            }, [] as (string[])[])
+            .map(lines => {
+                let commandRange = typeof command.range === 'undefined' ? new vscode.Range(0, 0, 0, 0) : command.range;
+                return new TidalExpression(lines.join("\r\n"), commandRange);
+            });
     })
     .reduce((x, y) => {y.forEach(z => x.push(z)); return x;}, []);
 }
