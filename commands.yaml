@@ -7,7 +7,7 @@ slow:
     for the pattern to repeat.
   params:
     times: The amount to slow down or speed up the pattern by. Can be a pattern
-            itself.
+      itself.
   returns: A slowed down version of the pattern
   links:
     - url: https://tidalcycles.org/index.php/slow
@@ -82,18 +82,49 @@ s:
 n:
   cmd: note cpattern
   help: |-
-    Creates a note pattern. Depending on where and how it's used it either
-    provides structure or just changes the note values in an existing control
-    pattern.
+    Sets the `n` value in a pattern. If you're using the pattern with a sample
+    the `n` value selects the sample in the folder. If you're using the pattern
+    with a synth sound n
+
+    **Note**: `n` is not an abbreviation for `note`. They both change different
+    parameters of the control patterns.
   examples:
-    - 'd1 $ n "0 0 0 0" # sound "bd"'
+    - 'd1 $ n "1 2 3 4" # sound "numbers" # speed 1.5'
+    - 'd1 $ n "0 1 0 3" # sound "bd sn bd sn"'
     - 'd1 $ n "0 1 2 3" # sound "supersaw"'
-    - 'd1 $ n "0 1 2 3" # sound "arpy"'
-    - 'd1 $ sound "alphabet alphabet alphabet alphabet ~ ~" # n "0 2 3 2 ~ ~" # cut 1' 
+    - 'd1 $ sound "alphabet!4 ~!2" # n "0 2 3 2 ~!" # cut 1' 
+note:
+  cmd:
+    - note cpattern
+    - up cpattern
+  help: |-
+    Set the note pitch. For samples this changes the playback speed.
+
+    You can set the note pitch in the pattern by either using numbers or note
+    names, where `0` and `c5` are the original sample pitch. See the
+    description in the [Tutorial](https://tidalcycles.org/index.php/Tutorial)
+    for more information.
+  examples:
+    - 'd1 $ note "0 1 2 <3 -12>" # sound "hh:9"'
+    - 'd1 $ up "0 1 2 <3 -12>" # sound "hh:9"'
+    - 'd1 $ note "0 c5 f5 [c5 ds5 f4]" # sound "hh:9"'
+    - |-
+      d1 $ note "[0, -12, 12] [c6, ds6, g5]*2 c5 [c6, ds6, g5]"
+        |-| note 12 # sound "supersaw"
+    - |-
+      -- combining note and n can be useful for samples, but has no effect on synths
+      d1 $ note "[0, -12, 12] [c6, ds6, g5]*2 c5 [c6, ds6, g5]"
+        |-| note 12 # (slow 4 $ n "0!2 2 3" # sound "arpy")
+  links:
+    - https://tidalcycles.org/index.php/Tutorial
+up:
+  alias: note
 hush:
   cmd: hush
   help: |-
-    Stop all running streams.
+    Stop all running streams. Is actually a common alias defined in the
+    `TidalBoot.hs` file, so if `hush` does nto work for you, check if and which
+    tidal bootup file is being sourced.
   examples:
     - 'hush'
 silence:
@@ -166,7 +197,7 @@ rev:
     - 'd1 $ every 2 (rev) $ s "bd hh hh lt"'
 every:
   cmd: every numcycles function cpattern
-  help:
+  help: |-
     Apply a `function` to a pattern every `numcycles` cycles, effectively
     replacing the orgiginal pattern with the modified one in that cycle.
   examples:
@@ -185,8 +216,7 @@ crush:
     - 'd1 $ slow 2 $ s "bd!8" # crush (run 8 |+| 1)'
 gain:
   cmd: gain number cpattern
-  help:
-    Apply a gain value to a control pattern.
+  help: Apply a gain value to a control pattern.
   params:
     number: A frational pattern that controls the gain.
   examples:
@@ -194,8 +224,7 @@ gain:
     - 'd1 $ s "hh!8" # gain (fast 2 "1 0.8")'
 pan:
   cmd: 'cpattern # pan number'
-  help:
-    Pan the output of a pattern between left (`0`) and right (`1`).
+  help: Pan the output of a pattern between left (`0`) and right (`1`).
   params:
     number: A fractional pattern that defines how to pan the output.
   examples:
@@ -212,7 +241,7 @@ shape:
     - 'd1 $ s "bd!4" # shape (slow 2 $ range 0 1 saw)'
 vowel:
   cmd: 'cpattern # vowel pattern'
-  help:
+  help: |-
     Shapes a sound to a vowel. Works best with sounds with a low of noise or
     distortion.
   params:
@@ -258,8 +287,8 @@ striate:
     a0 b0 a1 b1 a2 b2 a3 b3
     ~~~~
 
-    Note: If the effect you're going for does not emerge, make sure you're not
-    unintentionally `cut`ing the samples.
+    **Note**: If the effect you're going for does not emerge, make sure you're
+    not unintentionally `cut`ing the samples.
   params:
     noparts: The number of parts to chop the samples into.
     length: The length of each part.
@@ -351,7 +380,7 @@ off:
   alias: superimpose
 run:
   cmd: run number
-  help:
+  help: |-
     Generates a pattern of one cycle length of consecutive, ascending numbers
     starting from 1 up to the specified `number`.
   examples:
@@ -408,7 +437,7 @@ sine:
     - saw
     - square
     - tri
-  help:
+  help: |-
     Generate a value according to one of the shape functions. The frequency is
     one per cycle, use `slow` or `fast` to change it. The values are between
     `0` and `1`, both exclusive for all except square. The interval can be
@@ -460,8 +489,7 @@ rand:
           $ s "sn:2!4"
 irand:
   cmd: irand number
-  help:
-    Generate random integer numbers between 0 and `number - 1`.
+  help: Generate random integer numbers between 0 and `number - 1`.
   params:
     number: The upper, exclusive bound for the random numbers.
   examples:
@@ -473,7 +501,7 @@ irand:
           $ s "sn:2!4"
 range:
   cmd: range lower upper function
-  help:
+  help: |-
     Scales the values of a function. If the values of `function` were in the
     range of `0` to `1` before they'll be in the range of `lower` to `upper`
     afterwards.
@@ -505,17 +533,141 @@ cut:
         , ((1/128) ~>) $ s "bass!4" # gain 0.7 # cut 2
         , s "bd!4" # cut 2
         ]
+whenmod:
+  cmd: whenmod div remainder function cpattern
+  help: |-
+    Apply `function` to `cpattern` every time the current cycle count modulo 
+    `div` is `remainder` **or higher**. `fast` and `slow` affect the cycle count
+    and hence the behavior of `whenmod`.
 
+    This is handy e.g. for drum fills.
+  params:
+    div: The divisor to divide the cycle count by.
+    remainder: The minimum the remainder of the modulo opeation needs to be
+      in order to modify the pattern by `function`
+    function: A function to apply to the pattern.
+  examples:
+    - 'd1 $ fast 4 $ whenmod 4 2 (# speed 2) $ s "arpy"'
+    - 'd1 $ fast 4 $ whenmod 4 1 (# speed 2) $ s "arpy"'
+    - 'd1 $ fast 4 $ whenmod 4 3 (euclid 3 8) $ s "sn:2"'
+    - 'd1 $ fast 4 $ whenmod 4 3 (const "sn:2!3") $ s "sn:2"'
+stack:
+  cmd: stack [ cpatterns ]
+  help: |-
+    Combines the events of an array of control patterns. The patterns can be of
+    different lengths. The patterns can use polyphony or `stack`s themselves.
 
-# up:
-# samples:
-# slowcat:
-# cat:
-# fastcat:
-# degrade:
-# whenmod:
-# const:
-# stack:
+    **Note:** Some functions like some effects (e.g. `delay`) a whole `orbit`
+    not only single patterns. Hence using them in `stack` does not work. If you
+    want different effect values you need to separate your sounds into different
+    streams and/or orbits.
+  examples:
+    - 'd1 $ stack [s "hh!4", fast 2 "bd"]'
+    - |-
+      d1 $ stack [
+          stack [
+              s "bd!2"
+              , stack [
+                      ((1/4) ~>) $ s "hh!2" # gain 1.2
+                      , slow 2 $ s "tablex:1" # unit "c" # speed 0.5
+                  ] # cut 1                      -- same cut group
+              ] # orbit 2                        -- same orbit for the whole stack
+                # room 0.7 # size 0.5 # lpf 6000 -- same fx for the whole orbit
+          , stack [
+              slow 2 $ note "e2 d2" # s "arpy" # crush 6
+              , stut "<1 3>" 0.1 (3/16) $        -- use stut to fake delays
+                  ((1/4) ~>) $ note "[e4, g4, b4]!2" # s "arpy"
+              ] # orbit 1                        -- separate orbit for the whole stack
+                # lpf 1200 # resonance 0.15      -- applies only this orbit
+          ]
+degrade:
+  cmd:
+    - degrade cpattern
+    - degradeBy number cpattern
+  help: |-
+    Randomly drops events from a pattern. `degrade` has a 50% chance of dropping
+    events, with `degradeBy` you can specify a `number` between `0` (don't drop
+    anything) and `1` (drop every event).
+  params:
+    number: The probability between `0` and `1` that an event is going to be
+      dropped.
+  examples:
+    - 'd1 $ degrade $ s "hh!16"'
+    - 'd1 $ degradeBy 0.1 $ s "hh!16"'
+    - 'd1 $ degradeBy (slow 4 $ range 0.1 0.5 tri) $ striate 64 $ s "breaks125"'
+degradeBy:
+  alias: degrade
+const:
+  cmd: const newpattern cpattern
+  help: |-
+    Discard any incoming pattern information and replace with a new pattern.
+    This is handy for when you want to completely replace a patter in a function
+    like `every`.
+  params:
+    newpattern: The new control pattern.
+  examples:
+    - 'd1 $ const (s "hh!4") $ s "bd!4" # gain "1 0 1 0"'
+    - 'd1 $ every 2 (const $ s "sn(11,16)") $ s "bd!4"'
+samples:
+  cmd: samples sound number
+  help: |-
+    Lets you set the `s` and `n` parameter on a pattern separately.
+  params:
+    sound: A pattern specifying the sounds to play.
+    number: A number or function that specifies the sample to pick from the
+      sound folder.
+  examples:
+    - 'd1 $ sound $ samples "drum*4" (run 4)'
+xfade:
+  cmd: 
+    - xfade stream cpattern
+    - xfadeIn stream time cpattern
+  help: |-
+    Fade a new pattern into a stream over time. For `xfade` 4 cycles are used.
+    `xfadeIn` let's you specify the number of cycles in the `time` parameter.
 
-# anticipate:
-# xfadeIn:
+    You can use `xfade` to fade out byt just fading to `silence`.
+  params:
+    stream: The number or name of a stream. This has to be the stream name and
+      can't be one of the aliases like `d1` that are set up. For `d1` you would
+      have to use the number 1.
+    time: The number of cycles to take for the fading the new pattern in.
+  examples:
+    - 'xfade 1 $ s "bd!4"'
+    - 'xfade 1 $ stack [ s "bd!8", fast 2 $ s "~ sn:2" ]'
+    - |-
+      xfadeIn 1 8 $ stack [
+        s "bd!4" , s "hh!16"
+        , note "c3!7 c2" # s "arpy" # gain 0.9
+        ]
+xfadeIn:
+  alias: xfade
+slowcat:
+  cmd:
+    - cat [cpatterns]
+    - slowcat [cpatterns]
+    - fastcat [cpatterns]
+  help: |-
+    Concatenates cycles from an array of pattern into combined cycles. `cat` is
+    and alias for `slowcat`.
+
+    For each cycle the patterns in the array are, in order, asked to provide
+    one cycle of events. These one cycles per pattern are then concatenated. In
+    the case of `fastcat` the concatenated pattern is then sped up by the number
+    of patterns in the array, so the new, concatenated cycles spans exactly one
+    cycle. `slowcat` does nto adjust the speed, hence the new pattern will have
+    a length of cycles that's equal to the number of patterns in the array.
+
+    If the patterns have different lengths/speeds their "parts" will be
+    prograssively integrated into the concatenated pattern.
+  examples:
+    - 'd1 $ slowcat [n "0!2", n "1!2"] # s "arpy"'
+    - 'd1 $ cat [n "0!2", n "1!2"] # s "arpy"'
+    - 'd1 $ fastcat [n "0!2", n "1!2"] # s "arpy"'
+    - 'd1 $ fast 2 $ slowcat [n "0!2", n "1!2"] # s "arpy"'
+    - 'd1 $ fastcat [n "0!2", slow 3 $ n "2!2 3!2 4!2"] # s "arpy"'
+    - 'd1 $ fastcat [slow 2 $ n "0!2 1!2", slow 3 $ n "3!2 4!2"] # s "arpy"'
+cat:
+  alias: slowcat
+fastcat:
+  alias: slowcat
