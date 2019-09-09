@@ -118,7 +118,7 @@ view. This feature can be turned off by setting the
 Every sound also has some actions that you can execute by clicking on the
 respective icon displayed to the right, when you hover over an item:
 
- - ![Arrow right](images/material-icons/arrow_lt.svg): Insert the sound or
+ - ![Arrow right](images/material-icons/arrowr_lt.svg): Insert the sound or
     folder name in the currently active editor.
  - ![Clipboard](images/material-icons/clipboard_lt.svg): Copy the sound or
     folder name to the clipboard.
