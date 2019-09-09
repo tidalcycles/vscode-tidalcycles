@@ -3,7 +3,7 @@ import { assert } from 'chai';
 import * as yaml from 'js-yaml';
 import { TidalLanguageHelpProvider, CodeHelpDetailLevel } from '../src/codehelp';
 import { Position, CancellationTokenSource, MarkdownString } from 'vscode';
-import { createMockDocument } from './mock';
+import { createMockDocument, createMockContext } from './mock';
 import * as path from 'path';
 import * as os from 'os';
 import { readFileSync, mkdtempSync, writeFileSync } from 'fs';
@@ -16,7 +16,7 @@ suite("Code helper", () => {
     const tempdir = mkdtempSync(path.join(os.tmpdir(),"vstc-"));
 
     function createMockTestConfig(hoverLevel:string, completionLevel:string): TypeMoq.IMock<Config>{
-        let config = new Config();
+        let config = new Config(createMockContext().object);
         let mockConfig = TypeMoq.Mock.ofInstance(config, );
 
         mockConfig
@@ -31,7 +31,7 @@ suite("Code helper", () => {
     }
 
     test("config", () => {
-        let config = new Config();
+        let config = new Config(createMockContext().object);
         ['FULL','MINIMUM','OFF','NO_EXAMPLES_NO_LINKS',"foo"].forEach(x => {    
             if(x === "foo"){
                 assert.equal(

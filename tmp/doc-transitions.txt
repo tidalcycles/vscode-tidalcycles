@@ -1,0 +1,70 @@
+{| class="wikitable"
+! Function name
+! Type
+! Description
+|-
+|[[anticipate]]
+|<code>Time -> [ControlPattern] -> ControlPattern</code>
+|An increasing comb filter.
+|-
+|[[anticipateIn]]
+|<code>Time -> Time -> [ControlPattern] -> ControlPattern</code>
+|Same as anticipate though it allows you to specify the number of cycles until dropping to the new pattern.
+|-
+|[[clutch]]
+|<code>Time -> [Pattern a] -> Pattern a</code>
+|Degrades the current pattern while undegrading the next.
+|-
+|[[clutchIn]]
+|<code>Time -> Time -> [Pattern a] -> Pattern a</code>
+|-
+|[[interpolate]]
+|<code>Time -> [ControlPattern] -> ControlPattern</code>
+|-
+|[[interpolateIn]]
+|<code>Time -> Time -> [ControlPattern] -> ControlPattern</code>
+|-
+|[[jump]]
+|<code>Time -> [ControlPattern] -> ControlPattern</code>
+|Jumps directly into the given pattern, this is essentially the ''no_transition''-transition.
+Variants of jump provide more useful capabilities, see jumpIn and jumpMod.
+|-
+|[[jumpIn]]
+|<code>Int -> Time -> [ControlPattern] -> ControlPattern</code>
+|-
+|[[jumpIn']]
+|<code>Int -> Time -> [ControlPattern] -> ControlPattern</code>
+|Unlike jumpIn the variant jumpIn' will only transition at cycle boundary (e.g. when the cycle count is an integer).
+|-
+|[[jumpMod]]
+|<code>Int -> Time -> [ControlPattern] -> ControlPattern</code>
+|Sharp jump transition at next cycle boundary where cycle mod n == 0.
+|-
+|[[histpan]]
+|<code>Time -> Time -> [ControlPattern] -> ControlPattern</code>
+|Pans the last n versions of the pattern across the field.
+|-
+|[[wait]]
+|<code>Time -> Time -> [ControlPattern] -> ControlPattern</code>
+|Just stop for a bit before playing new pattern.
+|-
+|[[waitT]]
+|<code>(Time -> [ControlPattern] -> ControlPattern) -> Time -> Time -> [ControlPattern] -> ControlPattern</code>
+|Just as wait, waitT stops for a bit and then applies the given transition to the playing pattern.
+|-
+|[[wash]]
+|<code>(Pattern a -> Pattern a) -> (Pattern a -> Pattern a) -> Time -> Time -> Time -> Time -> [Pattern a] -> Pattern a</code>
+|Washes away the current pattern after a certain delay by applying a function to it over time, then switching over to the next pattern to which another function is applied.
+|-
+|[[washIn]]
+|<code>(Pattern a -> Pattern a) -> Time -> Time -> [Pattern a] -> Pattern a </code>
+|-
+|[[xfade]]
+|<code>Time -> [ControlPattern] -> ControlPattern</code>
+|-
+|[[xfadeIn]]
+|<code>Time -> Time -> [ControlPattern] -> ControlPattern</code>
+|Applies a crossfade, and fades one pattern out while fading a new pattern in.
+|}
+
+[[Category:Transitions]]

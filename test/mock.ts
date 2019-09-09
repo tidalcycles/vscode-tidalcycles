@@ -3,6 +3,7 @@ import {
     TextEditorDecorationType, window, DecorationRenderOptions
 } from 'vscode';
 import * as TypeMoq from 'typemoq';
+import * as vscode from 'vscode';
 
 class TestTextLine implements TextLine {
     lineNumber: number;
@@ -70,4 +71,46 @@ export function createMockCreateTextEditorDecorationType():
     let mockCreateTextEditorDecorationType = TypeMoq.Mock.ofInstance(window.createTextEditorDecorationType);
     mockCreateTextEditorDecorationType.setup(f => f(TypeMoq.It.isAny())).returns(() => mockTextEditorDecorationType.object);
     return mockCreateTextEditorDecorationType;
+}
+
+export class DummyMemento implements vscode.Memento {
+    constructor(
+        public readonly state: ({[key: string]: any}) = {}
+    )
+    {}
+
+    get<T>(key: string, defaultValue?: T): T | undefined{
+        if(key in Object.keys(this.state)){
+            return defaultValue;
+        }
+        return this.state[key];
+    }
+
+    async update<T>(key: string, value: T){
+        this.state[key] = value;
+        return Promise.resolve();
+    }
+}
+
+function instanceOfCheck(object: any, keys: string[]): boolean {
+    return Object.keys(object).filter(x => x in keys).length === keys.length;
+}
+
+function instanceOfMemento(object: any): object is vscode.Memento {
+    return instanceOfCheck(object, ['get', 'update']);
+}
+
+export function createMockContext(workspaceState: ({[key: string]: any}) | vscode.Memento = {}){
+    const ctx = TypeMoq.Mock.ofType<vscode.ExtensionContext>();
+
+    ctx.setup(context => context.workspaceState);
+
+    if(instanceOfMemento(workspaceState)){
+        ctx.object.workspaceState = workspaceState;
+    }
+    else {
+        ctx.object.workspaceState = new DummyMemento(workspaceState);
+    }
+
+    return ctx;
 }

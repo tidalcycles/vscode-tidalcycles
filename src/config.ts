@@ -2,8 +2,31 @@ import * as vscode from 'vscode';
 import { CodeHelpDetailLevel } from './codehelp';
 
 export class Config {
-    getConfiguration = vscode.workspace.getConfiguration;
-    configSection: string = 'tidalcycles';
+    readonly getConfiguration = vscode.workspace.getConfiguration;
+    readonly configSection: string = 'tidalcycles';
+    private workspaceState: vscode.Memento;
+
+    constructor(
+        private readonly context: vscode.ExtensionContext
+    ){
+        this.workspaceState = this.context.workspaceState;
+    }
+
+    public getExtensionId(){
+        return "tidalcycles.vscode-tidalcycles";
+    }
+
+    public getPreferencesStringFor(s: string){
+        return `${this.configSection}.${s}`;
+    }
+
+    public getWorkspaceState<T>(key: string){
+        return this.workspaceState.get<T>(`${this.configSection}.${key}`);
+    }
+
+    public updateWorkspaceState(key:string, value: any){
+        return this.workspaceState.update(`${this.configSection}.${key}`, value);
+    }
 
     public bootTidalPath(): string | null {
         return this.getConfiguration(this.configSection).get('bootTidalPath', null);
@@ -58,6 +81,10 @@ export class Config {
         return this.getConfiguration(this.configSection).get('shortcuts.showInConsole', false);
     }
 
+    public getSoundsPaths(): string[] {
+        return this.getConfiguration(this.configSection).get('sounds.paths', []);
+    }
+    
     public getExtraCommandsFiles(): string[] {
         return this.getConfiguration(this.configSection).get<string[]>("codehelp.commands.extra", []);
     }
@@ -88,5 +115,9 @@ export class Config {
             vscode.window.showErrorMessage("Could not convert "+level+" to CodeHelpDetailLevel: "+error);
         }
         return enumLevel;
+    }
+
+    public getPlaySoundOnSelection(){
+        return this.getConfiguration(this.configSection).get('sounds.playonselection', true);
     }
 }

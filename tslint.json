@@ -13,5 +13,11 @@
 		"promise-function-async": true,
 		"max-line-length": [true, 128]
 	},
-	"defaultSeverity": "warning"
+	"defaultSeverity": "warning",
+	"linterOptions": {
+		"exclude": [
+			"out"
+			, "node_modules/**"
+		]
+	}
 }

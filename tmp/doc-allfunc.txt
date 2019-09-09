@@ -1,0 +1,1200 @@
+Here are all the functions provided by the main Tidal library modules.
+
+This is mainly intended as a guide for people helping document tidalcycles. Many of the following functions will be only for internal use and not of interest to end-user musicians, but there are some useful things here yet to be documented.
+
+= Sound.Tidal.Core =
+{| class="wikitable sortable"
+! Function
+! Type
+! Marked
+|-
+|<nowiki>#</nowiki>
+|<code>Sound.Tidal.Context.Unionable b => Pattern b -> Pattern b -> Pattern b</code>
+|-
+|<nowiki>%|</nowiki>
+|<code>Real a => Pattern a -> Pattern a -> Pattern a</code>
+|-
+|<nowiki>*|</nowiki>
+|<code>Num a => Pattern a -> Pattern a -> Pattern a</code>
+|-
+|<nowiki>+|</nowiki>
+|<code>Num a => Pattern a -> Pattern a -> Pattern a</code>
+|-
+|<nowiki>-|</nowiki>
+|<code>Num a => Pattern a -> Pattern a -> Pattern a</code>
+|-
+|<nowiki>/|</nowiki>
+|<code>Fractional a => Pattern a -> Pattern a -> Pattern a</code>
+|-
+|<nowiki><></nowiki>
+|<code>Pattern a -> Pattern a -> Pattern a</code>
+|-
+|<nowiki><|</nowiki>
+|<code>Sound.Tidal.Context.Unionable a => Pattern a -> Pattern a -> Pattern a</code>
+|-
+|<nowiki><~</nowiki>
+|<code>Pattern Time -> Pattern a -> Pattern a</code>
+|-
+|<nowiki>>|</nowiki>
+|<code>Sound.Tidal.Context.Unionable a => Pattern a -> Pattern a -> Pattern a</code>
+|-
+|[[_every]]
+|<code>Int -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[_every']]
+|<code>Int -> Int -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[_fast]]
+|<code>Time -> Pattern a -> Pattern a</code>
+|-
+|[[_run]]
+|<code>(Enum a, Num a) => a -> Pattern a</code>
+|-
+|[[_scan]]
+|<code>(Enum a, Num a) => a -> Pattern a</code>
+|-
+|[[_slow]]
+|<code>Time -> Pattern a -> Pattern a</code>
+|-
+|[[append]]
+|<code>Pattern a -> Pattern a -> Pattern a</code>
+|-
+|[[cat]]
+|<code>[Pattern a] -> Pattern a</code>
+|-
+|[[compress]]
+|<code>Arc -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[compressTo]]
+|<code>Arc -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[cosine]]
+|<code>Fractional a => Pattern a</code>
+| TODO
+|-
+|[[density]]
+|<code>Pattern Time -> Pattern a -> Pattern a</code>
+|-
+|[[densityGap]]
+|<code>Pattern Time -> Pattern a -> Pattern a</code>
+|-
+|[[envEq]]
+|<code>Pattern Double</code>
+| TODO
+|-
+|[[envEqR]]
+|<code>Pattern Double</code>
+| TODO
+|-
+|[[envL]]
+|<code>Pattern Double</code>
+| TODO
+|-
+|[[envLR]]
+|<code>Pattern Double</code>
+| TODO
+|-
+|[[every]]
+|<code>Pattern Int -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[every']]
+|<code>Pattern Int -> Pattern Int -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[fast]]
+|<code>Pattern Time -> Pattern a -> Pattern a</code>
+|-
+|[[fastAppend]]
+|<code>Pattern a -> Pattern a -> Pattern a</code>
+|-
+|[[fastCat]]
+|<code>[Pattern a] -> Pattern a</code>
+|-
+|[[fastFromList]]
+|<code>[a] -> Pattern a</code>
+| TODO
+|-
+|[[fastGap]]
+|<code>Pattern Time -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[fastRepeatCycles]]
+|<code>Int -> Pattern a -> Pattern a</code>
+|-
+|[[fastSqueeze]]
+|<code>Pattern Time -> Pattern a -> Pattern a</code>
+|-
+|[[fastcat]]
+|<code>[Pattern a] -> Pattern a</code>
+|-
+|[[foldEvery]]
+|<code>[Int] -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[fromList]]
+|<code>[a] -> Pattern a</code>
+| TODO
+|-
+|[[fromMaybes]]
+|<code>[Maybe a] -> Pattern a</code>
+|-
+|[[isaw]]
+|<code>(Fractional a, Real a) => Pattern a</code>
+| TODO
+|-
+|[[listToPat]]
+|<code>[a] -> Pattern a</code>
+|-
+|[[overlay]]
+|<code>Pattern a -> Pattern a -> Pattern a</code>
+|-
+|[[repeatCycles]]
+|<code>Int -> Pattern a -> Pattern a</code>
+|-
+|[[rev]]
+|<code>Pattern a -> Pattern a</code>
+|-
+|[[run]]
+|<code>(Enum a, Num a) => Pattern a -> Pattern a</code>
+|-
+|[[saw]]
+|<code>(Fractional a, Real a) => Pattern a</code>
+| TODO
+|-
+|[[scan]]
+|<code>(Enum a, Num a) => Pattern a -> Pattern a</code>
+|-
+|[[sig]]
+|<code>(Time -> a) -> Pattern a</code>
+| TODO
+|-
+|[[silence]]
+|<code>Pattern a</code>
+| TODO
+|-
+|[[sine]]
+|<code>Fractional a => Pattern a</code>
+| TODO
+|-
+|[[slow]]
+|<code>Pattern Time -> Pattern a -> Pattern a</code>
+|-
+|[[slowAppend]]
+|<code>Pattern a -> Pattern a -> Pattern a</code>
+|-
+|[[slowCat]]
+|<code>[Pattern a] -> Pattern a</code>
+|-
+|[[slowSqueeze]]
+|<code>Pattern Time -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[slowcat]]
+|<code>[Pattern a] -> Pattern a</code>
+|-
+|[[sparsity]]
+|<code>Pattern Time -> Pattern a -> Pattern a</code>
+|-
+|[[square]]
+|<code>(Fractional a, Real a) => Pattern a</code>
+| TODO
+|-
+|[[stack]]
+|<code>[Pattern a] -> Pattern a</code>
+|-
+|[[timeCat]]
+|<code>[(Time, Pattern a)] -> Pattern a</code>
+| TODO
+|-
+|[[tri]]
+|<code>(Fractional a, Real a) => Pattern a</code>
+| TODO
+|-
+|[[when]]
+|<code>(Int -> Bool) -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[whenT]]
+|<code>(Time -> Bool) -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[zoom]]
+|<code>Arc -> Pattern a -> Pattern a</code>
+|-
+|<nowiki>|%</nowiki>
+|<code>Real a => Pattern a -> Pattern a -> Pattern a</code>
+|-
+|<nowiki>|%|</nowiki>
+|<code>(Applicative a, Real b) => a b -> a b -> a b</code>
+|-
+|<nowiki>|*</nowiki>
+|<code>Num a => Pattern a -> Pattern a -> Pattern a</code>
+|-
+|<nowiki>|*|</nowiki>
+|<code>(Applicative a, Num b) => a b -> a b -> a b</code>
+|-
+|<nowiki>|+</nowiki>
+|<code>Num a => Pattern a -> Pattern a -> Pattern a</code>
+|-
+|<nowiki>|+|</nowiki>
+|<code>(Applicative a, Num b) => a b -> a b -> a b</code>
+|-
+|<nowiki>|-</nowiki>
+|<code>Num a => Pattern a -> Pattern a -> Pattern a</code>
+|-
+|<nowiki>|-|</nowiki>
+|<code>(Applicative a, Num b) => a b -> a b -> a b</code>
+|-
+|<nowiki>|/</nowiki>
+|<code>Fractional a => Pattern a -> Pattern a -> Pattern a</code>
+|-
+|<nowiki>|/|</nowiki>
+|<code>(Applicative a, Fractional b) => a b -> a b -> a b</code>
+|-
+|<nowiki>|<</nowiki>
+|<code>Sound.Tidal.Context.Unionable a => Pattern a -> Pattern a -> Pattern a</code>
+|-
+|<nowiki>|<|</nowiki>
+|<code>(Applicative a, Sound.Tidal.Context.Unionable b) => a b -> a b -> a b</code>
+|-
+|<nowiki>|></nowiki>
+|<code>Sound.Tidal.Context.Unionable a => Pattern a -> Pattern a -> Pattern a</code>
+|-
+|<nowiki>|>|</nowiki>
+|<code>(Applicative a, Sound.Tidal.Context.Unionable b) => a b -> a b -> a b</code>
+|-
+|<nowiki>~></nowiki>
+|<code>Pattern Time -> Pattern a -> Pattern a</code>
+|}
+
+= Sound.Tidal.Control =
+{| class="wikitable sortable"
+! Function
+! Type
+! Marked
+|-
+|[[_cF]]
+|<code>[Double] -> String -> Pattern Double</code>
+|-
+|[[_cP]]
+|<code>(Enumerable a, Parseable a) => [Pattern a] -> String -> Pattern a</code>
+|-
+|[[_cS]]
+|<code>[String] -> String -> Pattern String</code>
+|-
+|[[_cX]]
+|<code>(Arc -> Value -> [Event a]) -> [a] -> String -> Pattern a</code>
+|-
+|[[_chop]]
+|<code>Int -> ControlPattern -> ControlPattern</code>
+|-
+|[[_gap]]
+|<code>Int -> ControlPattern -> ControlPattern</code>
+|-
+|[[_slice]]
+|<code>Int -> Int -> ControlPattern -> ControlPattern</code>
+|-
+|[[_spin]]
+|<code>Int -> ControlPattern -> ControlPattern</code>
+|-
+|[[_striate]]
+|<code>Int -> ControlPattern -> ControlPattern</code>
+|-
+|[[_striateBy]]
+|<code>Int -> Double -> ControlPattern -> ControlPattern</code>
+|-
+|[[_stut]]
+|<code>Integer -> Double -> Rational -> ControlPattern -> ControlPattern</code>
+|-
+|[[_stutWith]]
+|<code>(Num n, Ord n) => n -> Time -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[cF]]
+|<code>Double -> String -> Pattern Double</code>
+|-
+|[[cF0]]
+|<code>String -> Pattern Double</code>
+|-
+|[[cF_]]
+|<code>String -> Pattern Double</code>
+| TODO
+|-
+|[[cI]]
+|<code>String -> Pattern Int</code>
+| TODO
+|-
+|[[cP]]
+|<code>(Enumerable a, Parseable a) => Pattern a -> String -> Pattern a</code>
+| TODO
+|-
+|[[cP_]]
+|<code>(Enumerable a, Parseable a) => String -> Pattern a</code>
+| TODO
+|-
+|[[cR]]
+|<code>Time -> String -> Pattern Rational</code>
+| TODO
+|-
+|[[cR0]]
+|<code>String -> Pattern Time</code>
+| TODO
+|-
+|[[cR_]]
+|<code>String -> Pattern Time</code>
+| TODO
+|-
+|[[cS]]
+|<code>String -> String -> Pattern String</code>
+| TODO
+|-
+|[[cS_]]
+|<code>String -> Pattern String</code>
+| TODO
+|-
+|[[cT]]
+|<code>Time -> String -> Pattern Time</code>
+| TODO
+|-
+|[[cT0]]
+|<code>String -> Pattern Time</code>
+| TODO
+|-
+|[[cT_]]
+|<code>String -> Pattern Time</code>
+| TODO
+|-
+|[[chop]]
+|<code>Pattern Int -> ControlPattern -> ControlPattern</code>
+|-
+|[[chopArc]]
+|<code>Arc -> Int -> [Arc]</code>
+|-
+|[[gap]]
+|<code>Pattern Int -> ControlPattern -> ControlPattern</code>
+|-
+|[[hurry]]
+|<code>Pattern Rational -> ControlPattern -> ControlPattern</code>
+|-
+|[[in0]]
+|<code>Pattern Double</code>
+|-
+|[[in1]]
+|<code>Pattern Double</code>
+| TODO
+|-
+|... up to ...
+|
+|-
+|[[in127]]
+|<code>Pattern Double</code>
+| TODO
+|-
+|[[interlace]]
+|<code>ControlPattern -> ControlPattern -> ControlPattern</code>
+|-
+|[[loopAt]]
+|<code>Pattern Time -> ControlPattern -> ControlPattern</code>
+|-
+|[[mergePlayRange]]
+|<code>(Double, Double) -> ControlMap -> ControlMap</code>
+|-
+|[[randslice]]
+|<code>Int -> ControlPattern -> ControlPattern</code>
+| TODO
+|-
+|[[slice]]
+|<code>Pattern Int -> Pattern Int -> ControlPattern -> ControlPattern</code>
+| TODO
+|-
+|[[smash]]
+|<code>Pattern Int -> [Pattern Time] -> ControlPattern -> Pattern ControlMap</code>
+|-
+|[[smash']]
+|<code>Int -> [Pattern Time] -> ControlPattern -> Pattern ControlMap</code>
+|-
+|[[spin]]
+|<code>Pattern Int -> ControlPattern -> ControlPattern</code>
+|-
+|[[striate]]
+|<code>Pattern Int -> ControlPattern -> ControlPattern</code>
+|-
+|[[striate']]
+|<code>Pattern Int -> Pattern Double -> ControlPattern -> ControlPattern</code>
+|-
+|[[striateBy]]
+|<code>Pattern Int -> Pattern Double -> ControlPattern -> ControlPattern</code>
+|-
+|[[stut]]
+|<code>Pattern Integer -> Pattern Double -> Pattern Rational -> ControlPattern -> ControlPattern</code>
+|-
+|[[stut']]
+|<code>Pattern Int -> Pattern Time -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[stutWith]]
+|<code>Pattern Int -> Pattern Time -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[weave]]
+|<code>Time -> ControlPattern -> [ControlPattern] -> ControlPattern</code>
+|-
+|[[weave']]
+|<code>Time -> Pattern a -> [Pattern a -> Pattern a] -> Pattern a</code>
+|-
+|[[weaveWith]]
+|<code>Time -> Pattern a -> [Pattern a -> Pattern a] -> Pattern a</code>
+|}
+
+= Sound.Tidal.UI =
+
+{|  class="wikitable sortable"
+! Function
+! Type
+! Marked
+|-
+|[[_degradeBy]]
+|<code>Double -> Pattern a -> Pattern a</code>
+|-
+|[[_distrib]]
+|<code>[Int] -> Pattern a -> Pattern a</code>
+|-
+|[[_euclid]]
+|<code>Int -> Int -> Pattern a -> Pattern a</code>
+|-
+|[[_euclid']]
+|<code>Int -> Int -> Pattern a -> Pattern a</code>
+|-
+|[[_euclidBool]]
+|<code>Int -> Int -> Pattern Bool</code>
+|-
+|[[_euclidFull]]
+|<code>Int -> Int -> Pattern a -> Pattern a -> Pattern a</code>
+|-
+|[[_euclidInv]]
+|<code>Int -> Int -> Pattern a -> Pattern a</code>
+|-
+|[[_euclidOff]]
+|<code>Int -> Int -> Integer -> Pattern a -> Pattern a</code>
+|-
+|[[_euclidOffBool]]
+|<code>Int -> Int -> Integer -> Pattern Bool -> Pattern Bool</code>
+|-
+|[[_iter]]
+|<code>Int -> Pattern a -> Pattern a</code>
+|-
+|[[_iter']]
+|<code>Int -> Pattern a -> Pattern a</code>
+|-
+|[[_linger]]
+|<code>Time -> Pattern a -> Pattern a</code>
+|-
+|[[_off]]
+|<code>Time -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[_ply]]
+|<code>Int -> Pattern a -> Pattern a</code>
+|-
+|[[_range]]
+|<code>(Functor f, Num b) => b -> b -> f b -> f b</code>
+|-
+|[[_rot]]
+|<code>Ord a => Int -> Pattern a -> Pattern a</code>
+|-
+|[[_segment]]
+|<code>Time -> Pattern a -> Pattern a</code>
+|-
+|[[_select]]
+|<code>Double -> [Pattern a] -> Pattern a</code>
+|-
+|[[_stripe]]
+|<code>Int -> Pattern a -> Pattern a</code>
+|-
+|[[_trunc]]
+|<code>Time -> Pattern a -> Pattern a</code>
+|-
+|[[_unDegradeBy]]
+|<code>Double -> Pattern a -> Pattern a</code>
+|-
+|[[almostAlways]]
+|<code>(Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[almostNever]]
+|<code>(Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[always]]
+|<code>(Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[arpeggiate]]
+|<code>Pattern a -> Pattern a</code>
+|-
+|[[arpg]]
+|<code>Pattern a -> Pattern a</code>
+|-
+|[[brak]]
+|<code>Pattern a -> Pattern a</code>
+|-
+|[[choose]]
+|<code>[a] -> Pattern a</code>
+|-
+|[[chooseBy]]
+|<code>Pattern Double -> [a] -> Pattern a</code>
+|-
+|[[chunk]]
+|<code>Integer -> (Pattern b -> Pattern b) -> Pattern b -> Pattern b</code>
+| TODO
+|-
+|[[chunk']]
+|<code>Integral a => a -> (Pattern b -> Pattern b) -> Pattern b -> Pattern b</code>
+|-
+|[[contrast]]
+|<code>(ControlPattern -> ControlPattern) -> (ControlPattern -> ControlPattern) -> ControlPattern -> ControlPattern -> ControlPattern</code>
+| TODO
+|-
+|[[contrastBy]]
+|<code>(a -> Value -> Bool) -> (ControlPattern -> Pattern b) -> (ControlPattern -> Pattern b) -> Pattern (containers-0.5.7.1:Data.Map.Base.Map String a) -> Pattern (containers-0.5.7.1:Data.Map.Base.Map String Value) -> Pattern b</code>
+| TODO
+|-
+|[[contrastRange]]
+|<code>(ControlPattern -> Pattern a) -> (ControlPattern -> Pattern a) -> Pattern (containers-0.5.7.1:Data.Map.Base.Map String (Value, Value)) -> ControlPattern -> Pattern a</code>
+| TODO
+|-
+|[[cycleChoose]]
+|<code>[a] -> Pattern a</code>
+| TODO
+|-
+|[[degrade]]
+|<code>Pattern a -> Pattern a</code>
+|-
+|[[degradeBy]]
+|<code>Pattern Double -> Pattern a -> Pattern a</code>
+|-
+|[[degradeOverBy]]
+|<code>Int -> Pattern Double -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[discretise]]
+|<code>Pattern Time -> Pattern a -> Pattern a</code>
+|-
+|[[distrib]]
+|<code>[Pattern Int] -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[double]]
+|<code>Time -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[echo]]
+|<code>Time -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[enclosingArc]]
+|<code>[Arc] -> Arc</code>
+|-
+|[[euclid]]
+|<code>Pattern Int -> Pattern Int -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[euclidFull]]
+|<code>Pattern Int -> Pattern Int -> Pattern a -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[euclidInv]]
+|<code>Pattern Int -> Pattern Int -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[euclidOff]]
+|<code>Pattern Int -> Pattern Int -> Pattern Integer -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[euclidOffBool]]
+|<code>Pattern Int -> Pattern Int -> Pattern Integer -> Pattern Bool -> Pattern Bool</code>
+| TODO
+|-
+|[[fadeIn]]
+|<code>Time -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[fadeInFrom]]
+|<code>Time -> Time -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[fadeOut]]
+|<code>Time -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[fadeOutFrom]]
+|<code>Time -> Time -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[fastspread]]
+|<code>(a -> t -> Pattern b) -> [a] -> t -> Pattern b</code>
+| TODO
+|-
+|[[fit]]
+|<code>Int -> [a] -> Pattern Int -> Pattern a</code>
+|-
+|[[fit']]
+|<code>Pattern Time -> Int -> Pattern Int -> Pattern Int -> Pattern a -> Pattern a</code>
+|-
+|[[fix]]
+|<code>(ControlPattern -> ControlPattern) -> ControlPattern -> ControlPattern -> ControlPattern</code>
+|-
+|[[fixRange]]
+|<code>(ControlPattern -> Pattern ControlMap) -> Pattern (containers-0.5.7.1:Data.Map.Base.Map String (Value, Value)) -> ControlPattern -> Pattern ControlMap</code>
+| TODO
+|-
+|[[flatpat]]
+|<code>Pattern [a] -> Pattern a</code>
+| TODO
+|-
+|[[ghost]]
+|<code>Pattern ControlMap -> Pattern ControlMap</code>
+| TODO
+|-
+|[[ghost']]
+|<code>Time -> Pattern ControlMap -> Pattern ControlMap</code>
+|-
+|[[ghost'']]
+|<code>Time -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[ifp]]
+|<code>(Int -> Bool) -> (Pattern a -> Pattern a) -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[index]]
+|<code>Real b => b -> Pattern b -> Pattern c -> Pattern c</code>
+| TODO
+|-
+|[[inhabit]]
+|<code>[(String, Pattern a)] -> Pattern String -> Pattern a</code>
+| TODO
+|-
+|[[inside]]
+|<code>Pattern Time -> (Pattern a1 -> Pattern a) -> Pattern a1 -> Pattern a</code>
+| TODO
+|-
+|[[inv]]
+|<code>Functor f => f Bool -> f Bool</code>
+| TODO
+|-
+|[[irand]]
+|<code>Num a => Int -> Pattern a</code>
+|-
+|[[iter]]
+|<code>Pattern Int -> Pattern c -> Pattern c</code>
+|-
+|[[iter']]
+|<code>Pattern Int -> Pattern c -> Pattern c</code>
+|-
+|[[jux]]
+|<code>(Pattern ControlMap -> Pattern ControlMap) -> Pattern ControlMap -> Pattern ControlMap</code>
+|-
+|[[jux']]
+|<code>[t -> Pattern ControlMap] -> t -> Pattern ControlMap</code>
+| TODO
+|-
+|[[jux4]]
+|<code>(Pattern ControlMap -> Pattern ControlMap) -> Pattern ControlMap -> Pattern ControlMap</code>
+| remove?
+|-
+|[[juxBy]]
+|<code>Pattern Double -> (Pattern ControlMap -> Pattern ControlMap) -> Pattern ControlMap -> Pattern ControlMap</code>
+|-
+|[[juxcut]]
+|<code>(Pattern ControlMap -> Pattern ControlMap) -> Pattern ControlMap -> Pattern ControlMap</code>
+| TODO
+|-
+|[[juxcut']]
+|<code>[t -> Pattern ControlMap] -> t -> Pattern ControlMap</code>
+|-
+|[[layer]]
+|<code>[a -> Pattern b] -> a -> Pattern b</code>
+|-
+|[[lindenmayer]]
+|<code>Int -> String -> String -> String</code>
+| TODO
+|-
+|[[lindenmayerI]]
+|<code>Num b => Int -> String -> String -> [b]</code>
+|-
+|[[linger]]
+|<code>Pattern Time -> Pattern a -> Pattern a</code>
+|-
+|[[loopFirst]]
+|<code>Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[mask]]
+|<code>Pattern Bool -> Pattern a -> Pattern a</code>
+|-
+|[[never]]
+|<code>(Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[off]]
+|<code>Pattern Time -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[offadd]]
+|<code>Num a => Pattern Time -> Pattern a -> Pattern a -> Pattern a</code>
+| deprecate?
+|-
+|[[often]]
+|<code>(Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[outside]]
+|<code>Pattern Time -> (Pattern a1 -> Pattern a) -> Pattern a1 -> Pattern a</code>
+| TODO
+|-
+|[[palindrome]]
+|<code>Pattern a -> Pattern a</code>
+|-
+|[[parseLMRule]]
+|<code>String -> [(String, String)]</code>
+| TODO
+|-
+|[[parseLMRule']]
+|<code>String -> [(Char, String)]</code>
+|-
+|[[permstep]]
+|<code>RealFrac b => Int -> [a] -> Pattern b -> Pattern a</code>
+|-
+|[[pick]]
+|<code>String -> Int -> String</code>
+|deprecate?
+|-
+|[[ply]]
+|<code>Pattern Int -> Pattern a -> Pattern a</code>
+|-
+|[[quad]]
+|<code>Time -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[quantise]]
+|<code>(Functor f, RealFrac b) => b -> f b -> f b</code>
+| TODO
+|-
+|[[rand]]
+|<code>Fractional a => Pattern a</code>
+|-
+|[[randArcs]]
+|<code>Int -> Pattern [Arc]</code>
+| TODO
+|-
+|[[randStruct]]
+|<code>Int -> Pattern Int</code>
+| TODO
+|-
+|[[randcat]]
+|<code>[Pattern a] -> Pattern a</code>
+|-
+|[[range]]
+|<code>Num a => Pattern a -> Pattern a -> Pattern a -> Pattern a</code>
+|-
+|[[rangex]]
+|<code>(Functor f, Floating b) => b -> b -> f b -> f b</code>
+|-
+|[[rarely]]
+|<code>(Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[revArc]]
+|<code>Arc -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[rot]]
+|<code>Ord a => Pattern Int -> Pattern a -> Pattern a</code>
+|-
+|[[runWith]]
+|<code>Integer -> (Pattern b -> Pattern b) -> Pattern b -> Pattern b</code>
+| TODO
+|-
+|[[runWith']]
+|<code>Integral a => a -> (Pattern b -> Pattern b) -> Pattern b -> Pattern b</code>
+|-
+|[[samples]]
+|<code>Applicative f => f String -> f Int -> f String</code>
+| deprecate?
+|-
+|[[samples']]
+|<code>Applicative f => f String -> f Int -> f String</code>
+|-
+|[[scramble]]
+|<code>Int -> Pattern a -> Pattern a</code>
+|-
+|[[segment]]
+|<code>Pattern Time -> Pattern a -> Pattern a</code>
+|-
+|[[select]]
+|<code>Pattern Double -> [Pattern a] -> Pattern a</code>
+|-
+|[[seqP]]
+|<code>[(Time, Time, Pattern a)] -> Pattern a</code>
+|-
+|[[seqPLoop]]
+|<code>[(Time, Time, Pattern a)] -> Pattern a</code>
+|-
+|[[sew]]
+|<code>Pattern Bool -> Pattern a -> Pattern a -> Pattern a</code>
+|-
+|[[shuffle]]
+|<code>Int -> Pattern a -> Pattern a</code>
+|-
+|[[slowspread]]
+|<code>(a -> t -> Pattern b) -> [a] -> t -> Pattern b</code>
+| TODO
+|-
+|[[slowstripe]]
+|<code>Pattern Int -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[someCycles]]
+|<code>(Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[someCyclesBy]]
+|<code>Double -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[somecycles]]
+|<code>(Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[somecyclesBy]]
+|<code>Double -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[sometimes]]
+|<code>(Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[sometimesBy]]
+|<code>Pattern Double -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[spaceOut]]
+|<code>[Time] -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[spread]]
+|<code>(a -> t -> Pattern b) -> [a] -> t -> Pattern b</code>
+| TODO
+|-
+|[[spread']]
+|<code>Monad m => (a -> b -> m c) -> m a -> b -> m c</code>
+|-
+|[[spreadChoose]]
+|<code>(t -> t1 -> Pattern b) -> [t] -> t1 -> Pattern b</code>
+| TODO
+|-
+|[[spreadf]]
+|<code>[a -> Pattern b] -> a -> Pattern b</code>
+| TODO
+|-
+|[[spreadr]]
+|<code>(t -> t1 -> Pattern b) -> [t] -> t1 -> Pattern b</code>
+| TODO
+|-
+|[[stackwith]]
+|<code>Sound.Tidal.Context.Unionable a => Pattern a -> [Pattern a] -> Pattern a</code>
+| TODO
+|-
+|[[step]]
+|<code>String -> String -> Pattern String</code>
+| TODO
+|-
+|[[step']]
+|<code>[String] -> String -> Pattern String</code>
+|-
+|[[steps]]
+|<code>[(String, String)] -> Pattern String</code>
+| TODO
+|-
+|[[stretch]]
+|<code>Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[stripe]]
+|<code>Pattern Int -> Pattern a -> Pattern a</code>
+|-
+|[[struct]]
+|<code>Pattern Bool -> Pattern a -> Pattern a</code>
+|-
+|[[stutter]]
+|<code>Integral i => i -> Time -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[substruct]]
+|<code>Pattern String -> Pattern b -> Pattern b</code>
+| TODO
+|-
+|[[substruct']]
+|<code>Pattern Int -> Pattern a -> Pattern a</code>
+|-
+|[[superimpose]]
+|<code>(Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[swing]]
+|<code>Pattern Time -> Pattern a -> Pattern a</code>
+|-
+|[[swingBy]]
+|<code>Pattern Time -> Pattern Time -> Pattern a -> Pattern a</code>
+|-
+|[[tabby]]
+|<code>Integer -> Pattern a -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[timeLoop]]
+|<code>Pattern Time -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[timeToRand]]
+|<code>RealFrac a => a -> Double</code>
+| TODO
+|-
+|[[toScale]]
+|<code>Num a => [a] -> Pattern Int -> Pattern a</code>
+| TODO
+|-
+|[[toScale']]
+|<code>Num a => Int -> [a] -> Pattern Int -> Pattern a</code>
+|-
+|[[triple]]
+|<code>Time -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[trunc]]
+|<code>Pattern Time -> Pattern a -> Pattern a</code>
+|-
+|[[unDegradeBy]]
+|<code>Pattern Double -> Pattern a -> Pattern a</code>
+| TODO
+|-
+|[[unfix]]
+|<code>(ControlPattern -> ControlPattern) -> ControlPattern -> ControlPattern -> ControlPattern</code>
+| TODO
+|-
+|[[unfixRange]]
+|<code>(ControlPattern -> Pattern ControlMap) -> Pattern(containers-0.5.7.1:Data.Map.Base.Map String (Value, Value)) -> ControlPattern -> Pattern ControlMap</code>
+| TODO
+|-
+|[[unwrap']]
+|<code>Pattern (Pattern a) -> Pattern a</code>
+|-
+|[[ur]]
+|<code>Time -> Pattern String -> [(String, Pattern a)] -> [(String, Pattern a -> Pattern a)] -> Pattern a</code>
+|-
+|[[wchoose]]
+|<code>[(a, Double)] -> Pattern a</code>
+|-
+|[[wchooseBy]]
+|<code>Pattern Double -> [(a, Double)] -> Pattern a</code>
+|-
+|[[wedge]]
+|<code>Time -> Pattern a -> Pattern a -> Pattern a</code>
+|-
+|[[whenmod]]
+|<code>Int -> Int -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[within]]
+|<code>Arc -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|-
+|[[within']]
+|<code>Arc -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a</code>
+|}
+
+
+= Sound.Tidal.Pattern =
+
+I think all the below are fine as 'internal use only' [[User:Yaxu|Yaxu]] ([[User talk:Yaxu|talk]]) 21:33, 5 December 2018 (UTC)
+
+{| class="wikitable sortable"
+! Function
+! Type
+! Marked
+|-
+|(*>)
+|<code>Pattern (a -> b) -> Pattern a -> Pattern b</code>
+|-
+|(<*)
+|<code>Pattern (a -> b) -> Pattern a -> Pattern b</code>
+|-
+|[[__compress]]
+|<code>Arc -> Pattern a -> Pattern a</code>
+|-
+|[[__compressTo]]
+|<code>Arc -> Pattern a -> Pattern a</code>
+|-
+|[[_fastGap]]
+|<code>Time -> Pattern a -> Pattern a</code>
+|-
+|[[applyFIS]]
+|<code>(Double -> Double) -> (Int -> Int) -> (String -> String) -> Value -> Value</code>
+|-
+|[[arcCycles]]
+|<code>Arc -> [Arc]</code>
+|-
+|[[arcCyclesZW]]
+|<code>Arc -> [Arc]</code>
+|-
+|[[compareDefrag]]
+|<code>(Eq a, Ord a) => [Event a] -> [Event a] -> Bool</code>
+|-
+|[[cycleArcsInArc]]
+|<code>Arc -> [Arc]</code>
+|-
+|[[cyclePos]]
+|<code>Time -> Time</code>
+|-
+|[[cyclesInArc]]
+|<code>Integral a => Arc -> [a]</code>
+|-
+|[[defragParts]]
+|<code>Eq a => [Event a] -> [Event a]</code>
+|-
+|[[empty]]
+|<code>Pattern a</code>
+|-
+|[[eventHasOnset]]
+|<code>Event a -> Bool</code>
+|-
+|[[eventPart]]
+|<code>Event a -> Arc</code>
+|-
+|[[eventValue]]
+|<code>Event a -> a</code>
+|-
+|[[eventWhole]]
+|<code>Event a -> Arc</code>
+|-
+|[[eventWholeOnset]]
+|<code>Event a -> Time</code>
+|-
+|[[fNum2]]
+|<code>(Int -> Int -> Int) -> (Double -> Double -> Double) -> Value -> Value -> Value</code>
+|-
+|[[filterJust]]
+|<code>Pattern (Maybe a) -> Pattern a</code>
+|-
+|[[filterValues]]
+|<code>(a -> Bool) -> Pattern a -> Pattern a</code>
+|-
+|[[filterWhen]]
+|<code>(Time -> Bool) -> Pattern a -> Pattern a</code>
+|-
+|[[getF]]
+|<code>Value -> Maybe Double</code>
+|-
+|[[getI]]
+|<code>Value -> Maybe Int</code>
+|-
+|[[getS]]
+|<code>Value -> Maybe String</code>
+|-
+|[[innerJoin]]
+|<code>Pattern (Pattern a) -> Pattern a</code>
+|-
+|[[isAdjacent]]
+|<code>Eq a => Event a -> Event a -> Bool</code>
+|-
+|[[isAnalog]]
+|<code>Pattern a -> Bool</code>
+|-
+|[[isDigital]]
+|<code>Pattern a -> Bool</code>
+|-
+|[[isIn]]
+|<code>Arc -> Time -> Bool</code>
+|-
+|[[mapArc]]
+|<code>(Time -> Time) -> Arc -> Arc</code>
+|-
+|[[mapCycle]]
+|<code>(Time -> Time) -> Arc -> Arc</code>
+|-
+|[[matchManyToOne]]
+|<code></code>  (b -> a -> Bool) -> Pattern a -> Pattern b -> Pattern (Bool, b)
+|-
+|[[nextSam]]
+|<code>Time -> Time</code>
+|-
+|[[noOv]]
+|<code>String -> a</code>
+|-
+|[[onsetIn]]
+|<code>Arc -> Event a -> Bool</code>
+|-
+|[[outerJoin]]
+|<code>Pattern (Pattern a) -> Pattern a</code>
+|-
+|[[playFor]]
+|<code>Time -> Time -> Pattern a -> Pattern a</code>
+|-
+|[[prettyRat]]
+|<code>Rational -> String</code>
+|-
+|[[queryArc]]
+|<code>Pattern a -> Arc -> [Event a]</code>
+|-
+|[[rotL]]
+|<code>Time -> Pattern a -> Pattern a</code>
+|-
+|[[rotR]]
+|<code>Time -> Pattern a -> Pattern a</code>
+|-
+|[[sam]]
+|<code>Time -> Time</code>
+|-
+|[[showFrac]]
+|<code>Integer -> Integer -> String</code>
+|-
+|[[showPattern]]
+|<code>Show a => Arc -> Pattern a -> String</code>
+|-
+|[[splitQueries]]
+|<code>Pattern a -> Pattern a</code>
+|-
+|[[subArc]]
+|<code>Arc -> Arc -> Maybe Arc</code>
+|-
+|[[tParam]]
+|<code>(t1 -> t2 -> Pattern a) -> Pattern t1 -> t2 -> Pattern a</code>
+|-
+|[[tParam2]]
+|<code>(a -> b -> c -> Pattern d) -> Pattern a -> Pattern b -> c -> Pattern d</code>
+|-
+|[[tParam3]]
+|<code>(a -> b -> c -> Pattern d -> Pattern e) -> Pattern a -> Pattern b -> Pattern c -> Pattern d -> Pattern e</code>
+|-
+|[[tParamSqueeze]]
+|<code>(a -> Pattern b -> Pattern c) -> Pattern a -> Pattern b -> Pattern c</code>
+|-
+|[[timeToCycleArc]]
+|<code>Time -> Arc</code>
+|-
+|[[toTime]]
+|<code>Real a => a -> Rational</code>
+|-
+|[[unwrap]]
+|<code>Pattern (Pattern a) -> Pattern a</code>
+|-
+|[[unwrapSqueeze]]
+|<code>Pattern (Pattern a) -> Pattern a</code>
+|-
+|[[withEvent]]
+|<code>(Event a -> Event b) -> Pattern a -> Pattern b</code>
+|-
+|[[withEvents]]
+|<code>([Event a] -> [Event b]) -> Pattern a -> Pattern b</code>
+|-
+|[[withPart]]
+|<code>(Arc -> Arc) -> Pattern a -> Pattern a</code>
+|-
+|[[withQueryArc]]
+|<code>(Arc -> Arc) -> Pattern a -> Pattern a</code>
+|-
+|[[withQueryTime]]
+|<code>(Time -> Time) -> Pattern a -> Pattern a</code>
+|-
+|[[withResultArc]]
+|<code>(Arc -> Arc) -> Pattern a -> Pattern a</code>
+|-
+|[[withResultTime]]
+|<code>(Time -> Time) -> Pattern a -> Pattern a</code>
+|}
+
+= How the above lists were made =
+
+The ghci <code>:browse</code> command, some by-hand fixing up (removing stray carriage returns), and the following perl one-liner: <source lang="shell">perl -pe 's!(.*?)\s*::\s*(.*)!|-\n|[[$1]]\n|<code>$2</code>!'</source>
+
+
+[[Category:Functions]]
+[[Category:Reference]]

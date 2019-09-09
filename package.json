@@ -8,7 +8,7 @@
     "repository": "https://github.com/tidalcycles/vscode-tidalcycles",
     "license": "GPL-3.0",
     "engines": {
-        "vscode": "^1.23.0"
+        "vscode": "^1.30.0"
     },
     "categories": [
         "Other"
@@ -27,7 +27,9 @@
         "onCommand:tidal.shortcut.no7",
         "onCommand:tidal.shortcut.no8",
         "onCommand:tidal.shortcut.no9",
-        "onLanguage:haskell"
+        "onLanguage:haskell",
+        "onView:tidalcycles-soundbrowser-sounds",
+        "onView:tidalcycles-soundbrowser"
     ],
     "main": "./out/src/main",
     "contributes": {
@@ -100,6 +102,42 @@
                 "command": "tidal.shortcut.no9",
                 "title": "Tidal Shortcut #9",
                 "category": "Tidal Shortcuts"
+            },
+            {
+                "command": "tidalcycles.sounds.play",
+                "title": "Play a sound file",
+                "category": "Tidal Sounds",
+                "icon": {
+                    "dark": "images/material-icons/play.svg",
+                    "light": "images/material-icons/play_lt.svg"
+                }
+            },
+            {
+                "command": "tidalcycles.sounds.copytoclipboard",
+                "title": "Copy sound name to clipboard", 
+                "category": "Tidal Sounds",
+                "icon": {
+                    "dark": "images/material-icons/clipboard.svg",
+                    "light": "images/material-icons/clipboard_lt.svg"
+                }
+            },
+            {
+                "command": "tidalcycles.sounds.insertineditor",
+                "title": "Insert sound name in editor", 
+                "category": "Tidal Sounds",
+                "icon": {
+                    "dark": "images/material-icons/arrowr.svg",
+                    "light": "images/material-icons/arrowr_lt.svg"
+                }
+            },
+            {
+                "command": "tidalcycles.sounds.stop",
+                "title": "Stop all sound previews",
+                "category": "Tidal Sounds",
+                "icon": {
+                    "dark": "images/material-icons/stop.svg",
+                    "light": "images/material-icons/stop_lt.svg"
+                }
             }
         ],
         "keybindings": [
@@ -114,6 +152,16 @@
             {
                 "command": "tidal.hush",
                 "key": "Ctrl+Alt+H"
+            },
+            {
+                "command": "tidalcycles.sounds.play",
+                "key": "Space",
+                "when": "listFocus && listHasSelectionOrFocus"
+            },
+            {
+                "command": "tidalcycles.sounds.stop"
+                , "key": "Escape"
+                , "when": "listFocus && listHasSelectionOrFocus"
             }
         ],
         "configuration": {
@@ -257,8 +305,65 @@
                         "Full"
                     ],
                     "description": "How much information to show for Tidal code completion info."
+                },
+                "tidalcycles.sounds.paths": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [
+                    ],
+                    "description": "Sound paths to display in the sound browser. Set this e.g. to your Dirt-Samples directory."
+                }, 
+                "tidalcycles.sounds.playonselection": {
+                    "type": "boolean"
+                    , "default": true
+                    , "description": "Play the sounds you click on. If you set this to false you have to explicitly click the play button in the sounds browser."
                 }
             }
+        },
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "tidalcycles",
+                    "title": "Tidal Cycles",
+                    "icon": "images/tidal.svg"
+                }
+            ]
+        },
+        "views": {
+            "tidalcycles": [
+                {
+                    "id": "tidalcycles-soundbrowser-sounds",
+                    "name": "Sounds"
+                }
+            ]
+        },
+        "menus": {
+            "view/title": [
+                {
+                    "command": "tidalcycles.sounds.stop"
+                    , "group": "navigation"
+                    , "when": "view == tidalcycles-soundbrowser-sounds"
+                }
+            ],
+            "view/item/context": [
+                {
+                    "command": "tidalcycles.sounds.insertineditor",
+                    "group": "inline@10",
+                    "when": "view == tidalcycles-soundbrowser-sounds && viewItem == sound || viewItem == dir"
+                },
+                {
+                    "command": "tidalcycles.sounds.copytoclipboard",
+                    "group": "inline@20",
+                    "when": "view == tidalcycles-soundbrowser-sounds && viewItem == sound || viewItem == dir"
+                },
+                {
+                    "command": "tidalcycles.sounds.play",
+                    "group": "inline@30",
+                    "when": "view == tidalcycles-soundbrowser-sounds && viewItem == sound"
+                }
+            ]
         }
     },
     "scripts": {
@@ -276,12 +381,14 @@
         "@types/split2": "^2.1.6",
         "chai": "^4.1.2",
         "mocha": "^5.2.0",
+        "tslint": "^5.19.0",
         "typemoq": "^2.1.0",
-        "typescript": "^3.1.1",
-        "vscode": "^1.1.24"
+        "typescript": "^3.6.2",
+        "vscode": "^1.1.30"
     },
     "dependencies": {
         "js-yaml": "^3.13.1",
+        "node-wav-player": "^0.1.0",
         "split2": "^3.0.0"
     }
 }

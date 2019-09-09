@@ -1,0 +1,178 @@
+{| class="wikitable"
+! Function name
+! Input type
+! Description
+|-
+|[[s]]
+|<code>Pattern String</code>
+|An alias of [[sound]]
+|-
+|[[n]]
+|<code>Pattern Double</code>
+|-
+|[[sound]]
+|<code>Pattern String</code>
+|Sounds - either sample sets or synth names. This control is *required* when triggering sounds via SuperDirt.
+|-
+|[[begin]]
+|<code>Pattern Double</code>
+|Starts sample playback some fraction from the beginning. 0.5 would start playback at the middle.
+|-
+|[[end]]
+|<code>Pattern Double</code>
+|Stops sample playback some fraction from the end. 0.5 would stop playback at the middle.
+|-
+|[[accelerate]]
+|<code>Pattern Double</code>
+|Speeds up (or slows down) samples while they play.
+|-
+|[[cps]]
+|<code>Pattern Double</code>
+|-
+|[[nudge]]
+|<code>Pattern Double</code>
+|-
+|[[unit]]
+|<code>Pattern String</code>
+|-
+|[[loop]]
+|<code>Pattern Double</code>
+|Specifies how many times to loop through the sample.
+|-
+|[[legato]]
+|<code>Pattern Double</code>
+|-
+|[[sustain]]
+|<code>Pattern Double</code>
+|-
+|[[gain]]
+|<code>Pattern Double</code>
+|Specifies volume. Values less than 1 make the sound quieter. Values greater than 1 make the sound louder.
+|-
+|[[channel]]
+|<code>Pattern Int</code>
+|-
+|[[pan]]
+|<code>Pattern Double</code>
+|Controls stereo position for playback. With the default two-channel setup, zero is left, one is right.
+|-
+|[[note]]
+|<code>Pattern Double</code>
+|-
+|[[freq]]
+|<code>Pattern Double</code>
+|-
+|[[midinote]]
+|<code>Pattern Double</code>
+|-
+|[[octave]]
+|<code>Pattern Int</code>
+|Sets where "middle" C is. Default is 5, so "n 0" corresponds to "midinote 60"
+|-
+|[[offset]]
+|<code>Pattern Double</code>
+|-
+|[[cut]]
+|<code>Pattern Int</code>
+|-
+|[[orbit]]
+|<code>Pattern Int</code>
+|-
+|[[shape]]
+|<code>Pattern Double</code>
+|Distorts the sound, has a maximum value of 1.
+|-
+|[[hcutoff]]
+|<code>Pattern Double</code>
+|Frequency in Hz for a high-pass filter.  Alias is "hpf".
+|-
+|[[hresonance]]
+|<code>Pattern Double</code>
+|Resonance for high-pass filter.  Alias is "hpq".
+|-
+|[[bandf]]
+|<code>Pattern Double</code>
+|-
+|[[bandq]]
+|<code>Pattern Double</code>
+|-
+|[[crush]]
+|<code>Pattern Double</code>
+|-
+|[[coarse]]
+|<code>Pattern Int</code>
+|-
+|[[cutoff]]
+|<code>Pattern Double</code>
+|-
+|[[attack]]
+|<code>Pattern Double</code>
+|-
+|[[release]]
+|<code>Pattern Double</code>
+|-
+|[[hold]]
+|<code>Pattern Double</code>
+|-
+|[[tremolorate]]
+|<code>Pattern Double</code>
+|-
+|[[tremolodepth]]
+|<code>Pattern Double</code>
+|-
+|[[phaserrate]]
+|<code>Pattern Double</code>
+|-
+|[[phaserdepth]]
+|<code>Pattern Double</code>
+|-
+|[[vowel]]
+|<code>Pattern String</code>
+|-
+|[[delaytime]]
+|<code>Pattern Double</code>
+|-
+|[[delayfeedback]]
+|<code>Pattern Double</code>
+|-
+|[[delayAmp]]
+|<code>Pattern Double</code>
+|''missing from params?''
+|-
+|[[delaySend]]
+|<code>Pattern Double</code>
+|''missing from params?''
+|-
+|[[lock]]
+|<code>Pattern Double</code>
+|1 to lock delay to cycles per second (cps) aka tempo sync so with <code># lock 1 # delayt 0.25</code> = 1/4 of cycle delay etc
+0 to leave in terms of seconds
+|-
+|[[size]]
+|<code>Pattern Double</code>
+|-
+|[[room]]
+|<code>Pattern Double</code>
+|-
+|[[dry]]
+|<code>Pattern Double</code>
+|-
+|[[leslie]]
+|<code>Pattern Double</code>
+|-
+|[[lrate]]
+|<code>Pattern Double</code>
+|-
+|[[lsize]]
+|<code>Pattern Double</code>
+|-
+|[[waveloss]]
+|<code>Pattern Double</code>
+|Drops samples n out of 100.
+|-
+|[[squiz]]
+|<code>Pattern Double</code>
+|A weird pitch-shifter. Accepts numbers over 1.
+|}
+[[Category:Control Functions]]
+[[Category:Functions]]

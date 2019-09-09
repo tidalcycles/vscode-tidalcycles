@@ -6,14 +6,16 @@ import { Ghci } from './ghci';
 import { Tidal } from './tidal';
 import { History } from './history';
 import { TidalLanguageHelpProvider } from './codehelp';
+import { SoundBrowserSoundsView } from './soundbrowser';
 
 export function activate(context: ExtensionContext) {
-    const config = new Config();
+    const config = new Config(context);
     const logger = new Logger(window.createOutputChannel('TidalCycles'));
 
     const ghci = new Ghci(logger, config.useStackGhci(), config.ghciPath(), config.showGhciOutput());
     const tidal = new Tidal(logger, ghci, config.bootTidalPath(), config.useBootFileInCurrentDirectory());
     const history = new History(logger, config);
+    const soundBrowser = new SoundBrowserSoundsView(config);
 
     const hoveAndMarkdownProvider = new TidalLanguageHelpProvider(context.extensionPath, config);
     
@@ -116,7 +118,10 @@ export function activate(context: ExtensionContext) {
         evalSingleCommand, evalMultiCommand, hushCommand
         , ...hoveAndMarkdownProvider.createCommands()
         , ...shortcutCommands.filter(x => typeof x !== 'undefined')
+        , ...soundBrowser.registerCommands()
+        , ...soundBrowser.createTreeView()
     );
+
 }
 
 export function deactivate() { }
