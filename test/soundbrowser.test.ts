@@ -109,7 +109,7 @@ suite("Sound browser", () => {
         
         const commandsMock = TypeMoq.Mock.ofType<typeof vscode.commands>();
 
-        const registeredCommands = {};
+        const registeredCommands: ({[key: string]: any}) = {};
 
         const registerCommandMock = (cmd:string, fun: (() => void)) => {
             const mockDisposable = TypeMoq.Mock.ofType<vscode.Disposable>();
@@ -126,7 +126,7 @@ suite("Sound browser", () => {
 
         const windowMock = TypeMoq.Mock.ofType<typeof vscode.window>();
 
-        const editorMock = TypeMoq.Mock.ofType<typeof vscode.window.activeTextEditor>();
+        const editorMock = TypeMoq.Mock.ofType<vscode.TextEditor>();
 
         windowMock.setup(x => x.activeTextEditor).returns(() => {
             return editorMock.object;
