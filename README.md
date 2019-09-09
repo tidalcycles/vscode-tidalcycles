@@ -67,6 +67,65 @@ define two top level commands in the same shortcut.
 }
 ```
 
+### Sound browser
+
+You can configure a custom tree view for sounds that you might want to use. At
+the moment only locally available samples can be added to the view. To do so
+you need to add the path where your samples can be found to the configuration
+and then **restart vscode**:
+
+```
+{
+    "settings": {
+        "tidalcycles.sounds.paths": [
+            "/path/to/Dirt-Samples"
+            , "/path/to/other/samples"
+        ]
+    }
+}
+```
+
+The sound browser view is visible in the `Tidal Cycles` Activity Bar, just click
+on the TidalCycles logo there.
+
+In you sample tree view you'll only see one level of folders per specified
+sample directory. This is intentional, as SuperDirt also only supports one
+level at the moment.
+
+Samples in a folder are displayed in a format specific to Tidalcycles/SuperDirt.
+Here's an example for the `casio` folder from the `Dirt-Samples`:
+
+```
+> casio
+    casio:0 / high
+    casio:1 / low
+    casio:2 / noise
+```
+
+The first part of the name is how you can reference the sound in TidalCycles (
+provided that the folder is configured in SuperDirt as well). The second
+displayed part after the slash is the actual file name, stripped from its
+extension and any numeric prefix. If you hover the mouse over an item you'll get
+the actual, full file name in the title.
+
+To play a sound you can just click on the sound item (supported on Linux, macOS,
+Windows 10, others might work too). Click again to re-launch the sound. If you
+want to stop the sound you can either hit the `Escape` key or click on the
+[Stop](images/material-icons/stop_lt.svg) button in the title bar oof the tree
+view. This feature can be turned off by setting the
+`tidalcycles.sounds.playonselection` parameter to `false`.
+
+Every sound also has some actions that you can execute by clicking on the
+respective icon displayed to the right, when you hover over an item:
+
+ - [Arrow right](images/material-icons/arrow_lt.svg): Insert the sound or folder
+    name in the currently active editor.
+ - [Clipboard](images/material-icons/clipboard_lt.svg): Copy the sound or folder
+    name to the clipboard.
+ - [Play](images/material-icons/play_lt.svg): Play the sound. This is helpful if
+    you turned off the automatic playing of a sound when you click it (see
+    above).
+
 ## Syntax Highlighting
 
 In order to get syntax highlighting in `.tidal` files you must do
