@@ -111,19 +111,19 @@ the actual, full file name in the title.
 To play a sound you can just click on the sound item (supported on Linux, macOS,
 Windows 10, others might work too). Click again to re-launch the sound. If you
 want to stop the sound you can either hit the `Escape` key or click on the
-[Stop](images/material-icons/stop_lt.svg) button in the title bar oof the tree
+![Stop](images/material-icons/stop_lt.svg) button in the title bar oof the tree
 view. This feature can be turned off by setting the
 `tidalcycles.sounds.playonselection` parameter to `false`.
 
 Every sound also has some actions that you can execute by clicking on the
 respective icon displayed to the right, when you hover over an item:
 
- - [Arrow right](images/material-icons/arrow_lt.svg): Insert the sound or folder
-    name in the currently active editor.
- - [Clipboard](images/material-icons/clipboard_lt.svg): Copy the sound or folder
-    name to the clipboard.
- - [Play](images/material-icons/play_lt.svg): Play the sound. This is helpful if
-    you turned off the automatic playing of a sound when you click it (see
+ - ![Arrow right](images/material-icons/arrow_lt.svg): Insert the sound or
+    folder name in the currently active editor.
+ - ![Clipboard](images/material-icons/clipboard_lt.svg): Copy the sound or
+    folder name to the clipboard.
+ - ![Play](images/material-icons/play_lt.svg): Play the sound. This is helpful
+    if you turned off the automatic playing of a sound when you click it (see
     above).
 
 ## Syntax Highlighting
