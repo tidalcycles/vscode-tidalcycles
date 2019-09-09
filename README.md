@@ -210,11 +210,26 @@ Available levels for both options are:
                            information
  * `MINIMUM`: Only show command format information
 
-**Note**: Not every command is documented yet and the detail level of the
-documentation varies from command to command. The files
-[commands.yaml](commands.yaml) and [commands-generated.yaml](commands-generated.yaml)
-contain the currently available documentation. If you'd like to contribute,
-please add new documentation to [commands.yaml](commands.yaml).
+#### Writing new documentation
+
+Not every command is documented yet and the detail level of the documentation
+varies from command to command. The files [commands.yaml](commands.yaml) and
+[commands-generated.yaml](commands-generated.yaml) contain the currently
+available documentation. If you'd like to contribute, please add new
+documentation to [commands.yaml](commands.yaml).
+
+The easiest way to do this is by creating a new file and adding it to the
+`tidalcycles.codehelp.commands.extra` list. The files in this list will be read
+in addition to the defaults contained in the extension itself. This way you can
+start writing and using documentation without actually having to re-compile the
+extension.
+
+For the format take a look at the existing documentation and the source code.
+Most fields support MarkDown syntax as well, so you can style them.
+
+If you want to see how your documentation looks, simply reload the file by
+executing the `tidal.codehelp.reload`. Look out for error messages popping up
+and if there are none you should see your changes immediately.
 
 ### Full Config Example
 

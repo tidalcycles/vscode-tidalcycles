@@ -84,6 +84,10 @@ export class Config {
     public getSoundsPaths(): string[] {
         return this.getConfiguration(this.configSection).get('sounds.paths', []);
     }
+    
+    public getExtraCommandsFiles(): string[] {
+        return this.getConfiguration(this.configSection).get<string[]>("codehelp.commands.extra", []);
+    }
 
     public getHoverHelpDetailLevel(): CodeHelpDetailLevel {
         let level = this.getConfiguration(this.configSection)

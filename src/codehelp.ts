@@ -1,7 +1,11 @@
-import { Hover, HoverProvider } from 'vscode';
+import { Hover, HoverProvider, Disposable } from 'vscode';
 import { Position, TextDocument, CancellationToken, MarkdownString, Range, CompletionItemKind } from 'vscode';
 import { CompletionItemProvider, CompletionContext, ProviderResult, CompletionItem, CompletionList, Uri, window } from 'vscode';
 import { Config } from './config';
+import * as yaml from 'js-yaml';
+import * as path from 'path';
+import { readFileSync } from 'fs';
+import * as vscode from 'vscode';
 
 export enum CodeHelpDetailLevel {
     OFF = 0
@@ -28,22 +32,39 @@ class TidalParameterDescription {
 }
 
 class TidalCommandDescription {
-    public readonly formattedCommand:MarkdownString;
+    public readonly command:string;
+    public readonly alias?: string;
+    public readonly formattedCommand:MarkdownString[];
     public readonly parameters:TidalParameterDescription[] | undefined;
     public readonly returns:MarkdownString | undefined;
     public readonly help:MarkdownString |  undefined;
     public readonly examples:MarkdownString[];
     public readonly links:({url:string, title:MarkdownString})[];
 
-    constructor(
-        public readonly command:string
-        , formattedCommand?:string | MarkdownString
+    constructor(config:{
+        command:string
+        , alias?:string
+        , formattedCommand?:(string | MarkdownString | ((string | MarkdownString)[]))
         , parameters?:TidalParameterDescription[]
         , returns?:string
         , help?:MarkdownString | string
-        , links:({url:string, title:string | MarkdownString})[] = []
-        , examples:string | string[] | MarkdownString | MarkdownString[] = []
-    ){
+        , links?:({url:string, title:string | MarkdownString})[]
+        , examples?:string | string[] | MarkdownString | MarkdownString[]
+    }){
+        let {
+            command
+            , alias
+            , formattedCommand
+            , parameters
+            , returns
+            , help
+            , links
+            , examples
+        } = config;
+
+        this.command = command;
+        this.alias = alias;
+
         if(typeof parameters === 'undefined'){
             this.parameters = [];
         }
@@ -60,29 +81,36 @@ class TidalCommandDescription {
                 formattedCommand = command+" ?";
             }
             else {
-                formattedCommand = command+" "+this.parameters.map(x => x.name).reduce((x,y) => x+" "+y);
+                formattedCommand = command+" "+this.parameters.map(x => x.name).join(" ");
             }
         }
         
-        if(typeof formattedCommand === 'string'){
-            if(formattedCommand.indexOf("`") < 0 || formattedCommand.indexOf("    ") !== 0){
-                formattedCommand = `    ${formattedCommand}`;
-            }
-            formattedCommand = new MarkdownString(formattedCommand);
+        if(!Array.isArray(formattedCommand)){
+            formattedCommand = [formattedCommand];
         }
-        
-        this.formattedCommand = formattedCommand;
+
+        this.formattedCommand = formattedCommand.map(cmd => {
+            if(typeof cmd === 'string'){
+                if(cmd.indexOf("`") < 0 || cmd.indexOf("    ") !== 0){
+                    cmd = `    ${cmd}`;
+                }
+                return new MarkdownString(cmd);
+            }
+            return cmd;
+        });
 
         this.parameters.forEach(p => p.help.isTrusted = true);
-        this.formattedCommand.isTrusted = true;
+        this.formattedCommand.forEach((cmd) => {cmd.isTrusted = true;});
 
+        let myReturns;
         if(typeof returns === 'undefined'){
-            this.returns = undefined;
+            myReturns = undefined;
         }
         else {
-            this.returns = typeof returns === 'string' ? new MarkdownString(returns) : returns;
-            this.returns.isTrusted = true;
+            myReturns = typeof returns === 'string' ? new MarkdownString(returns) : returns;
+            myReturns.isTrusted = true;
         }
+        this.returns = myReturns;
         
         if(typeof help === 'undefined'){
             this.help = undefined;
@@ -92,12 +120,15 @@ class TidalCommandDescription {
             this.help.isTrusted = true;
         }
 
-        this.links = links.map(link => ({
+        this.links = typeof links === 'undefined' ? [] : links.map(link => ({
             ...link
             , title: typeof link.title === 'string' ?  new MarkdownString(link.title) : link.title}
         ));
         
-        if(typeof examples === 'string'){
+        if(typeof examples === 'undefined'){
+            this.examples = [];
+        }
+        else if(typeof examples === 'string'){
             this.examples = [new MarkdownString(examples)];
         }
         else if(Array.isArray(examples)){
@@ -130,7 +161,11 @@ ${x}
         let ms = new MarkdownString("");
         ms.isTrusted = true;
         
-        ms = ms.appendMarkdown(withCommand ? this.formattedCommand.value : "");
+        ms = ms.appendMarkdown(
+            withCommand
+            ? this.formattedCommand.map(x => x.value).join("    \n")
+            : ""
+        );
         if(detailLevel === CodeHelpDetailLevel.MINIMUM){
             return ms;
         }
@@ -146,7 +181,7 @@ ${x}
                     `\`${x.name}\` `
                     + (typeof x.type !== 'undefined' ? `\`${TidalTypeDescription[x.type]}\`` : "")
                     + ` ${x.help.value}`)
-                    .reduce((x,y) => x+"    \r\n"+y,"")
+                    .join("    \r\n")
             )
             .appendMarkdown(typeof this.returns === 'undefined' ? "" :
                 "\r\n\r\n" + "Returns: "
@@ -159,7 +194,7 @@ ${x}
 
         ms = ms.appendMarkdown(this.examples.length === 0 ? "" :
                 hline + "Examples:\r\n\r\n"
-                + this.examples.map(x => x.value).reduce((x,y) => x+"    \r\n"+y,"")
+                + this.examples.map(x => x.value).join("    \r\n")
             )
             .appendMarkdown(this.links.length === 0 ? "" :
                 hline + this.links
@@ -167,29 +202,91 @@ ${x}
                         (lnk.title.value.trim() === "" ? "" : `${lnk.title.value}: `)
                         + `<${lnk.url}>`
                     )
-                    .reduce((x,y) => x+"    \r\n"+y,"")
+                    .join("    \r\n")
             );
         return ms;
     }
 
 }
 
+export interface YamlInfo {
+    source: string;
+    ydef: object;
+}
+
 export class TidalLanguageHelpProvider implements HoverProvider, CompletionItemProvider {
     public readonly commandDescriptions: ({[word:string]:TidalCommandDescription}) = {};
 
     constructor(
-        yamlCommandDefinitions:({source: string, ydef:object})[]
-        , private readonly config:Config
+        private readonly extensionPath: string
+        , private readonly config: Config
+        , yamlCommandDefinitions?:YamlInfo[]
     ){
-        yamlCommandDefinitions.forEach(({source, ydef}) => {
-            try {
-                this.parseYamlDefinitions(ydef)
-                    .forEach(cmd => this.commandDescriptions[cmd.command] = cmd);
-            }
-            catch(error){
-                window.showErrorMessage(`Error loading Tidal command descriptions from ${source}: `+error);
-            }
-        });
+      this.init(yamlCommandDefinitions);
+    }
+
+    public init(yamlCommandDefinitions?:YamlInfo[]){
+        const extraFiles = this.config.getExtraCommandsFiles();
+        const defaultSources = ["commands-generated.yaml","commands.yaml"].map(x => path.join(this.extensionPath, x));
+
+        const combinedDefinitions = [
+                ...(typeof yamlCommandDefinitions === 'undefined' ? defaultSources : [])
+                , ...(typeof extraFiles === 'undefined' ? [] : extraFiles)
+            ].map((defPath) => {
+                try {
+                    return {source: defPath, ydef: yaml.load(readFileSync(defPath).toString())};
+                }
+                catch(error){
+                    window.showErrorMessage(`Error parsing Tidal command yaml from ${defPath}: `+error);
+                }
+                return undefined;
+            })
+            .filter(x => typeof x !== 'undefined')
+            .map(x => x as unknown as (({source: string, ydef: any}))) // makes typescript happy, because it can't infer the !undefined tpye from the filter
+            .reduce((x, y) => {
+                return [...x, y];
+            }, typeof yamlCommandDefinitions === 'undefined' ? [] as YamlInfo[] : yamlCommandDefinitions)
+            ;
+
+        const newKeys = combinedDefinitions
+            .map(({source, ydef}) => { // parse all yamls
+                try {
+                    return this.parseYamlDefinitions(ydef);
+                }
+                catch(error){
+                    window.showErrorMessage(`Error loading Tidal command descriptions from ${source}: `+error);
+                }
+                return [];
+            })
+            .reduce( // flatten array of arrays
+                (x, y) => {
+                    x = [...x, ...y];
+                    return x;
+                }
+            , [])
+            .map(cmd => { // add new commands and remember which were added/updated
+                this.commandDescriptions[cmd.command] = cmd;
+                return cmd.command;
+            })
+            .reduce((x, y) => { // convert array of added commands to object for faster indexing (see below)
+                x[y] = true;
+                return x;
+            }, {} as ({[key:string]:boolean}))
+            ;
+        
+        Object.keys(this.commandDescriptions)
+            .filter(x => typeof (newKeys[x]) === 'undefined') // check if the command is still documented
+            .forEach(x => { // if not, remove it
+                delete this.commandDescriptions[x];
+            });
+    }
+
+    public createCommands(): Disposable[] {
+        return [
+            vscode.commands.registerCommand("tidal.codehelp.reload", () => {
+                this.init();
+            })
+        ];
     }
 
     private parseYamlDefinitions(ydef:object): TidalCommandDescription[] {
@@ -201,9 +298,10 @@ export class TidalLanguageHelpProvider implements HoverProvider, CompletionItemP
             let parameters:TidalParameterDescription[] | undefined = undefined;
             let examples:string[] | undefined = undefined;
             let links:({url:string, title:string})[] | undefined = undefined;
-            let formattedCommand:string | undefined = undefined;
+            let formattedCommand:string[] = [];
             let help:string | undefined = undefined;
             let returns:string | undefined = undefined;
+            let alias:string | undefined = undefined;
 
             if(typeof v === 'object'){
                 Object.entries(v === null ? {} : v).map(([property, value, ..._]) => {
@@ -212,7 +310,15 @@ export class TidalLanguageHelpProvider implements HoverProvider, CompletionItemP
                     }
                     if(property === 'cmd' || property === 'formattedCommand'){
                         if(typeof value === 'string'){
-                            formattedCommand = value;
+                            formattedCommand = [value];
+                        }
+                        else if(Array.isArray(value)){
+                            formattedCommand = value.filter(x => typeof x === 'string');
+                        }
+                    }
+                    else if(property === 'alias'){
+                        if(typeof value === 'string'){
+                            alias = value;
                         }
                     }
                     else if(property === 'return' || property === 'returns'){
@@ -287,7 +393,7 @@ export class TidalLanguageHelpProvider implements HoverProvider, CompletionItemP
                 throw new Error("Invalid command description value type "+(typeof v));
             }
 
-            return new TidalCommandDescription(command, formattedCommand, parameters, returns, help, links, examples);
+            return new TidalCommandDescription({command, alias, formattedCommand, parameters, returns, help, links, examples});
         });
     }
 
@@ -309,7 +415,7 @@ export class TidalLanguageHelpProvider implements HoverProvider, CompletionItemP
         for(let i=endChar;i<=line.length;i++){
             endChar = i;
             if(i < line.length){
-                const m = line.charAt(i).match(/^[0-9a-z_]$/i);
+                const m = line.charAt(i).match(/^[0-9a-z_']$/i);
                 if(m === null || m.length === 0){
                     break;
                 }
@@ -337,23 +443,33 @@ export class TidalLanguageHelpProvider implements HoverProvider, CompletionItemP
             .map(k => ({'key':k, 'cdesc':this.commandDescriptions[k]}))
             .map(({key, cdesc}) => {
                 const item = new CompletionItem(key);
+                let insertCommand = cdesc;
                 
+                if(typeof cdesc.alias !== 'undefined'){
+                    const alias = cdesc.alias;
+                    let adesc = this.commandDescriptions[alias];
+                    if(typeof adesc !== 'undefined'){
+                        cdesc = adesc;
+                    }
+                }
+
                 item.kind = CompletionItemKind.Snippet;
 
                 if(typeof cdesc !== 'undefined'){
                     item.documentation = cdesc.format(this.config.getCompletionHelpDetailLevel(), false);
                 }
                 item.range = range;
-                item.detail = cdesc.formattedCommand.value.replace(/`/g,'');
+                item.detail = cdesc.formattedCommand.map(x => x.value.replace(/`/g,'')).join("    \n");
 
                 if(typeof cdesc.parameters === 'undefined'){
                     item.detail = "Tidal code";
                 }
                 else {
-                    item.insertText = cdesc.command
-                        + cdesc.parameters.filter(x => x.editable)
-                                            .map(x => x.name)
-                                            .reduce((x,y)=>x+" "+y,"");
+                    item.insertText = insertCommand.command
+                        + (insertCommand.parameters ? insertCommand.parameters : cdesc.parameters)
+                            .filter(x => x.editable)
+                            .map(x => x.name)
+                            .join(" ");
                 }
 
                 return item;
@@ -371,12 +487,18 @@ export class TidalLanguageHelpProvider implements HoverProvider, CompletionItemP
         if(typeof word === 'undefined' || typeof range === 'undefined'){
             return undefined;
         }
-        let hoverText = this.commandDescriptions[word];
-        if(typeof hoverText === 'undefined'){
+        let commandDescription = this.commandDescriptions[word];
+        if(typeof commandDescription === 'undefined'){
             return undefined;
         }
+        if(typeof commandDescription.alias !== 'undefined'){
+            const nhover = this.commandDescriptions[commandDescription.alias];
+            if(typeof nhover !== undefined){
+                commandDescription = nhover;
+            }
+        }
 
-        const hovermd = hoverText.format(this.config.getHoverHelpDetailLevel(), true);
+        const hovermd = commandDescription.format(this.config.getHoverHelpDetailLevel(), true);
         if(typeof hovermd === 'undefined'){
             return undefined;
         }
