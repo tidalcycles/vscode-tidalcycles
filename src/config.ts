@@ -58,6 +58,10 @@ export class Config {
         return this.getConfiguration(this.configSection).get('shortcuts.showInConsole', false);
     }
 
+    public getExtraCommandsFiles(): string[] {
+        return this.getConfiguration(this.configSection).get<string[]>("codehelp.commands.extra", []);
+    }
+
     public getHoverHelpDetailLevel(): CodeHelpDetailLevel {
         let level = this.getConfiguration(this.configSection)
             .get("codehelp.hover.level", CodeHelpDetailLevel[CodeHelpDetailLevel.FULL] as string);

@@ -17,6 +17,7 @@
         "onCommand:tidal.eval",
         "onCommand:tidal.evalMulti",
         "onCommand:tidal.hush",
+        "onCommand:tidal.codehelp.reload",
         "onCommand:tidal.shortcut.no1",
         "onCommand:tidal.shortcut.no2",
         "onCommand:tidal.shortcut.no3",
@@ -46,6 +47,10 @@
             {
                 "command": "tidal.shush",
                 "title": "Tidal Shush"
+            },
+            {
+                "command": "tidal.codehelp.reload",
+                "title": "Tidal Codehelp Reload"
             },
             {
                 "command": "tidal.shortcut",
@@ -222,6 +227,14 @@
                     "type": "boolean",
                     "default": false,
                     "markdownDescription": "Show the shortcut commands that are executed in the console. Useful for debugging."
+                },
+                "tidalcycles.codehelp.commands.extra": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [],
+                    "description": "Extra files to read command definitions for hover and comletion support. This will be appended to the internal file and thus override any existing definitions."
                 },
                 "tidalcycles.codehelp.hover.level": {
                     "type": "string",
