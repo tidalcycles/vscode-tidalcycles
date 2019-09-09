@@ -390,20 +390,26 @@ run:
 quantise:
   cmd: quantise num function
   help: |-
-    Limit values in a function to `num` equally spaced values. The `num`
-    parameter is not a hard-and-fast value, see examples.
+    Limit values in a function to `num` equally spaced values, if the function
+    returns values between `0` (inclusive) and `1` (exclusive). `quantize 1`
+    will return two values instead of one for that range. Keep in mind that
+    `saw`, `tri` and `sine` don't reach the value `1`.
+
+    For values outside the range of `0` to `1` it'll still generate quantized
+    values but it'll be `(upper-lower)*num+1` values that are spaced equally
+    between `lower` (inclusive) and `upper` (inclusive).
   params:
     num: The number of discrete values. Actual values of the function will be
       assigned to the nearest lower discrete value.
     function: The function to quantise.
   examples:
-    - 'd1 $ s "arpy!16" # speed (range 1 2 sine) -- every event has a distinct value'
-    - 'd1 $ s "arpy!16" # speed (quantise 2 $ range 1 2 sine) -- there''s only two values now'
-    - 'd1 $ s "arpy!16" # speed (quantise 2 $ range 1 2.4 sine) -- three values'
-    - 'd1 $ s "arpy!16" # speed (quantise 2 $ range 0.5 2.4 sine) -- four values'
-    - 'd1 $ s "arpy!16" # speed (quantise 2 $ range 2 2.4 sine) -- one values'
-    - 'd1 $ s "arpy!16" # speed (quantise 6 $ range 2 2.4 sine) -- three values'
-    - 'd1 $ s "arpy!32" # speed (quantise 32 $ range 2 2.4 sine) -- a lot of values'
+    - 'd1 $ s "arpy!16" # speed (saw |+| 1) -- every event has a distinct value'
+    - 'd1 $ s "arpy!16" # speed (quantise 2 $ saw |+| 1) -- there''s only two values now'
+    - 'd1 $ s "arpy!16" # speed (quantise 3 $ saw |+| 1) -- only three values'
+    - 'd1 $ s "arpy!16" # speed (quantise 3 $ saw |+| 2) -- still only three values'
+    - 'd1 $ s "arpy!16" # speed (quantise 3 $ range 1 4 saw |+| 1) -- nine values'
+    - 'd1 $ s "arpy!16" # speed (quantise 1 $ (saw |+| 1)) --one value, because saw is >=0 and <1'
+    - 'd1 $ s "arpy!16" # speed (quantise 1 $ (square |+| 1)) -- two values, because square is 0 or 1'
 euclid:
   cmd: euclid num parts cpattern
   help:
