@@ -114,7 +114,7 @@
             },
             {
                 "command": "tidalcycles.sounds.copytoclipboard",
-                "title": "Copy sound name to clipboard", 
+                "title": "Copy sound name to clipboard",
                 "category": "Tidal Sounds",
                 "icon": {
                     "dark": "images/material-icons/clipboard.svg",
@@ -123,7 +123,7 @@
             },
             {
                 "command": "tidalcycles.sounds.insertineditor",
-                "title": "Insert sound name in editor", 
+                "title": "Insert sound name in editor",
                 "category": "Tidal Sounds",
                 "icon": {
                     "dark": "images/material-icons/arrowr.svg",
@@ -159,9 +159,9 @@
                 "when": "listFocus && listHasSelectionOrFocus"
             },
             {
-                "command": "tidalcycles.sounds.stop"
-                , "key": "Escape"
-                , "when": "listFocus && listHasSelectionOrFocus"
+                "command": "tidalcycles.sounds.stop",
+                "key": "Escape",
+                "when": "listFocus && listHasSelectionOrFocus"
             }
         ],
         "configuration": {
@@ -311,14 +311,13 @@
                     "items": {
                         "type": "string"
                     },
-                    "default": [
-                    ],
+                    "default": [],
                     "description": "Sound paths to display in the sound browser. Set this e.g. to your Dirt-Samples directory."
-                }, 
+                },
                 "tidalcycles.sounds.playonselection": {
-                    "type": "boolean"
-                    , "default": true
-                    , "description": "Play the sounds you click on. If you set this to false you have to explicitly click the play button in the sounds browser."
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Play the sounds you click on. If you set this to false you have to explicitly click the play button in the sounds browser."
                 }
             }
         },
@@ -342,9 +341,9 @@
         "menus": {
             "view/title": [
                 {
-                    "command": "tidalcycles.sounds.stop"
-                    , "group": "navigation"
-                    , "when": "view == tidalcycles-soundbrowser-sounds"
+                    "command": "tidalcycles.sounds.stop",
+                    "group": "navigation",
+                    "when": "view == tidalcycles-soundbrowser-sounds"
                 }
             ],
             "view/item/context": [
