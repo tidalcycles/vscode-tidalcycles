@@ -1,5 +1,13 @@
 # Change Log
 
+## "1.3.0"
+
+- Sound browser
+- Improvements to autocompletion
+- Support for writing documentation
+- Bug fixes
+- Return of configurable random messages and eval count in output
+
 ## "1.2.0"
 
 - Tidal function autocompletion
