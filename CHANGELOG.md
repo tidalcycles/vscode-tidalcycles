@@ -3,6 +3,7 @@
 ## "1.3.0"
 
 - Sound browser
+- Customizable quick keybindings
 - Improvements to autocompletion
 - Support for writing documentation
 - Bug fixes
