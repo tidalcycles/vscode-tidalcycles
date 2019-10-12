@@ -30,9 +30,9 @@ export class Ghci implements IGhci {
         }
 
         if (this.useStack) {
-            var stackOptions = ['--silent', 'ghci', '--ghci-options', '-XOverloadedStrings'];
+            var stackOptions = ['exec', '--package', 'tidal', '--', 'ghci', '-XOverloadedStrings'];
             if (!this.showGhciOutput) {
-                stackOptions.push('--ghci-options', '-v0');
+                stackOptions.push('-v0');
             }
             this.ghciProcess = spawn('stack', stackOptions,
                 {
