@@ -8,7 +8,7 @@ import * as fs from 'fs';
 import { homedir } from 'os';
 import * as commandExists from 'command-exists-promise';
 
-const ghciCommandName = 'ghcixxx';
+const ghciCommandName = 'ghci';
 
 /**
  * Provides an interface for sending commands to a GHCi session.
@@ -123,15 +123,15 @@ export class Ghci implements IGhci {
 
         triedPaths.push(ghciCommandName);
 
-        // 4. try another well-known path: $HOME/.ghcup/bin/ghci
-        const wellKnownPath1 = `/usr/local/bin/ghcixxx`;
+        // 4. try a well-known path: /usr/local/bin/ghcixxx
+        const wellKnownPath1 = `/usr/local/bin/ghci`;
         if (fs.existsSync(wellKnownPath1)) {
             return wellKnownPath1;
         }
 
         triedPaths.push(wellKnownPath1);
 
-        // 4. try another well-known path: $HOME/.ghcup/bin/ghci
+        // 5. try another well-known path: $HOME/.ghcup/bin/ghci
         const wellKnownPath2 = `${homedir()}.ghcup/bin/ghci`;
         if (fs.existsSync(wellKnownPath2)) {
             return wellKnownPath2;
