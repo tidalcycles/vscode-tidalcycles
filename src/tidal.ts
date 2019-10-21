@@ -7,7 +7,10 @@ import { homedir } from 'os';
  * Provides an interface to send instructions to the current Tidal instance.
  */
 export interface ITidal {
-    sendTidalExpression(expression: string, echoCommandToLogger?: boolean): Promise<void>;
+    sendTidalExpression(
+        expression: string,
+        echoCommandToLogger?: boolean
+    ): Promise<void>;
 }
 
 export class Tidal implements ITidal {
@@ -51,8 +54,8 @@ export class Tidal implements ITidal {
         } else if (bootTidalPath) {
             // expand '~' to home directory if present as first character
             const bootTidalPathExpanded = bootTidalPath.startsWith('~')
-                    ? homedir() + bootTidalPath.substring(1)
-                    : bootTidalPath;
+                ? homedir() + bootTidalPath.substring(1)
+                : bootTidalPath;
             uri = vscode.Uri.file(`${bootTidalPathExpanded}`);
         }
 
@@ -66,29 +69,32 @@ export class Tidal implements ITidal {
         }
 
         for (const command of bootCommands) {
-            this.ghci.writeLn(command);
+            await this.ghci.writeLn(command);
         }
 
         this.tidalBooted = true;
         return true;
     }
 
-    public async sendTidalExpression(expression: string, echoCommandToLogger: boolean=false) {
+    public async sendTidalExpression(
+        expression: string,
+        echoCommandToLogger: boolean = false
+    ) {
         if (!(await this.bootTidal())) {
             this.logger.error('Could not boot Tidal');
             return;
         }
 
-        this.ghci.writeLn(':{');
+        await this.ghci.writeLn(':{');
         const splits = expression.split(/[\r\n]+/);
         for (let i = 0; i < splits.length; i++) {
             const line = splits[i];
-            if(echoCommandToLogger){
+            if (echoCommandToLogger) {
                 this.logger.log(line);
             }
-            this.ghci.writeLn(line);
+            await this.ghci.writeLn(line);
         }
-        this.ghci.writeLn(':}');
+        await this.ghci.writeLn(':}');
     }
 
     private async getBootCommandsFromFile(
@@ -134,7 +140,7 @@ export class Tidal implements ITidal {
         '    waitT i f t = transition tidal True (Sound.Tidal.Transition.waitT f t) i',
         '    jump i = transition tidal True (Sound.Tidal.Transition.jump) i',
         '    jumpIn i t = transition tidal True (Sound.Tidal.Transition.jumpIn t) i',
-        '    jumpIn\' i t = transition tidal True (Sound.Tidal.Transition.jumpIn\' t) i',
+        "    jumpIn' i t = transition tidal True (Sound.Tidal.Transition.jumpIn' t) i",
         '    jumpMod i t = transition tidal True (Sound.Tidal.Transition.jumpMod t) i',
         '    mortal i lifespan release = transition tidal True (Sound.Tidal.Transition.mortal lifespan release) i',
         '    interpolate i = transition tidal True (Sound.Tidal.Transition.interpolate) i',
@@ -146,7 +152,7 @@ export class Tidal implements ITidal {
         '    forId i t = transition tidal False (Sound.Tidal.Transition.mortalOverlay t) i',
         '    d1 = p 1 . (|< orbit 0)',
         '    d2 = p 2 . (|< orbit 1)',
-        '    d3 = p 3 . (|< orbit 2)', 
+        '    d3 = p 3 . (|< orbit 2)',
         '    d4 = p 4 . (|< orbit 3)',
         '    d5 = p 5 . (|< orbit 4)',
         '    d6 = p 6 . (|< orbit 5)',

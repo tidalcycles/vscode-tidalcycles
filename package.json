@@ -386,6 +386,7 @@
         "vscode": "^1.1.30"
     },
     "dependencies": {
+        "command-exists-promise": "^2.0.2",
         "js-yaml": "^3.13.1",
         "node-wav-player": "^0.1.0",
         "split2": "^3.0.0"
