@@ -11,6 +11,7 @@
     "eslint.enable": false,
     "typescript.tsdk": "node_modules\\typescript\\lib",
     "prettier.tabWidth": 4,
-    "prettier.tslintIntegration": true,
-    "prettier.disableLanguages": ["markdown"]
+    "prettier.useTabs": false,
+    "prettier.disableLanguages": ["markdown"],
+    "prettier.singleQuote": true
 }

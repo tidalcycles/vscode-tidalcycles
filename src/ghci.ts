@@ -132,7 +132,7 @@ export class Ghci implements IGhci {
         triedPaths.push(wellKnownPath1);
 
         // 5. try another well-known path: $HOME/.ghcup/bin/ghci
-        const wellKnownPath2 = `${homedir()}.ghcup/bin/ghci`;
+        const wellKnownPath2 = `${homedir()}/.ghcup/bin/ghci`;
         if (fs.existsSync(wellKnownPath2)) {
             return wellKnownPath2;
         }
