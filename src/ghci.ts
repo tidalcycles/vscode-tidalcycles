@@ -42,7 +42,7 @@ export class Ghci implements IGhci {
                 '-XOverloadedStrings'
             ];
             if (!this.showGhciOutput) {
-                stackOptions.push('-v0');
+                stackOptions.push('--ghci-options', '-v0');
             }
             this.ghciProcess = spawn('stack', stackOptions, {
                 cwd: vscode.workspace.rootPath
