@@ -2,7 +2,7 @@
     "name": "vscode-tidalcycles",
     "displayName": "TidalCycles for VSCode",
     "description": "TidalCycles support in VSCode",
-    "version": "1.3.0",
+    "version": "1.4.0",
     "publisher": "tidalcycles",
     "icon": "images/icon128.png",
     "repository": "https://github.com/tidalcycles/vscode-tidalcycles",
@@ -386,6 +386,7 @@
         "vscode": "^1.1.30"
     },
     "dependencies": {
+        "command-exists-promise": "^2.0.2",
         "js-yaml": "^3.13.1",
         "node-wav-player": "^0.1.0",
         "split2": "^3.0.0"

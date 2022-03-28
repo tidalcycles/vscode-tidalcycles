@@ -1,5 +1,14 @@
 # Change Log
 
+## "1.4.1"
+
+- fix issue with auto-detected .ghcup path not being found
+
+## "1.4.0"
+
+- more robust ghci path checking and warnings
+- fix bug with "show eval count" always enabled even if false
+
 ## "1.3.0"
 
 - Sound browser
