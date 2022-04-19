@@ -282,7 +282,7 @@
                         "type": "string"
                     },
                     "default": [],
-                    "description": "Extra files to read command definitions for hover and comletion support. This will be appended to the internal file and thus override any existing definitions."
+                    "description": "Extra files to read command definitions for hover and completion support. This will be appended to the internal file and thus override any existing definitions."
                 },
                 "tidalcycles.codehelp.hover.level": {
                     "type": "string",
