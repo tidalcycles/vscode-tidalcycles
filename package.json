@@ -143,15 +143,18 @@
         "keybindings": [
             {
                 "command": "tidal.eval",
-                "key": "Shift+Enter"
+                "key": "Shift+Enter",
+                "when": "resourceExtname == '.tidal'"
             },
             {
                 "command": "tidal.evalMulti",
-                "key": "Ctrl+Enter"
+                "key": "Ctrl+Enter",
+                "when": "resourceExtname == '.tidal'"
             },
             {
                 "command": "tidal.hush",
-                "key": "Ctrl+Alt+H"
+                "key": "Ctrl+Alt+H",
+                "when": "resourceExtname == '.tidal'"
             },
             {
                 "command": "tidalcycles.sounds.play",
