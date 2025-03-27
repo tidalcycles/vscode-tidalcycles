@@ -24,7 +24,7 @@ suite('Repl', () => {
         await repl.hush();
 
         mockTidal.verify(t => t.sendTidalExpression('hush'), TypeMoq.Times.once());
-        mockHistory.verify(h => h.log(TypeMoq.It.isAny()), TypeMoq.Times.exactly(100));
+        mockHistory.verify(h => h.log(TypeMoq.It.isAny()), TypeMoq.Times.once()); // hey!
     });
 
     test('Hush not executed in non-.tidal file', async () => {
