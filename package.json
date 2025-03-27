@@ -382,12 +382,12 @@
         "@types/node": "^18.16.0",
         "@types/split2": "^4.2.0",
         "@types/vscode": "^1.77.0",
+        "@vscode/test-electron": "^2.4.1",
         "chai": "^4.3.7",
         "mocha": "^10.2.0",
         "tslint": "^5.20.1",
         "typemoq": "^2.1.0",
-        "typescript": "^5.0.4",
-        "@vscode/test-electron": "^2.3.0"
+        "typescript": "^5.0.4"
     },
     "dependencies": {
         "command-exists-promise": "^2.0.2",
