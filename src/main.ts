@@ -1,5 +1,5 @@
 import { TextEditor, ExtensionContext, window, commands, languages, Range } from 'vscode';
-import { DEFAULT_TEMPLATE_MARKER, Repl, splitCommands } from './repl';
+import { Repl, splitCommands } from './repl';
 import { Logger } from './logging';
 import { Config } from './config';
 import { Ghci } from './ghci';
