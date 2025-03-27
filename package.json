@@ -27,9 +27,7 @@
         "onCommand:tidal.shortcut.no7",
         "onCommand:tidal.shortcut.no8",
         "onCommand:tidal.shortcut.no9",
-        "onLanguage:haskell",
-        "onView:tidalcycles-soundbrowser-sounds",
-        "onView:tidalcycles-soundbrowser"
+        "onLanguage:haskell"
     ],
     "main": "./out/src/main",
     "contributes": {
