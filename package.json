@@ -369,10 +369,10 @@
         }
     },
     "scripts": {
-        "vscode:prepublish": "npm run compile",
-        "compile": "tsc -p ./",
+        "vscode:prepublish": "npm run build",
+        "build": "tsc -p ./",
         "watch": "tsc -watch -p ./",
-        "test": "npm run compile && node ./out/test/runner.js"
+        "test": "vscode-test"
     },
     "devDependencies": {
         "@types/chai": "^4.3.4",
@@ -382,6 +382,7 @@
         "@types/node": "^18.16.0",
         "@types/split2": "^4.2.0",
         "@types/vscode": "^1.77.0",
+        "@vscode/test-cli": "^0.0.10",
         "@vscode/test-electron": "^2.4.1",
         "chai": "^4.3.7",
         "mocha": "^10.2.0",
