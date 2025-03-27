@@ -79,6 +79,10 @@ export class DummyMemento implements vscode.Memento {
     )
     {}
 
+    keys(): readonly string[] {
+        return this.state.keys();
+    }
+
     get<T>(key: string, defaultValue?: T): T | undefined{
         if(key in Object.keys(this.state)){
             return defaultValue;
@@ -97,20 +101,15 @@ function instanceOfCheck(object: any, keys: string[]): boolean {
 }
 
 function instanceOfMemento(object: any): object is vscode.Memento {
-    return instanceOfCheck(object, ['get', 'update']);
+    return instanceOfCheck(object, ['keys', 'get', 'update']);
 }
 
 export function createMockContext(workspaceState: ({[key: string]: any}) | vscode.Memento = {}){
     const ctx = TypeMoq.Mock.ofType<vscode.ExtensionContext>();
 
-    ctx.setup(context => context.workspaceState);
-
-    if(instanceOfMemento(workspaceState)){
-        ctx.object.workspaceState = workspaceState;
-    }
-    else {
-        ctx.object.workspaceState = new DummyMemento(workspaceState);
-    }
+    ctx.setup(context => context.workspaceState).returns(() =>
+        instanceOfMemento(workspaceState) ?  workspaceState : new DummyMemento(workspaceState)
+    );
 
     return ctx;
 }

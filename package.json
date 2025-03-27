@@ -372,26 +372,27 @@
         "vscode:prepublish": "npm run compile",
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "npm run compile && node ./node_modules/vscode/bin/test"
+        "test": "npm run compile && node ./out/test/runner.js"
     },
     "devDependencies": {
-        "@types/chai": "^4.1.6",
-        "@types/js-yaml": "^3.12.1",
-        "@types/mocha": "^5.2.5",
-        "@types/node": "^7.0.0",
-        "@types/split2": "^2.1.6",
-        "chai": "^4.1.2",
-        "mocha": "^5.2.0",
-        "tslint": "^5.19.0",
+        "@types/chai": "^4.3.4",
+        "@types/glob": "^8.1.0",
+        "@types/js-yaml": "^4.0.5",
+        "@types/mocha": "^10.0.1",
+        "@types/node": "^18.16.0",
+        "@types/split2": "^4.2.0",
+        "@types/vscode": "^1.77.0",
+        "chai": "^4.3.7",
+        "mocha": "^10.2.0",
+        "tslint": "^5.20.1",
         "typemoq": "^2.1.0",
-        "typescript": "^3.6.2",
-        "vscode": "^1.1.30"
+        "typescript": "^5.0.4",
+        "@vscode/test-electron": "^2.3.0"
     },
     "dependencies": {
         "command-exists-promise": "^2.0.2",
-        "js-yaml": "^3.13.1",
-        "node-wav-player": "^0.1.0",
-        "split2": "^3.0.0"
+        "js-yaml": "^4.1.0",
+        "node-wav-player": "^0.2.0",
+        "split2": "^4.2.0"
     }
 }

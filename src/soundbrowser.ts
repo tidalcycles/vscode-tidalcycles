@@ -175,7 +175,7 @@ export class SoundBrowserSoundsView implements default_vscode.TreeDataProvider<S
         disposables.push(this._treeView);
 
         disposables.push(this._treeView.onDidChangeSelection(e => {
-            this.currentSelection = e.selection;
+            this.currentSelection = [...e.selection];
         }));
 
         return disposables;
@@ -197,13 +197,13 @@ export class SoundBrowserSoundsView implements default_vscode.TreeDataProvider<S
                     if(!Array.isArray(node)){
                         node = [node];
                     }
-                    
+
                     if(node.length > 0){
                         this.stopPlayers();
                     }
-                    
+
                     const item = (node.filter(x => instanceOfSoundItem(x)).pop()) as SoundItem;
-                    
+
                     if(item && item.type === 'sound'){
                         const player = this.getPlayerFor(item.itemName);
                         if(player){
@@ -274,7 +274,7 @@ export class SoundBrowserSoundsView implements default_vscode.TreeDataProvider<S
     }
 
     refresh(): void {
-		this._onDidChangeTreeData.fire();
+		this._onDidChangeTreeData.fire(undefined);
 	}
 
     getTreeItem(element: SoundItem): default_vscode.TreeItem {
@@ -299,7 +299,7 @@ export class SoundBrowserSoundsView implements default_vscode.TreeDataProvider<S
             }
             return Promise.resolve([]);
         }
-        
+
         const dpaths = this.config.getSoundsPaths();
 
         for(let i=0;i<dpaths.length;i++){
@@ -315,7 +315,7 @@ export class SoundBrowserSoundsView implements default_vscode.TreeDataProvider<S
             this._vscode.window.showWarningMessage(
                 "You haven't configured any Tidal sound paths yet."
                 , "Configure sounds paths"
-            ).then(() => 
+            ).then(() =>
                 this._vscode.commands.executeCommand(
                     "workbench.action.openSettings"
                     , `@ext:${this.config.getExtensionId()} ${this.config.getPreferencesStringFor("sounds.paths")}`
@@ -418,7 +418,7 @@ export class FileSystemSoundTreeProvider implements SoundTreeProvider {
                     .map(({fn, stat}, i) => {
                         const isDir = stat && !stat.isFile();
                         const filePath = path.join(vpath, fn);
-                        
+
                         return new SoundItem({
                             virtualRoot: parent.virtualRoot
                             , type: isDir ? 'dir' : 'sound'

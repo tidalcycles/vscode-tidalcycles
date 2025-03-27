@@ -58,10 +58,10 @@ export class Ghci implements IGhci {
             });
         }
 
-        this.ghciProcess.stderr.pipe(split2()).on('data', (data: any) => {
+        this.ghciProcess.stderr!.pipe(split2()).on('data', (data: any) => {
             this.stderr.emit('data', data);
         });
-        this.ghciProcess.stdout.on('data', (data: any) => {
+        this.ghciProcess.stdout!.on('data', (data: any) => {
             this.stdout.emit('data', data);
         });
         return this.ghciProcess;
@@ -70,7 +70,7 @@ export class Ghci implements IGhci {
     private async write(command: string) {
         try {
             const ghciProcess = await this.getGhciProcess();
-            ghciProcess.stdin.write(command);
+            ghciProcess.stdin!.write(command);
         } catch (e) {
             this.logger.error(`${e}`);
             return;
