@@ -83,41 +83,9 @@ export function activate(context: ExtensionContext) {
         }
     });
 
-    const executeShortcut = (shortcut: string | undefined) => {
-        if(typeof shortcut === 'undefined' || shortcut === null || shortcut.trim() === ''){
-            return;
-        }
-        const repl = getRepl(repls, window.activeTextEditor);
-        if (repl !== undefined) {
-            const expressions = splitCommands(shortcut);
-            expressions.forEach(e =>
-                repl.executeTemplate(e.expression, DEFAULT_TEMPLATE_MARKER, config.showShortcutCommandInConsole())
-            );
-        }
-    };
-
-    const shortcutCommands = Array(9).fill(1).map((_, i) => {
-        i = i + 1;
-        return commands.registerCommand(`tidal.shortcut.no${i}`, function() {
-            executeShortcut(config.getShortcutCommand(i));
-        });
-    });
-
-    shortcutCommands.push((() => {
-        return commands.registerCommand('tidal.shortcut', (args?:{[key:string]:any}) => {
-            if(typeof args === 'undefined'){
-                return undefined;
-            }
-            let command = Object.keys(args).filter(x => x === 'command').map(x=>args[x]).pop() as string | undefined;
-
-            executeShortcut(command);
-        });
-    })());
-
     context.subscriptions.push(
         evalSingleCommand, evalMultiCommand, hushCommand
         , ...hoveAndMarkdownProvider.createCommands()
-        , ...shortcutCommands.filter(x => typeof x !== 'undefined')
         , ...soundBrowser.registerCommands()
         , ...soundBrowser.createTreeView()
     );
