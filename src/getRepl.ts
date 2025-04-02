@@ -7,9 +7,9 @@ import { write } from './output';
 const bootPath =
         '/Users/kindohm/.cabal/share/x86_64-osx-ghc-9.4.8/tidal-1.9.5/BootTidal.hs';
 
-type Repl = {
-    send: (x: string) => void;
-};
+// type Repl = {
+//     send: (x: string) => void;
+// };
 
 let proc: child_process.ChildProcessWithoutNullStreams;
 
@@ -61,6 +61,7 @@ export const send = (command: string) => {
 
     console.log('sending', command);
     process.stdin.write(command);
+    process.stdin.write('\n');
     console.log('sent.');
 
 };
