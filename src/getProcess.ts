@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as child_process from 'child_process';
 import { getTidalBootPath } from './getTidalBootPath';
 import { getGhciBasePath } from './getGhciBasePath';
-import { write, writeLine } from './output';
+import { write, writeLine } from './logger';
 
 let proc: child_process.ChildProcessWithoutNullStreams;
 

@@ -1,6 +1,6 @@
 import { workspace } from 'vscode';
 import * as config from './config';
-import { writeLine } from './output';
+import { writeLine } from './logger';
 import * as fs from 'fs';
 import * as path from 'path';
 import { getGhciBasePath } from './getGhciBasePath';
