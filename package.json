@@ -228,7 +228,7 @@
         "vscode:prepublish": "npm run build",
         "build": "tsc -p ./",
         "watch": "tsc -watch -p ./",
-        "test": "vscode-test"
+        "test:integration": "vscode-test"
     },
     "devDependencies": {
         "@types/chai": "^4.3.4",
