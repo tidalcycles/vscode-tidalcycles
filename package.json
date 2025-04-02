@@ -243,7 +243,6 @@
         "@vscode/test-electron": "^2.4.1",
         "chai": "^4.3.7",
         "mocha": "^10.2.0",
-        "sinon": "^20.0.0",
         "tslint": "^5.20.1",
         "typemoq": "^2.1.0",
         "typescript": "5.8.2"
