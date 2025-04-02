@@ -1,49 +1,69 @@
 import * as fs from 'fs';
 import * as child_process from 'child_process';
+import { write } from './output';
 // import { readBootTidal } from './resourceReader';
 // import { bootSuperDirt } from './superdirt/superdirt';
 
+const bootPath =
+        '/Users/kindohm/.cabal/share/x86_64-osx-ghc-9.4.8/tidal-1.9.5/BootTidal.hs';
+
+type Repl = {
+    send: (x: string) => void;
+};
+
+let proc: child_process.ChildProcessWithoutNullStreams;
+
+const getProcess = () : child_process.ChildProcessWithoutNullStreams => {
+    if (!proc) {
+        console.log('process not ready yet')
+        const path = '/Users/kindohm/.ghcup/bin/ghci';
+        const raw = fs.readFileSync(bootPath, 'utf-8');
+
+        proc = child_process.spawn(path, [], { shell: true });
+
+        proc.stderr.on('data', (data) => {
+            console.error('errorrrr!!!');
+            console.error(data.toString('utf8'));
+            write(data.toString('utf8'));
+            // this.stdErr.push(data.toString('utf8'))
+            // setTimeout(() => {
+            //   if (this.stdErr.length) {
+            //     let err = this.stdErr.join('')
+            //     this.stdErr.length = 0;
+            //     this.emit('stderr', err);
+            //   }
+            // }, 50)
+        });
+    
+        proc.stdout.on('data', (data) => {
+            console.log(data.toString('utf8'));
+            write(data.toString('utf8'));
+            // this.stdOut.push(data.toString('utf8'))
+            // setTimeout(() => {
+            //   if (this.stdOut.length) {
+            //     let out = this.stdOut.join('')
+            //     this.stdOut.length = 0
+            //     this.emit('stdout', out);
+            //   }
+            // }, 50)
+        });
 
 
-export const getRepl = async () => {
-  const path = '/Users/kindohm/.ghcup/bin/ghci';
-  const bootPath = '/Users/kindohm/.cabal/share/x86_64-osx-ghc-9.4.8/tidal-1.9.5/BootTidal.hs';
-  const process = child_process.spawn(path, [], { shell: true });
+        proc.stdin.write(raw);
+    }
+    console.log('process is ready')
 
-  const raw= fs.readFileSync(bootPath, 'utf-8');
-  
+    return proc;
+};
 
-  process.stderr.on('data', data => {
-    console.error(data.toString('utf8'));
-    // this.stdErr.push(data.toString('utf8'))
-    // setTimeout(() => {
-    //   if (this.stdErr.length) {
-    //     let err = this.stdErr.join('')
-    //     this.stdErr.length = 0;
-    //     this.emit('stderr', err);
-    //   }
-    // }, 50)
-  });
+export const send = (command: string) => {
+    const process = getProcess();
 
-  process.stdout.on('data', data => {
-    console.log(data.toString('utf8'));
-    // this.stdOut.push(data.toString('utf8'))
-    // setTimeout(() => {
-    //   if (this.stdOut.length) {
-    //     let out = this.stdOut.join('')
-    //     this.stdOut.length = 0
-    //     this.emit('stdout', out);
-    //   }
-    // }, 50)
-  });
+    console.log('sending', command);
+    process.stdin.write(command);
+    console.log('sent.');
 
-  console.log('sending...')
-  process.stdin.write(raw);
-  console.log('sent.')
-
-
-}
-
+};
 
 // let terminal: Terminal;
 
@@ -73,8 +93,6 @@ export const getRepl = async () => {
 //         }
 
 //         await writeLineWait(rawBootTidal);
-
-        
 
 //         window.activeTextEditor?.show();
 

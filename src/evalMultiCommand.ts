@@ -1,13 +1,13 @@
 import { Range, TextDocument, TextEditor, window, workspace } from 'vscode';
-import { getRepl } from './getRepl';
+import { send } from './getRepl';
 
 export const evalMultiCommand = async () => {
     const input = getExpressionUnderCursor(true);
     if (!input) {
         return;
     }
-     await getRepl();
-    // repl.send(input);
+    //  const repl = await getRepl();
+    send(input);
 };
 
 const isEmpty = (document: TextDocument, line: number): boolean => {
