@@ -9,7 +9,7 @@ export const bootTidalPath = () => {
 }
 
 
-
+// todo: delete this class in favor of functions
 export class Config {
     readonly getConfiguration = vscode.workspace.getConfiguration;
     readonly configSection: string = 'tidalcycles';

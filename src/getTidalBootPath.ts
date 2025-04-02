@@ -3,11 +3,8 @@ import * as config from './config';
 import { writeLine } from './output';
 import * as fs from 'fs';
 import * as path from 'path';
-import { getGhciBasePath } from './getGhciPath';
+import { getGhciBasePath } from './getGhciBasePath';
 import * as child_process from 'child_process';
-
-// const bootPath =
-//     '/Users/kindohm/.cabal/share/x86_64-osx-ghc-9.4.8/tidal-1.9.5/BootTidal.hs';
 
 export const getTidalBootPath = () => {
     const configuredBootTidalPath = config.bootTidalPath();
