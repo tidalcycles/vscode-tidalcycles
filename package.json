@@ -18,9 +18,7 @@
         "onCommand:tidal.evalMulti",
         "onCommand:tidal.hush",
         "onCommand:tidal.codehelp.reload",
-        "onLanguage:haskell",
-        "onView:tidalcycles-soundbrowser-sounds",
-        "onView:tidalcycles-soundbrowser"
+        "onLanguage:haskell"
     ],
     "main": "./out/src/main",
     "contributes": {
@@ -222,40 +220,6 @@
                     "id": "tidalcycles",
                     "title": "Tidal Cycles",
                     "icon": "images/tidal.svg"
-                }
-            ]
-        },
-        "views": {
-            "tidalcycles": [
-                {
-                    "id": "tidalcycles-soundbrowser-sounds",
-                    "name": "Sounds"
-                }
-            ]
-        },
-        "menus": {
-            "view/title": [
-                {
-                    "command": "tidalcycles.sounds.stop",
-                    "group": "navigation",
-                    "when": "view == tidalcycles-soundbrowser-sounds"
-                }
-            ],
-            "view/item/context": [
-                {
-                    "command": "tidalcycles.sounds.insertineditor",
-                    "group": "inline@10",
-                    "when": "view == tidalcycles-soundbrowser-sounds && viewItem == sound || viewItem == dir"
-                },
-                {
-                    "command": "tidalcycles.sounds.copytoclipboard",
-                    "group": "inline@20",
-                    "when": "view == tidalcycles-soundbrowser-sounds && viewItem == sound || viewItem == dir"
-                },
-                {
-                    "command": "tidalcycles.sounds.play",
-                    "group": "inline@30",
-                    "when": "view == tidalcycles-soundbrowser-sounds && viewItem == sound"
                 }
             ]
         }
