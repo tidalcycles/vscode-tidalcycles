@@ -1,5 +1,5 @@
 import { commands, ExtensionContext } from 'vscode';
-import { quit } from './getRepl';
+import { quit } from './repl';
 import { evalCommand, evalMultiCommand, hushCommand } from './evalCommands';
 import { TidalLanguageHelpProvider } from './codehelp';
 import { Config } from './config';

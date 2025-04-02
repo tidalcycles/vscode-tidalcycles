@@ -1,4 +1,4 @@
-import { send } from "./getRepl";
+import { send } from "./repl";
 import { getExpressionUnderCursor } from "./getExpressionUnderCursor";
 
 export const evalCommand = () => {
