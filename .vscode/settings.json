@@ -13,5 +13,6 @@
     "prettier.tabWidth": 4,
     "prettier.useTabs": false,
     "prettier.disableLanguages": ["markdown"],
-    "prettier.singleQuote": true
+    "prettier.singleQuote": true,
+    "terminal.integrated.localEchoLatencyThreshold": -1
 }
