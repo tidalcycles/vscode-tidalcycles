@@ -73,14 +73,6 @@ export class Config {
         return this.getConfiguration(this.configSection).get('randomMessages', [])
     }
 
-    public getShortcutCommand(num: number): string {
-        return this.getConfiguration(this.configSection).get(`shortcuts.no${num}`, "");
-    }
-
-    public showShortcutCommandInConsole(): boolean {
-        return this.getConfiguration(this.configSection).get('shortcuts.showInConsole', false);
-    }
-
     public getSoundsPaths(): string[] {
         return this.getConfiguration(this.configSection).get('sounds.paths', []);
     }
