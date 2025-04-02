@@ -1,6 +1,15 @@
 import * as vscode from 'vscode';
 import { CodeHelpDetailLevel } from './codehelp';
 
+const getConfiguration = vscode.workspace.getConfiguration;
+const configSection = 'tidalcycles';
+
+export const bootTidalPath = () => {
+    return getConfiguration(configSection).get('bootTidalPath', null);
+}
+
+
+
 export class Config {
     readonly getConfiguration = vscode.workspace.getConfiguration;
     readonly configSection: string = 'tidalcycles';

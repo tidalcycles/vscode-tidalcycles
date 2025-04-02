@@ -14,3 +14,7 @@ const getOutputChannel = () => {
 export const write = (message: string) => {
     getOutputChannel().append(message);
 };
+
+export const writeLine = (message: string) => {
+    write(`${message}\n`);
+};
