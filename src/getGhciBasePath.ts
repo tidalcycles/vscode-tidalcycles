@@ -1,10 +1,10 @@
 import * as os from 'os';
 import * as path from 'path';
-import { ghciPath } from './config';
+import * as config from './config';
 import { writeLine } from './logger';
 
 export const getGhciBasePath = () => {
-    const configuredPath = ghciPath();
+    const configuredPath = config.ghciPath();
 
     if (configuredPath && configuredPath.trim().length > 0) {
         writeLine(`custom GHCI base path configured at ${configuredPath}`);

@@ -4,7 +4,7 @@ import { CodeHelpDetailLevel } from './codehelp';
 const getConfiguration = vscode.workspace.getConfiguration;
 const configSection = 'tidalcycles';
 
-export const bootTidalPath = () => {
+export const bootTidalPath = () : string | null => {
     return getConfiguration(configSection).get('bootTidalPath', null);
 }
 

@@ -228,7 +228,7 @@
         "vscode:prepublish": "npm run build",
         "build": "tsc -p ./",
         "watch": "tsc -watch -p ./",
-        "test": "mocha --require tsx test/*.test.ts",
+        "test": "nyc --reporter=text mocha --require ts-node/register test/*.spec.ts",
         "test:integration": "vscode-test"
     },
     "devDependencies": {
@@ -236,6 +236,7 @@
         "@types/glob": "^8.1.0",
         "@types/js-yaml": "^4.0.5",
         "@types/mocha": "^10.0.1",
+        "@types/mock-require": "^3.0.0",
         "@types/node": "22.13.14",
         "@types/sinon": "^17.0.4",
         "@types/split2": "^4.2.0",
@@ -244,6 +245,10 @@
         "@vscode/test-electron": "^2.4.1",
         "chai": "^4.3.7",
         "mocha": "^10.2.0",
+        "mock-require": "^3.0.3",
+        "nyc": "^17.1.0",
+        "sinon": "^20.0.0",
+        "ts-node": "^10.9.2",
         "tslint": "^5.20.1",
         "tsx": "^4.19.3",
         "typemoq": "^2.1.0",
