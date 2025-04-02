@@ -1,20 +1,38 @@
 import { commands, ExtensionContext } from 'vscode';
-import { evalMultiCommand } from './evalMultiCommand';
 import { quit } from './getRepl';
+import { evalCommand, evalMultiCommand, hushCommand } from './evalCommands';
+import { TidalLanguageHelpProvider } from './codehelp';
+import { Config } from './config';
 
 export const activate = (context: ExtensionContext) => {
-    // let evalCommandRegistered = commands.registerCommand(
-    //   'tcpure.eval',
-    //   evalCommand
-    // );
+    const config = new Config(context);
 
-    let evalMultiCommandRegistered = commands.registerCommand(
+    const hoverAndMarkdownProvider = new TidalLanguageHelpProvider(
+        context.extensionPath,
+        config
+    );
+
+    const evalCommandRegistered = commands.registerCommand(
+        'tidal.eval',
+        evalCommand
+    );
+
+    const evalMultiCommandRegistered = commands.registerCommand(
         'tidal.evalMulti',
         evalMultiCommand
     );
 
-    // context.subscriptions.push(evalCommandRegistered);
-    context.subscriptions.push(evalMultiCommandRegistered);
+    const hushCommandRegistered = commands.registerCommand(
+        'tidal.hush',
+        hushCommand
+    );
+
+    context.subscriptions.push(
+        evalCommandRegistered,
+        evalMultiCommandRegistered,
+        hushCommandRegistered,
+        ...hoverAndMarkdownProvider.createCommands()
+    );
 };
 
 export function deactivate() {
