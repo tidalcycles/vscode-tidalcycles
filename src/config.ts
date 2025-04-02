@@ -8,84 +8,26 @@ export const bootTidalPath = () => {
     return getConfiguration(configSection).get('bootTidalPath', null);
 }
 
+export const feedbackColor = () => {
+    return getConfiguration(configSection).get('feedbackColor', 'rgba(100,250,100,0.3)');
+}
+
+export const ghciPath = () => {
+    return getConfiguration(configSection).get('ghciPath', 'ghci');
+}
 
 // todo: delete this class in favor of functions
 export class Config {
     readonly getConfiguration = vscode.workspace.getConfiguration;
     readonly configSection: string = 'tidalcycles';
-    private workspaceState: vscode.Memento;
 
-    constructor(
-        private readonly context: vscode.ExtensionContext
-    ){
-        this.workspaceState = this.context.workspaceState;
-    }
-
-    public getExtensionId(){
-        return "tidalcycles.vscode-tidalcycles";
-    }
-
-    public getPreferencesStringFor(s: string){
-        return `${this.configSection}.${s}`;
-    }
-
-    public getWorkspaceState<T>(key: string){
-        return this.workspaceState.get<T>(`${this.configSection}.${key}`);
-    }
-
-    public updateWorkspaceState(key:string, value: any){
-        return this.workspaceState.update(`${this.configSection}.${key}`, value);
-    }
-
-    public bootTidalPath(): string | null {
-        return this.getConfiguration(this.configSection).get('bootTidalPath', null);
-    }
-
-    public feedbackColor(): string {
-        return this.getConfiguration(this.configSection).get('feedbackColor', 'rgba(100,250,100,0.3)');
-    }
-
-    public ghciPath(): string {
-        return this.getConfiguration(this.configSection).get('ghciPath', 'ghci');
-    }
-
-    public showEvalCount(): boolean {
-        return this.getConfiguration(this.configSection).get('showEvalCount', false);
-    }
-
-    public evalCountPrefix(): string {
-        return this.getConfiguration(this.configSection).get('evalCountPrefix', 'Evals: ');
-    }
-
-    public showGhciOutput(): boolean {
-        return this.getConfiguration(this.configSection).get('showGhciOutput', false);
-    }
-
-    public showOutputInConsoleChannel(): boolean {
-        return this.getConfiguration(this.configSection).get('showOutputInConsoleChannel', false);
-    }
-
-    public useBootFileInCurrentDirectory(): boolean {
-        return this.getConfiguration(this.configSection).get('useBootFileInCurrentDirectory', false);
+    constructor() {
     }
 
     public useStackGhci(): boolean {
         return this.getConfiguration(this.configSection).get('useStackGhci', false);
     }
 
-    public randomMessageProbability(): number {
-        return parseFloat(this.getConfiguration(this.configSection)
-            .get('randomMessageProbability', '0'));
-    }
-
-    public randomMessages(): string[] {
-        return this.getConfiguration(this.configSection).get('randomMessages', [])
-    }
-
-    public getSoundsPaths(): string[] {
-        return this.getConfiguration(this.configSection).get('sounds.paths', []);
-    }
-    
     public getExtraCommandsFiles(): string[] {
         return this.getConfiguration(this.configSection).get<string[]>("codehelp.commands.extra", []);
     }

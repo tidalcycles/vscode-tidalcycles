@@ -5,7 +5,7 @@ import { TidalLanguageHelpProvider } from './codehelp';
 import { Config } from './config';
 
 export const activate = (context: ExtensionContext) => {
-    const config = new Config(context);
+    const config = new Config();
 
     const hoverAndMarkdownProvider = new TidalLanguageHelpProvider(
         context.extensionPath,
