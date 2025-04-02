@@ -228,7 +228,8 @@
         "vscode:prepublish": "npm run build",
         "build": "tsc -p ./",
         "watch": "tsc -watch -p ./",
-        "test": "vscode-test"
+        "test": "mocha --require tsx test/*.test.ts",
+        "test:integration": "vscode-test"
     },
     "devDependencies": {
         "@types/chai": "^4.3.4",
@@ -243,6 +244,7 @@
         "chai": "^4.3.7",
         "mocha": "^10.2.0",
         "tslint": "^5.20.1",
+        "tsx": "^4.19.3",
         "typemoq": "^2.1.0",
         "typescript": "5.8.2"
     },

@@ -23,4 +23,5 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run build 
-    - run: xvfb-run -a npm test
+    - run: npm test
+    - run: xvfb-run -a npm run test:integration
