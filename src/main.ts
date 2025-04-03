@@ -9,7 +9,7 @@ import { TidalLanguageHelpProvider } from './codehelp';
 
 export function activate(context: ExtensionContext) {
     const config = new Config(context);
-    const logger = new Logger(window.createOutputChannel('TidalCycles'));
+    const logger =   new Logger(window.createOutputChannel('TidalCycles'));
 
     const ghci = new Ghci(logger, config.useStackGhci(), config.ghciPath(), config.showGhciOutput());
     const tidal = new Tidal(logger, ghci, config.bootTidalPath(), config.useBootFileInCurrentDirectory());
