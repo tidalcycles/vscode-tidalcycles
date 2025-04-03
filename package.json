@@ -234,6 +234,7 @@
     "build": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "test": "mocha --require ts-node/register test/*.test.ts",
+    "test:coverage": "nyc npm run test",
     "test:integration": "vscode-test",
     "prepare": "husky",
     "pretty-quick-staged": "pretty-quick --staged"
@@ -254,6 +255,7 @@
     "husky": "^9.1.7",
     "mocha": "^10.2.0",
     "mock-require": "^3.0.3",
+    "nyc": "^17.1.0",
     "prettier": "^3.5.3",
     "pretty-quick": "^4.1.1",
     "sinon": "^20.0.0",
