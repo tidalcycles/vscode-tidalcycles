@@ -1,6 +1,6 @@
 import { workspace } from 'vscode';
 import * as config from './config';
-import { writeLine } from './logger';
+import { info } from './logger';
 import * as fs from 'fs';
 import * as path from 'path';
 import { getGhciBasePath } from './getGhciBasePath';
@@ -13,14 +13,12 @@ export const getTidalBootPath = () => {
 
   // first, check for a configured boot path
   if (configuredBootTidalPath) {
-    writeLine(
-      `Custom Tidal boot path is configured: ${configuredBootTidalPath}`
-    );
+    info(`Custom Tidal boot path is configured: ${configuredBootTidalPath}`);
 
     return configuredBootTidalPath;
   }
 
-  writeLine('Custom Tidal boot path is not configured');
+  info('Custom Tidal boot path is not configured\n');
 
   // next, check for a BootTidal.hs file in the local dir
   if (workspace.workspaceFolders && workspace.workspaceFolders.length > 0) {
@@ -30,10 +28,10 @@ export const getTidalBootPath = () => {
     );
     try {
       fs.statSync(localBootFilePath);
-      writeLine(`Local Tidal boot file was found: ${localBootFilePath}`);
+      info(`Local Tidal boot file was found: ${localBootFilePath}`);
       return localBootFilePath;
     } catch (err) {
-      writeLine(`Local Tidal boot file was not found.`);
+      info(`Local Tidal boot file was not found.`);
     }
   }
 
@@ -48,8 +46,6 @@ export const getTidalBootPath = () => {
 
   const packagePath = path.join(dataDir, bootTidalFileName);
 
-  writeLine(
-    `Using default Tidal boot file from package path: "${packagePath}"`
-  );
+  info(`Using default Tidal boot file from package path: "${packagePath}"`);
   return packagePath;
 };

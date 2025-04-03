@@ -21,7 +21,7 @@ describe('getTidalBootPath', () => {
   const sandbox = sinon.createSandbox();
 
   beforeEach(() => {
-    sandbox.stub(logger, 'writeLine');
+    sandbox.stub(logger, 'info');
     sandbox.mock(vscode.workspace);
   });
 
