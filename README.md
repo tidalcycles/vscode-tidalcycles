@@ -3,11 +3,10 @@
 Support for the TidalCycles in vscode. You can learn more about
 TidalCycles at [TidalCycles](https://tidalcycles.org).
 
-## Upgrading to 1.1
+## Contributing
 
-If you are upgrading from 1.04 to 1.1, you will need to install the latest version of SuperDirt unless you are using
-your own custom Tidal boot file. The default boot will assign Tidal's `d1` through `d12` connections to 
-SuperCollider orbits 0 through 11, respectively.
+Interested in contributing? Please read the [contributing doc](contributing.md)
+for dev environment info and guidelines.
 
 ## Features
 
@@ -23,8 +22,8 @@ In order to get syntax highlighting in `.tidal` files you must do
 two things:
 
 - Install the [Haskell Syntax Highlighting](https://marketplace.visualstudio.com/items?itemName=justusadam.language-haskell) extension
-- Associate `.tidal` files to the Haskell language by adding the following 
-settings in `settings.json`:
+- Associate `.tidal` files to the Haskell language by adding the following
+  settings in `settings.json`:
 
 ```
 "files.associations": {
@@ -46,7 +45,7 @@ a more verbose explanation of a few of them:
 
 ### GHCi path
 
-Probably the most important setting. This is the path to `ghci.exe` on your machine. 
+Probably the most important setting. This is the path to `ghci.exe` on your machine.
 If it's on your OS `PATH`, then just setting this value to `ghci` will probably do fine.
 
 Examples:
@@ -66,8 +65,8 @@ If instead you wish you run your own bootup process, you can configure this exte
 to a Tidal bootup file on your machine, or use a `BootTidal.hs` file located in the first directory
 of your VS Code IDE.
 
-* `tidalcycles.bootTidalPath` - path to a file that contains line-by-line commands to boot the TidalCycles Haskell package.
-* `tidalcycles.useBootFileInCurrentDirectory` - when equal to `true`, the extension will boot from a file named `BootTidal.hs` in the first workspace folder
+- `tidalcycles.bootTidalPath` - path to a file that contains line-by-line commands to boot the TidalCycles Haskell package.
+- `tidalcycles.useBootFileInCurrentDirectory` - when equal to `true`, the extension will boot from a file named `BootTidal.hs` in the first workspace folder
 
 Examples:
 
@@ -95,11 +94,11 @@ configuration settings, one for the `hover` feature and one for `completion`:
 
 Available levels for both options are:
 
- * `OFF`: Disables the feature
- * `FULL`: Enables all available information 
- * `NO_EXAMPLES_NO_LINKS`: Only show command format, parameters and return value
-                           information
- * `MINIMUM`: Only show command format information
+- `OFF`: Disables the feature
+- `FULL`: Enables all available information
+- `NO_EXAMPLES_NO_LINKS`: Only show command format, parameters and return value
+  information
+- `MINIMUM`: Only show command format information
 
 #### Writing new documentation
 
