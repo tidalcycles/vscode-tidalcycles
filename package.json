@@ -116,6 +116,11 @@
           "default": "",
           "description": "The file system path to a file that contains Tidal bootup code."
         },
+        "tidalcycles.consolePrompt": {
+          "type": "string",
+          "default": "t",
+          "description": "The 'prompt' to display in the output window. Refer to the docs for available placeholders."
+        },
         "tidalcycles.feedbackColor": {
           "type": "string",
           "default": "rgba(100,250,100,0.3)",

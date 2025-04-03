@@ -4,6 +4,7 @@ import * as child_process from 'child_process';
 import { getTidalBootPath } from './getTidalBootPath';
 import { getGhciBasePath } from './getGhciBasePath';
 import { info, error } from './logger';
+import { getPrompt } from './getPrompt';
 
 let proc: child_process.ChildProcessWithoutNullStreams;
 
@@ -28,7 +29,7 @@ export const getProcess = (): child_process.ChildProcessWithoutNullStreams => {
         if (stdErr.length) {
           const out = stdErr.join('');
           stdErr.length = 0;
-          error(out);
+          error(`${getPrompt()} ${cleanStdErr(out)}`);
         }
       }, 50);
     });
@@ -39,7 +40,7 @@ export const getProcess = (): child_process.ChildProcessWithoutNullStreams => {
         if (stdOut.length) {
           const out = stdOut.join('');
           stdOut.length = 0;
-          info(out);
+          info(`${getPrompt()} ${cleanStdOut(out)}`);
         }
       }, 50);
     });
@@ -48,4 +49,20 @@ export const getProcess = (): child_process.ChildProcessWithoutNullStreams => {
   }
 
   return proc;
+};
+
+const cleanStdOut = (stdout: string) => {
+  return stdout
+    .trim()
+    .replace(/tidal>.*Prelude>/g, '')
+    .replace(/tidal>/g, '')
+    .replace(/Prelude>/g, '')
+    .replace(/Prelude.*\|/g, '')
+    .replace(/GHCi.*help/g, '');
+};
+
+const cleanStdErr = (stderr: string) => {
+  return stderr
+    .replace(/<interactive>.*error:/g, '')
+    .replace(/ \(bound at.*/g, '');
 };
