@@ -1,1 +1,1 @@
-npm run pretty-quick
+npm run pretty-quick --staged
