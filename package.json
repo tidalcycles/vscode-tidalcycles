@@ -231,7 +231,7 @@
     "test": "mocha --require tsx test/*.test.ts",
     "test:integration": "vscode-test",
     "prepare": "husky",
-    "pretty-quick": "pretty-quick"
+    "pretty-quick-staged": "pretty-quick --staged"
   },
   "devDependencies": {
     "@types/chai": "^4.3.4",
