@@ -6,3 +6,4 @@ npm-debug.log
 /out/
 .vscode-test
 .DS_Store
+.nyc_output

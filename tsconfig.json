@@ -1,27 +1,22 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "target": "ES2018",
-        "outDir": "out",
-        "lib": [
-            "ES2018"
-        ],
-        "sourceMap": true,
-        "rootDir": ".",
-        /* Strict Type-Checking Option */
-        "strict": true,   /* enable all strict type-checking options */
-        "strictNullChecks": true,
-        "strictPropertyInitialization": true,
-        "strictFunctionTypes": true,
-        "alwaysStrict": true,
-        /* Additional Checks */
-        "noUnusedLocals": true /* Report errors on unused locals. */
-        // "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
-        // "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
-        // "noUnusedParameters": true,  /* Report errors on unused parameters. */
-    },
-    "exclude": [
-        "node_modules",
-        ".vscode-test"
-    ]
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2018",
+    "outDir": "out",
+    "lib": ["ES2018"],
+    "sourceMap": true,
+    "rootDir": ".",
+    /* Strict Type-Checking Option */
+    "strict": true /* enable all strict type-checking options */,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "strictFunctionTypes": true,
+    "alwaysStrict": true,
+    /* Additional Checks */
+    "noUnusedLocals": true /* Report errors on unused locals. */
+    // "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
+    // "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
+    // "noUnusedParameters": true,  /* Report errors on unused parameters. */
+  },
+  "exclude": ["node_modules", ".vscode-test", "test"]
 }
