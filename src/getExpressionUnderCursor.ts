@@ -1,61 +1,63 @@
-import { Range, TextDocument, TextEditor, window, workspace } from "vscode";
+import { Range, TextDocument, TextEditor, window, workspace } from 'vscode';
 
-export const getExpressionUnderCursor = (getMultiline: boolean): string | null => {
-    const editor: TextEditor | undefined = window.activeTextEditor;
+export const getExpressionUnderCursor = (
+  getMultiline: boolean
+): string | null => {
+  const editor: TextEditor | undefined = window.activeTextEditor;
 
-    if (!editor) {
-        return null;
+  if (!editor) {
+    return null;
+  }
+
+  const document = editor.document;
+  const position = editor.selection.active;
+  const line = document.lineAt(position);
+
+  if (!getMultiline) {
+    if (isEmpty(document, position.line)) {
+      return null;
     }
-
-    const document = editor.document;
-    const position = editor.selection.active;
-    const line = document.lineAt(position);
-
-    if (!getMultiline) {
-        if (isEmpty(document, position.line)) {
-            return null;
-        }
-        const range = new Range(
-            line.lineNumber,
-            0,
-            line.lineNumber,
-            line.text.length
-        );
-        feedback(range);
-        return document.getText(range);
-    }
-
-    const selectedRange = new Range(
-        editor.selection.anchor,
-        editor.selection.active
+    const range = new Range(
+      line.lineNumber,
+      0,
+      line.lineNumber,
+      line.text.length
     );
-    const startLineNumber = getStartLineNumber(document, selectedRange);
-    if (startLineNumber === null) {
-        return null;
-    }
-
-    const endLineNumber = getEndLineNumber(document, startLineNumber);
-    const endCol = document.lineAt(endLineNumber).text.length;
-
-    let range = new Range(startLineNumber, 0, endLineNumber, endCol);
-
-    // bad place for this
     feedback(range);
     return document.getText(range);
+  }
+
+  const selectedRange = new Range(
+    editor.selection.anchor,
+    editor.selection.active
+  );
+  const startLineNumber = getStartLineNumber(document, selectedRange);
+  if (startLineNumber === null) {
+    return null;
+  }
+
+  const endLineNumber = getEndLineNumber(document, startLineNumber);
+  const endCol = document.lineAt(endLineNumber).text.length;
+
+  const range = new Range(startLineNumber, 0, endLineNumber, endCol);
+
+  // bad place for this
+  feedback(range);
+  return document.getText(range);
 };
 
 const getStartLineNumber = (
-    document: TextDocument,
-    range: Range
+  document: TextDocument,
+  range: Range
 ): number | null => {
-    // If current line is empty, search forward for the expression start
-    if (isEmpty(document, range.start.line)) {
-        return getFirstNonBlankLineInRange(document, range);
-    }
+  // If current line is empty, search forward for the expression start
+  if (isEmpty(document, range.start.line)) {
+    return getFirstNonBlankLineInRange(document, range);
+  }
 
-    // Else, current line has contents and so Tidal expression may start on a prior line
-    return getFirstExpressionLineBeforeSelection(document, range);
-}
+  // Else, current line has contents and so Tidal expression may start on a prior line
+  return getFirstExpressionLineBeforeSelection(document, range);
+};
 
 const getFirstExpressionLineBeforeSelection = (
   document: TextDocument,
@@ -65,11 +67,11 @@ const getFirstExpressionLineBeforeSelection = (
 
   // If current line is empty, do not attempt to search.
   if (isEmpty(document, currentLineNumber)) {
-      return null;
+    return null;
   }
 
   while (currentLineNumber >= 0 && !isEmpty(document, currentLineNumber)) {
-      currentLineNumber--;
+    currentLineNumber--;
   }
 
   return currentLineNumber + 1;
@@ -80,13 +82,13 @@ const getFirstNonBlankLineInRange = (
   range: Range
 ): number | null => {
   for (
-      let currentLineNumber = range.start.line;
-      currentLineNumber <= range.end.line;
-      currentLineNumber++
+    let currentLineNumber = range.start.line;
+    currentLineNumber <= range.end.line;
+    currentLineNumber++
   ) {
-      if (!isEmpty(document, currentLineNumber)) {
-          return currentLineNumber;
-      }
+    if (!isEmpty(document, currentLineNumber)) {
+      return currentLineNumber;
+    }
   }
 
   return null;
@@ -98,10 +100,10 @@ const getEndLineNumber = (
 ): number => {
   let currentLineNumber = startLineNumber;
   while (
-      currentLineNumber < document.lineCount &&
-      !isEmpty(document, currentLineNumber)
+    currentLineNumber < document.lineCount &&
+    !isEmpty(document, currentLineNumber)
   ) {
-      currentLineNumber++;
+    currentLineNumber++;
   }
   return currentLineNumber - 1;
 };
@@ -111,18 +113,18 @@ const feedback = (range: Range): void => {
   const flashColor = configuration.get<string>('flashDecoration', '#00ff00');
 
   const flashDecorationType = window.createTextEditorDecorationType({
-      backgroundColor: flashColor,
+    backgroundColor: flashColor,
   });
 
   const editor: TextEditor | undefined = window.activeTextEditor;
 
   if (!editor) {
-      return;
+    return;
   }
 
   editor.setDecorations(flashDecorationType, [range]);
   setTimeout(function () {
-      flashDecorationType.dispose();
+    flashDecorationType.dispose();
   }, 250);
 };
 

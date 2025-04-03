@@ -237,9 +237,11 @@
     "test:coverage": "nyc npm run test",
     "test:integration": "vscode-test",
     "prepare": "husky",
-    "pretty-quick-staged": "pretty-quick --staged"
+    "pretty-quick-staged": "pretty-quick --staged",
+    "lint": "eslint --ext .ts"
   },
   "devDependencies": {
+    "@eslint/js": "^9.23.0",
     "@types/chai": "^4.3.4",
     "@types/glob": "^8.1.0",
     "@types/js-yaml": "^4.0.5",
@@ -249,9 +251,13 @@
     "@types/sinon": "^17.0.4",
     "@types/split2": "^4.2.0",
     "@types/vscode": "1.98.0",
+    "@typescript-eslint/eslint-plugin": "^8.29.0",
+    "@typescript-eslint/parser": "^8.29.0",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
     "chai": "^4.3.7",
+    "eslint": "^9.23.0",
+    "globals": "^16.0.0",
     "husky": "^9.1.7",
     "mocha": "^10.2.0",
     "mock-require": "^3.0.3",
@@ -260,9 +266,9 @@
     "pretty-quick": "^4.1.1",
     "sinon": "^20.0.0",
     "ts-node": "^10.9.2",
-    "tslint": "^5.20.1",
     "typemoq": "^2.1.0",
-    "typescript": "5.8.2"
+    "typescript": "5.8.2",
+    "typescript-eslint": "^8.29.0"
   },
   "dependencies": {
     "command-exists-promise": "^2.0.2",
