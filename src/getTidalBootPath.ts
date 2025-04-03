@@ -30,7 +30,7 @@ export const getTidalBootPath = () => {
       fs.statSync(localBootFilePath);
       info(`Local Tidal boot file was found: ${localBootFilePath}`);
       return localBootFilePath;
-    } catch (err) {
+    } catch {
       info(`Local Tidal boot file was not found.`);
     }
   }

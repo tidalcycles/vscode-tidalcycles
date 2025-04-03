@@ -42,7 +42,7 @@ export class Config {
   }
 
   public getHoverHelpDetailLevel(): CodeHelpDetailLevel {
-    let level = this.getConfiguration(this.configSection).get(
+    const level = this.getConfiguration(this.configSection).get(
       'codehelp.hover.level',
       CodeHelpDetailLevel[CodeHelpDetailLevel.FULL] as string
     );
@@ -50,7 +50,7 @@ export class Config {
   }
 
   public getCompletionHelpDetailLevel(): CodeHelpDetailLevel {
-    let level = this.getConfiguration(this.configSection).get(
+    const level = this.getConfiguration(this.configSection).get(
       'codehelp.completion.level',
       CodeHelpDetailLevel[CodeHelpDetailLevel.FULL] as string
     );
