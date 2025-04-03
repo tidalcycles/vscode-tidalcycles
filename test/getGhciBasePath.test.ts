@@ -33,7 +33,7 @@ describe('getGhciBasePath', () => {
   });
 
   it('should return configured path', () => {
-    sandbox.stub(logger, 'writeLine');
+    sandbox.stub(logger, 'info');
     sandbox.stub(config, 'ghciPath').returns('/path/to/my/stuff');
 
     const actual = getGhciBasePath();
@@ -41,7 +41,7 @@ describe('getGhciBasePath', () => {
   });
 
   it('should remove "ghci" from end of configured path', () => {
-    sandbox.stub(logger, 'writeLine');
+    sandbox.stub(logger, 'info');
     sandbox.stub(config, 'ghciPath').returns('/path/to/my/stuff/ghci');
 
     const actual = getGhciBasePath();
