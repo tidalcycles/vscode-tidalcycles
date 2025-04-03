@@ -22,6 +22,22 @@
             ],
             "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
             "preLaunchTask": "npm: watch"
-        }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Mocha Tests",
+            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+            "args": [
+              "--require",
+              "ts-node/register",
+              "${workspaceFolder}/**/*.spec.js",
+      
+            ],
+            "internalConsoleOptions": "openOnSessionStart",
+            "skipFiles": [
+              "<node_internals>/**"
+            ]
+          },
     ]
 }

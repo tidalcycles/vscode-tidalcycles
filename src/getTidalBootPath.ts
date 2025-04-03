@@ -7,6 +7,7 @@ import { getGhciBasePath } from './getGhciBasePath';
 import * as child_process from 'child_process';
 
 export const getTidalBootPath = () => {
+    console.log('start')
     const configuredBootTidalPath = config.bootTidalPath();
 
     // first, check for a configured boot path
@@ -27,6 +28,7 @@ export const getTidalBootPath = () => {
             'BootTidal.hs'
         );
         try {
+            console.log('here')
             fs.statSync(localBootFilePath);
             writeLine(`Local Tidal boot file was found: ${localBootFilePath}`);
             return localBootFilePath;
@@ -34,8 +36,6 @@ export const getTidalBootPath = () => {
             writeLine(`Local Tidal boot file was not found.`);
         }
     }
-
-    //field tidal data-dir
 
     // finally, locate the Tidal boot file in the Tidal ghc package
     const ghciBasePath = getGhciBasePath();
