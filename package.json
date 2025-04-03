@@ -228,7 +228,7 @@
     "vscode:prepublish": "npm run build",
     "build": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "test": "mocha --require tsx test/*.test.ts",
+    "test": "mocha --require ts-node/register test/*.test.ts",
     "test:integration": "vscode-test",
     "prepare": "husky",
     "pretty-quick-staged": "pretty-quick --staged"
@@ -252,8 +252,8 @@
     "prettier": "^3.5.3",
     "pretty-quick": "^4.1.1",
     "sinon": "^20.0.0",
+    "ts-node": "^10.9.2",
     "tslint": "^5.20.1",
-    "tsx": "^4.19.3",
     "typemoq": "^2.1.0",
     "typescript": "5.8.2"
   },
