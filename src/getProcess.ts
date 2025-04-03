@@ -3,34 +3,49 @@ import * as fs from 'fs';
 import * as child_process from 'child_process';
 import { getTidalBootPath } from './getTidalBootPath';
 import { getGhciBasePath } from './getGhciBasePath';
-import { write, writeLine } from './logger';
+import { info, error } from './logger';
 
 let proc: child_process.ChildProcessWithoutNullStreams;
 
-export const getProcess = () : child_process.ChildProcessWithoutNullStreams => {
-    if (!proc) {
-        
-        const tidalBootPath = getTidalBootPath();
-        const ghciPath = path.join(getGhciBasePath(), 'ghci');
+const stdOut: string[] = [];
+const stdErr: string[] = [];
 
-        writeLine(`GHCI path: ${ghciPath}`);
-        writeLine(`Tidal boot path: ${tidalBootPath}`);
+export const getProcess = (): child_process.ChildProcessWithoutNullStreams => {
+  if (!proc) {
+    const tidalBootPath = getTidalBootPath();
+    const ghciPath = path.join(getGhciBasePath(), 'ghci');
 
-        const raw = fs.readFileSync(tidalBootPath, 'utf-8');
+    info(`GHCI path: ${ghciPath}`);
+    info(`Tidal boot path: ${tidalBootPath}`);
 
-        proc = child_process.spawn(ghciPath, [], { shell: true });
+    const raw = fs.readFileSync(tidalBootPath, 'utf-8');
 
-        proc.stderr.on('data', (data) => {
-            write(data.toString('utf8'));
-        });
-    
-        proc.stdout.on('data', (data) => {
-            write(data.toString('utf8'));
-        });
+    proc = child_process.spawn(ghciPath, [], { shell: true });
 
+    proc.stderr.on('data', (data) => {
+      stdErr.push(data.toString('utf8'));
+      setTimeout(() => {
+        if (stdErr.length) {
+          const out = stdErr.join('');
+          stdErr.length = 0;
+          error(out);
+        }
+      }, 50);
+    });
 
-        proc.stdin.write(raw);
-    }
+    proc.stdout.on('data', (data) => {
+      stdOut.push(data.toString('utf8'));
+      setTimeout(() => {
+        if (stdOut.length) {
+          const out = stdOut.join('');
+          stdOut.length = 0;
+          info(out);
+        }
+      }, 50);
+    });
 
-    return proc;
+    proc.stdin.write(raw);
+  }
+
+  return proc;
 };

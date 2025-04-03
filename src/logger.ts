@@ -1,20 +1,20 @@
-import { OutputChannel, window } from 'vscode';
+import { LogOutputChannel, window } from 'vscode';
 
-let outputChannel: OutputChannel;
+let outputChannel: LogOutputChannel;
 
 const getOutputChannel = () => {
-    if (!outputChannel) {
-        outputChannel = window.createOutputChannel('TidalCycles');
-        outputChannel.show();
-    }
+  if (!outputChannel) {
+    outputChannel = window.createOutputChannel('TidalCycles', { log: true });
+    outputChannel.show();
+  }
 
-    return outputChannel;
+  return outputChannel;
 };
 
-export const write = (message: string) => {
-    getOutputChannel().append(message);
+export const info = (message: string) => {
+  getOutputChannel().append(message);
 };
 
-export const writeLine = (message: string) => {
-    write(`${message}\n`);
+export const error = (message: string) => {
+  getOutputChannel().error(message);
 };
