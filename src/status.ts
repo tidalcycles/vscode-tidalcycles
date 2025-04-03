@@ -2,7 +2,7 @@ let evaluationCount = 0;
 let lastCommand = '';
 let difference = 0;
 
-export const evaluate = (command: string) => {
+export const updateStatus = (command: string) => {
   evaluationCount++;
   difference = command.length - lastCommand.length;
   lastCommand = command;

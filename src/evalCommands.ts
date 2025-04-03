@@ -1,13 +1,13 @@
 import { send } from './repl';
 import { getExpressionUnderCursor } from './getExpressionUnderCursor';
-import { evaluate } from './status';
+import { updateStatus } from './status';
 
 export const evalCommand = () => {
   const input = getExpressionUnderCursor(false);
   if (!input) {
     return;
   }
-  evaluate(input);
+  updateStatus(input);
   send(input);
 };
 
@@ -16,11 +16,11 @@ export const evalMultiCommand = () => {
   if (!input) {
     return;
   }
-  evaluate(input);
+  updateStatus(input);
   send(input);
 };
 
 export const hushCommand = () => {
-  evaluate('hush');
+  updateStatus('hush');
   send('hush');
 };
