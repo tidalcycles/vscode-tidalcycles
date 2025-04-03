@@ -116,6 +116,11 @@
           "default": "",
           "description": "The file system path to a file that contains Tidal bootup code."
         },
+        "tidalcycles.consolePrompt": {
+          "type": "string",
+          "default": "t",
+          "description": "The 'prompt' to display in the output window. Refer to the docs for available placeholders."
+        },
         "tidalcycles.feedbackColor": {
           "type": "string",
           "default": "rgba(100,250,100,0.3)",
@@ -229,6 +234,7 @@
     "build": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "test": "mocha --require ts-node/register test/*.test.ts",
+    "test:coverage": "nyc npm run test",
     "test:integration": "vscode-test",
     "prepare": "husky",
     "pretty-quick-staged": "pretty-quick --staged"
@@ -249,6 +255,7 @@
     "husky": "^9.1.7",
     "mocha": "^10.2.0",
     "mock-require": "^3.0.3",
+    "nyc": "^17.1.0",
     "prettier": "^3.5.3",
     "pretty-quick": "^4.1.1",
     "sinon": "^20.0.0",
