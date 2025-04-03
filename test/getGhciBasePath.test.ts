@@ -1,3 +1,4 @@
+// @ts-expect-error its ok
 import mock = require('mock-require');
 
 mock('vscode', {
