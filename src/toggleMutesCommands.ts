@@ -2,7 +2,7 @@ import { send } from './repl';
 
 const mutesState: Record<string, boolean> = {};
 
-const toggleMute = (connection: string) => {
+export const toggleMute = (connection: string) => {
   const command = mutesState[connection]
     ? `unmute ${connection}`
     : `mute ${connection}`;
