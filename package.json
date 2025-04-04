@@ -14,10 +14,6 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:tidal.eval",
-    "onCommand:tidal.evalMulti",
-    "onCommand:tidal.hush",
-    "onCommand:tidal.codehelp.reload",
     "onLanguage:haskell"
   ],
   "main": "./out/src/main",
@@ -36,48 +32,8 @@
         "title": "Tidal Hush"
       },
       {
-        "command": "tidal.shush",
-        "title": "Tidal Shush"
-      },
-      {
         "command": "tidal.codehelp.reload",
         "title": "Tidal Codehelp Reload"
-      },
-      {
-        "command": "tidalcycles.sounds.play",
-        "title": "Play a sound file",
-        "category": "Tidal Sounds",
-        "icon": {
-          "dark": "images/material-icons/play.svg",
-          "light": "images/material-icons/play_lt.svg"
-        }
-      },
-      {
-        "command": "tidalcycles.sounds.copytoclipboard",
-        "title": "Copy sound name to clipboard",
-        "category": "Tidal Sounds",
-        "icon": {
-          "dark": "images/material-icons/clipboard.svg",
-          "light": "images/material-icons/clipboard_lt.svg"
-        }
-      },
-      {
-        "command": "tidalcycles.sounds.insertineditor",
-        "title": "Insert sound name in editor",
-        "category": "Tidal Sounds",
-        "icon": {
-          "dark": "images/material-icons/arrowr.svg",
-          "light": "images/material-icons/arrowr_lt.svg"
-        }
-      },
-      {
-        "command": "tidalcycles.sounds.stop",
-        "title": "Stop all sound previews",
-        "category": "Tidal Sounds",
-        "icon": {
-          "dark": "images/material-icons/stop.svg",
-          "light": "images/material-icons/stop_lt.svg"
-        }
       }
     ],
     "keybindings": [
@@ -95,16 +51,6 @@
         "command": "tidal.hush",
         "key": "Ctrl+Alt+H",
         "when": "resourceExtname == '.tidal'"
-      },
-      {
-        "command": "tidalcycles.sounds.play",
-        "key": "Space",
-        "when": "listFocus && listHasSelectionOrFocus"
-      },
-      {
-        "command": "tidalcycles.sounds.stop",
-        "key": "Escape",
-        "when": "listFocus && listHasSelectionOrFocus"
       }
     ],
     "configuration": {
@@ -130,44 +76,6 @@
           "type": "string",
           "default": "ghci",
           "description": "The path or command used to run GHCi."
-        },
-        "tidalcycles.randomMessageProbability": {
-          "type": "number",
-          "default": 0,
-          "description": "Probability between 0 and 1 of whether a random message will be shown per eval in the output."
-        },
-        "tidalcycles.randomMessages": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "default": [],
-          "description": "An array of strings of random messages."
-        },
-        "tidalcycles.showEvalCount": {
-          "type": "boolean",
-          "default": false,
-          "description": "Show an incremented count of evaluations in the console output on each eval."
-        },
-        "tidalcycles.evalCountPrefix": {
-          "type": "string",
-          "default": "Evals: ",
-          "description": "The text to write just before the eval count number."
-        },
-        "tidalcycles.showGhciOutput": {
-          "type": "boolean",
-          "default": true,
-          "description": "Display the standard output from GHCi in the console."
-        },
-        "tidalcycles.showOutputInConsoleChannel": {
-          "type": "boolean",
-          "default": true,
-          "description": "Show Tidal output in a VS Code output panel."
-        },
-        "tidalcycles.useBootFileInCurrentDirectory": {
-          "type": "boolean",
-          "default": false,
-          "description": "Use a BootTidal.hs file located in the current folder or first folder of the opened workspace."
         },
         "tidalcycles.useStackGhci": {
           "type": "boolean",
@@ -203,19 +111,6 @@
             "Full"
           ],
           "description": "How much information to show for Tidal code completion info."
-        },
-        "tidalcycles.sounds.paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "default": [],
-          "description": "Sound paths to display in the sound browser. Set this e.g. to your Dirt-Samples directory."
-        },
-        "tidalcycles.sounds.playonselection": {
-          "type": "boolean",
-          "default": true,
-          "description": "Play the sounds you click on. If you set this to false you have to explicitly click the play button in the sounds browser."
         }
       }
     },
