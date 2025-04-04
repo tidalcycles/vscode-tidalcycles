@@ -34,6 +34,10 @@
       {
         "command": "tidal.codehelp.reload",
         "title": "Tidal Codehelp Reload"
+      },
+      {
+        "command": "tidal.toggleMute1",
+        "title": "toggle mute d1"
       }
     ],
     "keybindings": [
@@ -50,6 +54,11 @@
       {
         "command": "tidal.hush",
         "key": "Ctrl+Alt+H",
+        "when": "resourceExtname == '.tidal'"
+      },
+      {
+        "command": "tidal.toggleMute1",
+        "key": "Ctrl+1",
         "when": "resourceExtname == '.tidal'"
       }
     ],
