@@ -23,6 +23,10 @@ export const consolePrompt = () => {
   return getConfiguration(configSection).get('consolePrompt', 't');
 };
 
+export const onlyLogErrors = () => {
+  return getConfiguration(configSection).get('onlyLogErrors', false);
+};
+
 // todo: delete this class in favor of functions
 export class Config {
   readonly getConfiguration = vscode.workspace.getConfiguration;

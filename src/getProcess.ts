@@ -5,11 +5,19 @@ import { getTidalBootPath } from './getTidalBootPath';
 import { getGhciBasePath } from './getGhciBasePath';
 import { info, error } from './logger';
 import { getPrompt } from './getPrompt';
+import { onlyLogErrors } from './config';
 
 let proc: child_process.ChildProcessWithoutNullStreams;
 
 const stdOut: string[] = [];
 const stdErr: string[] = [];
+
+let booted = false;
+const bootSuccessText = 'SuperDirt';
+
+const shouldLogInfo = () => {
+  return !booted || !onlyLogErrors();
+};
 
 export const getProcess = (): child_process.ChildProcessWithoutNullStreams => {
   if (!proc) {
@@ -39,8 +47,16 @@ export const getProcess = (): child_process.ChildProcessWithoutNullStreams => {
       setTimeout(() => {
         if (stdOut.length) {
           const out = stdOut.join('');
+
           stdOut.length = 0;
-          info(`${getPrompt()} ${cleanStdOut(out)}`);
+
+          if (shouldLogInfo()) {
+            info(`${getPrompt()} ${cleanStdOut(out)}`);
+          }
+
+          if (!booted && out.indexOf(bootSuccessText) >= 0) {
+            booted = true;
+          }
         }
       }, 50);
     });
