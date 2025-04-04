@@ -226,6 +226,11 @@
           "default": false,
           "description": "Use the GHCi instance provided by Stack in the current folder. If false, use the system-wide GHCi path."
         },
+        "tidalcycles.onlyLogErrors": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable to only produce log messages when errors occur."
+        },
         "tidalcycles.codehelp.commands.extra": {
           "type": "array",
           "items": {
