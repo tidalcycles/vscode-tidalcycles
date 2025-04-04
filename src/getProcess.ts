@@ -50,7 +50,10 @@ export const getProcess = (): child_process.ChildProcessWithoutNullStreams => {
 
           stdOut.length = 0;
 
-          shouldLogInfo() && info(`${getPrompt()} ${cleanStdOut(out)}`);
+          if (shouldLogInfo()) {
+            info(`${getPrompt()} ${cleanStdOut(out)}`);
+          }
+
           if (!booted && out.indexOf(bootSuccessText) >= 0) {
             booted = true;
           }
