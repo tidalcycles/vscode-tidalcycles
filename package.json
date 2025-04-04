@@ -34,6 +34,70 @@
       {
         "command": "tidal.codehelp.reload",
         "title": "Tidal Codehelp Reload"
+      },
+      {
+        "command": "tidal.toggleMute1",
+        "title": "toggle mute d1"
+      },
+      {
+        "command": "tidal.toggleMute2",
+        "title": "toggle mute d2"
+      },
+      {
+        "command": "tidal.toggleMute3",
+        "title": "toggle mute d3"
+      },
+      {
+        "command": "tidal.toggleMute4",
+        "title": "toggle mute d4"
+      },
+      {
+        "command": "tidal.toggleMute5",
+        "title": "toggle mute d5"
+      },
+      {
+        "command": "tidal.toggleMute6",
+        "title": "toggle mute d6"
+      },
+      {
+        "command": "tidal.toggleMute7",
+        "title": "toggle mute d7"
+      },
+      {
+        "command": "tidal.toggleMute8",
+        "title": "toggle mute d8"
+      },
+      {
+        "command": "tidal.toggleMute9",
+        "title": "toggle mute d9"
+      },
+      {
+        "command": "tidal.toggleMute10",
+        "title": "toggle mute d10"
+      },
+      {
+        "command": "tidal.toggleMute11",
+        "title": "toggle mute d11"
+      },
+      {
+        "command": "tidal.toggleMute12",
+        "title": "toggle mute d12"
+      },
+      {
+        "command": "tidal.toggleMute13",
+        "title": "toggle mute d13"
+      },
+      {
+        "command": "tidal.toggleMute14",
+        "title": "toggle mute d14"
+      },
+      {
+        "command": "tidal.toggleMute15",
+        "title": "toggle mute d15"
+      },
+      {
+        "command": "tidal.toggleMute16",
+        "title": "toggle mute d16"
       }
     ],
     "keybindings": [
@@ -50,6 +114,86 @@
       {
         "command": "tidal.hush",
         "key": "Ctrl+Alt+H",
+        "when": "resourceExtname == '.tidal'"
+      },
+      {
+        "command": "tidal.toggleMute1",
+        "key": "Ctrl+1",
+        "when": "resourceExtname == '.tidal'"
+      },
+      {
+        "command": "tidal.toggleMute2",
+        "key": "Ctrl+2",
+        "when": "resourceExtname == '.tidal'"
+      },
+      {
+        "command": "tidal.toggleMute3",
+        "key": "Ctrl+3",
+        "when": "resourceExtname == '.tidal'"
+      },
+      {
+        "command": "tidal.toggleMute4",
+        "key": "Ctrl+4",
+        "when": "resourceExtname == '.tidal'"
+      },
+      {
+        "command": "tidal.toggleMute5",
+        "key": "Ctrl+5",
+        "when": "resourceExtname == '.tidal'"
+      },
+      {
+        "command": "tidal.toggleMute6",
+        "key": "Ctrl+6",
+        "when": "resourceExtname == '.tidal'"
+      },
+      {
+        "command": "tidal.toggleMute7",
+        "key": "Ctrl+7",
+        "when": "resourceExtname == '.tidal'"
+      },
+      {
+        "command": "tidal.toggleMute8",
+        "key": "Ctrl+8",
+        "when": "resourceExtname == '.tidal'"
+      },
+      {
+        "command": "tidal.toggleMute9",
+        "key": "Ctrl+9",
+        "when": "resourceExtname == '.tidal'"
+      },
+      {
+        "command": "tidal.toggleMute10",
+        "key": "Ctrl+10",
+        "when": "resourceExtname == '.tidal'"
+      },
+      {
+        "command": "tidal.toggleMute11",
+        "key": "Ctrl+11",
+        "when": "resourceExtname == '.tidal'"
+      },
+      {
+        "command": "tidal.toggleMute12",
+        "key": "Ctrl+12",
+        "when": "resourceExtname == '.tidal'"
+      },
+      {
+        "command": "tidal.toggleMute13",
+        "key": "Ctrl+13",
+        "when": "resourceExtname == '.tidal'"
+      },
+      {
+        "command": "tidal.toggleMute14",
+        "key": "Ctrl+14",
+        "when": "resourceExtname == '.tidal'"
+      },
+      {
+        "command": "tidal.toggleMute15",
+        "key": "Ctrl+15",
+        "when": "resourceExtname == '.tidal'"
+      },
+      {
+        "command": "tidal.toggleMute16",
+        "key": "Ctrl+16",
         "when": "resourceExtname == '.tidal'"
       }
     ],
