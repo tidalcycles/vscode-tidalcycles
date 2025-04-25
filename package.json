@@ -309,6 +309,7 @@
     "prettier": "^3.5.3",
     "pretty-quick": "^4.1.1",
     "semantic-release": "^24.2.3",
+    "semantic-release-stop-before-publish": "^1.0.0",
     "semantic-release-vsce": "^6.0.7",
     "sinon": "^20.0.0",
     "ts-node": "^10.9.2",
@@ -321,5 +322,9 @@
     "js-yaml": "^4.1.0",
     "node-wav-player": "^0.2.0",
     "split2": "^4.2.0"
+  },
+  "vsce": {
+    "dependencies": true,
+    "yarn": false
   }
 }
