@@ -10,7 +10,7 @@ export default {
       'semantic-release-vsce',
       {
         packageVsix: true,
-        publish: false,
+        publish: true,
         publishPackagePath: '*.vsix',
       },
     ],
