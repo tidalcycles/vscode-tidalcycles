@@ -1,8 +1,12 @@
+# Azure Devops
+
 This package is published to the VSCode Marketplace. A Marketplace publisher named `tidalcycles`
 was created to facilitate the publish command using `vsce`.
 
 In order to publish the package, you must have an Azure Devops user associated with the
 `tidalcycles` publisher.
+
+### Helpful links
 
 - doc on how to publish an extension: https://code.visualstudio.com/api/working-with-extensions/publishing-extension
 - TidalCycles marketplace publisher page: https://marketplace.visualstudio.com/manage/publishers/tidalcycles
