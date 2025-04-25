@@ -10,7 +10,6 @@ permissions:
 
 jobs:
   release:
-    needs: build-and-test
     runs-on: ubuntu-latest
     permissions:
       contents: write # to be able to publish a GitHub release
