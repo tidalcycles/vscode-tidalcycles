@@ -1,4 +1,4 @@
-// package.release.config.js
+// release.config.js
 /**
  * @type {import('semantic-release').GlobalConfig}
  */
