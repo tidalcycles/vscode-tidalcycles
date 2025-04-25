@@ -1,4 +1,4 @@
-// package.release.config.js
+// release.config.js
 /**
  * @type {import('semantic-release').GlobalConfig}
  */
@@ -11,8 +11,14 @@ export default {
       {
         packageVsix: true,
         publish: false,
+        publishPackagePath: '*.vsix',
       },
     ],
-    'semantic-release-stop-before-publish',
+    [
+      '@semantic-release/github',
+      {
+        assets: '*.vsix',
+      },
+    ],
   ],
 };
