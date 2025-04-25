@@ -308,6 +308,7 @@
     "nyc": "^17.1.0",
     "prettier": "^3.5.3",
     "pretty-quick": "^4.1.1",
+    "semantic-release": "^24.2.3",
     "sinon": "^20.0.0",
     "ts-node": "^10.9.2",
     "typemoq": "^2.1.0",
