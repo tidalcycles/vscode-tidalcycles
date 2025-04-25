@@ -13,7 +13,7 @@ export const getTidalBootPath = () => {
 
   // first, check for a configured boot path
   if (configuredBootTidalPath) {
-    info(`Custom Tidal boot path is configured: ${configuredBootTidalPath}`);
+    info(`Custom Tidal boot path is configured at: ${configuredBootTidalPath}`);
 
     return configuredBootTidalPath;
   }
